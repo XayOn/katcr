@@ -35,7 +35,7 @@ async def search_magnets(query, page, loop):
         async with session.get(url) as response:
             assert response.status == 200
             content = await response.text()
-            return MAGNET_RE.finditer(content, re.IGNORECASE)
+            return MAGNET_RE.finditer(content, re.IGNORECASE).group(0)
 
 
 def execute_search(query, pagelen=1):
@@ -54,7 +54,7 @@ def execute_search(query, pagelen=1):
 
     for task in tasks:
         for magnet in task.result():
-            yield urllib.parse.parse_qs(magnet.group(0))
+            yield urllib.parse.parse_qs(magnet)
 
 
 def main():
