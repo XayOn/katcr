@@ -36,3 +36,11 @@ As a library, you can import the main coroutine with::
 
     for magnet in task.result():
         yield magnet
+
+
+KATbot
+------
+
+This exposes a Telegram Bot using telepot that returns links for
+.torrent files on KAT.cr for the first results page of
+whatever you send to the bot.
