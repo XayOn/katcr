@@ -29,14 +29,10 @@ class KATBot(telepot.async.Bot):
         """ Answer only chat messages """
         _, _, chat_id = telepot.glance(msg)
         magnets = search_magnets(msg['text'], 1, self.loop, "torrent")
-        await self.sendMessage(
-            chat_id, "Your search for {} produced:".format(msg['text']))
+        await self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
 
         for magnet in await magnets:
-            for key, value in magnet.items():
-                response = "<a href=\"http:{}\">{}</a>".format(
-                    key.split('?')[0], value[0])
-
+            response = "<a href=\"{}\">{}</a>".format(*magnet)
             await self.sendMessage(chat_id, response, parse_mode="html")
 
 
