@@ -38,16 +38,28 @@ async def search_magnets(query, page, loop, type_):
         This works by simple applying a regular expression
         to the page HTML (either for magnet or torrent).
     """
+
+    def parse_url(url):
+        """
+            Parse url, either a magnet or a normal url.
+            Returns the query string and the torrent title
+
+            returns url, torrenttitle
+        """
+        url = urllib.parse.urlparse(url)
+        query = urllib.parse.parse_qs(url.query)
+        query_ = query.get('dn', query.get('title', ''))[0]
+        if url.scheme == "magnet":
+            return "magnet:xt={}".format(query['xt'][0]), query_
+        return "http://{}{}{}".format(*url[0:3]), query_
+
     with aiohttp.ClientSession(loop=loop) as session:
         url = 'https://kat.cr/usearch/{}/{}/'.format(query, page)
         async with session.get(url) as response:
             assert response.status == 200
-            content = await response.text()
-            results = []
-            reg = TYPES[type_]
-            for magnet in reg.finditer(content, re.IGNORECASE):
-                results.append(urllib.parse.parse_qs(magnet.group(0)[1:-1]))
-            return results
+            iter_ = TYPES[type_].finditer(
+                await response.text(), re.IGNORECASE)
+            return [parse_url(url.group(0)[1:-1]) for url in iter_]
 
 
 def execute_search(query, pagelen=1, type_="magnet"):
@@ -83,11 +95,5 @@ def main():
     opts = docopt(__doc__, version="0.0.1")
     opts = (opts["--search"], int(opts["--pages"]), opts['--type'])
 
-    for magnet in execute_search(*opts):
-        if opts[2] == "magnet":
-            print("magnet:?xt={} - {}".format(magnet["magnet:?xt"][0],
-                                              magnet['dn'][0]))
-        else:
-            for key, value in magnet.items():
-                print("http:{} - {}".format(key.split('?')[0], value[0]))
-
+    for (url, qst) in execute_search(*opts):
+        print("{} - {}".format(url, qst))
