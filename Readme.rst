@@ -1,3 +1,5 @@
+.. image:: http://i.imgur.com/ofx75lO.png
+
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
