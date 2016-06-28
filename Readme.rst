@@ -35,10 +35,10 @@ Just that easy, a normal loop
 *This library also comes with a command line interface and a telegram bot!*
 
 
-A kickasstorrents command line interface
-----------------------------------------
+katcr - kickasstorrents command line interface
+-----------------------------------------------
 
-It comes with a simple but powerful command line interface, able to
+katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
 
 ::
@@ -62,9 +62,26 @@ return either magnets or torrents.
     	katcr --pages 1
 
 
-KATbot
-------
+KATBot - Kickasstorrents telegram bot
+-------------------------------------
 
-This exposes a Telegram Bot using telepot that returns links for
-.torrent files on KAT.cr for the first results page of
-whatever you send to the bot.
+Katcr also comes with a telegram bot entry point.
+
+::
+
+    Telegram bot to query kat.cr
+
+    Usage:
+        katcr --token <BOT_TOKEN>
+
+    Options:
+        --token=<BOT_TOKEN> Telegram bot token
+
+    Examples:
+        katcr --token 123123:123123
+
+
+It's a simple bot that replies with search results for each message it gets.
+It returns links to .torrent files from KAT.cr for the first page of results.
+
+.. image:: http://i.imgur.com/qywHKHT.gifv

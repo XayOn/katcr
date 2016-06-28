@@ -30,7 +30,7 @@ class KATBot(telepot.async.Bot):
         _, _, chat_id = telepot.glance(msg)
         if msg['text'] == "/start":
             return
-        magnets = search_magnets(msg['text'], 1, self.loop, "torrent")
+        magnets = search_magnets(msg['text'], 1, "torrent")
         await self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
 
         for magnet in await magnets:

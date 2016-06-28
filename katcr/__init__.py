@@ -30,7 +30,7 @@ TYPES = {
     'torrent': re.compile(r'\"//torcache.net(.+?)\"')}
 
 
-async def search_magnets(query, page, loop, type_):
+async def search_magnets(query, page, type_):
     """
         Coroutine that searches in kat.cr and returns
         all links
@@ -53,7 +53,7 @@ async def search_magnets(query, page, loop, type_):
             return "magnet:xt={}".format(query['xt'][0]), query_
         return "http://{}{}{}".format(*url[0:3]), query_
 
-    with aiohttp.ClientSession(loop=loop) as session:
+    with aiohttp.ClientSession() as session:
         url = 'https://kat.cr/usearch/{}/{}/'.format(query, page)
         async with session.get(url) as response:
             assert response.status == 200
@@ -78,7 +78,7 @@ def execute_search(query, pagelen=1, type_="magnet"):
 
     for page in range(0, pagelen):
         future = asyncio.ensure_future(
-            search_magnets(query, page + 1, loop, type_))
+            search_magnets(query, page + 1, type_))
         tasks.append(future)
 
     loop.run_until_complete(asyncio.wait(tasks))
