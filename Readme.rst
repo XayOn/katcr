@@ -108,8 +108,7 @@ to **get the token**
 
 This project is made with the best of intentions. For that times
 you need to search for somethink shared as a torrent on KAT
-(I.E, linux images).
+(I.E, linux images). Logo is based on robot cat by
+`Arsenty <https://thenounproject.com/arsenty/>`_
 
-Logo is based on robot cat by `Arsenty <https://thenounproject.com/arsenty/>`_
-
-If you like this project, show its appreciation by starring it
+If you like this project, you can show your appreciation by starring it
