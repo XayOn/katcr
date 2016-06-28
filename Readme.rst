@@ -1,12 +1,42 @@
-Katcr
------
+\:tv\: Python3 + KickAssTorrents | CLI | Telegram
+=================================================
 
-Easy-as-it-gets python3.5 library to search magnets
-in kickasstorrents (kat.cr)
+Python3.5 library to search in kickasstorrents (kat.cr)
+It's also a telegram bot and a command line interface :wink:
 
-Uses aiohttp to do paralell searches on kickasstorrents
+.. image:: http://i.imgur.com/vdAIPb3.png
 
-It also exports a nice text user interface:
+.. contents:: :local:
+
+
+Library Usage
+-------------
+
+KATcr uses *python3.5*'s new *async def* syntax.
+
+For searching purposes, it just has a simple coroutine, `search_magnets`,
+that accepts a search term, the page to return, `the loop` and a type.
+
+Type is either "torrent" or "magnet"
+
+Sample code for getting the first page of results::
+
+    from katcr import search_magnets
+
+    loop = asyncio.get_event_loop()
+    result = loop.run_until_complete(
+        search_magnets("ubuntu", 1, loop, "torrent"))
+
+    for url, name in result:
+        print("{}: {}".format(name, url))
+
+Just that easy, a normal loop
+
+*This library also comes with a command line interface and a telegram bot!*
+
+
+A kickasstorrents command line interface
++++++++++++++++++++++++++++++++++++++++++
 
 ::
 
@@ -22,20 +52,6 @@ It also exports a nice text user interface:
        katcr --search "Search terms" --pages 1
        katcr --pages 1
 
-
-Usage
------
-
-As a library, you can import the main coroutine with::
-
-    from katcr import search_magnets
-
-    loop = asyncio.get_event_loop()
-    task = asyncio.ensure_future(search_magnets("what", 1, loop))
-    loop.run_until_complete(task)
-
-    for magnet in task.result():
-        yield magnet
 
 
 KATbot
