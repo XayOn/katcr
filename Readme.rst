@@ -21,7 +21,7 @@ For search, it just has a simple coroutine, **search_magnets**,
 that accepts a search term, the page number to return, and a type (
 type is either **"torrent"** or **"magnet"**)
 
-Sample code for getting the first page of results::
+::
 
     from katcr import search_magnets
 
