@@ -2,6 +2,7 @@
 =================================================
 
 Python3.5 library to search in kickasstorrents (kat.cr)
+
 It's also a telegram bot and a command line interface :wink:
 
 .. contents:: :local:
@@ -9,15 +10,14 @@ It's also a telegram bot and a command line interface :wink:
 .. image:: http://i.imgur.com/vdAIPb3.png
 
 
-Library Usage
--------------
+\:notebook\: Library Usage
+---------------------------
 
-KATcr uses *python3.5*'s new *async def* syntax.
+KATcr uses **python3.5**'s new **async def** syntax.
 
-For searching purposes, it just has a simple coroutine, `search_magnets`,
-that accepts a search term, the page to return, `the loop` and a type.
-
-Type is either "torrent" or "magnet"
+For search, it just has a simple coroutine, **search_magnets**,
+that accepts a search term, the page number to return, and a type.
+Type is either **"torrent"** or **"magnet"**
 
 Sample code for getting the first page of results::
 
@@ -30,9 +30,8 @@ Sample code for getting the first page of results::
     for url, name in result:
         print("{}: {}".format(name, url))
 
-Just that easy, a normal loop
 
-*This library also comes with a command line interface and a telegram bot!*
+**This library also comes with a command line interface and a telegram bot!**
 
 
 katcr - kickasstorrents command line interface
