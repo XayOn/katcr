@@ -4,9 +4,9 @@
 Python3.5 library to search in kickasstorrents (kat.cr)
 It's also a telegram bot and a command line interface :wink:
 
-.. image:: http://i.imgur.com/vdAIPb3.png
-
 .. contents:: :local:
+
+.. image:: http://i.imgur.com/vdAIPb3.png
 
 
 Library Usage
@@ -36,22 +36,30 @@ Just that easy, a normal loop
 
 
 A kickasstorrents command line interface
-+++++++++++++++++++++++++++++++++++++++++
+----------------------------------------
+
+It comes with a simple but powerful command line interface, able to
+return either magnets or torrents.
 
 ::
 
-   Usage:
-       katcr --search <SEARCH_TERM> --pages <PAGES_NUM>
+    Easy-as-it-gets python3.5 library to search magnets
+    in kickasstorrents (kat.cr)
 
-   Options:
-       --search=<SEARCH_TERM>   Search term(s)
-       --pages=<PAGES_NUM>      Number of pages to lookup
+    Usage:
+    	katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type="magnet"
 
-   Examples:
-       katcr --search "Search terms" --pages 3
-       katcr --search "Search terms" --pages 1
-       katcr --pages 1
+    Options:
+    	--search=<SEARCH_TERM>   Search term(s)
+    	--pages=<PAGES_NUM>      Number of pages to lookup
+    	--type=<magnet|torrent>  Type
 
+    Examples:
+    	katcr --search "Search terms" --pages 3
+    	katcr --search "Search terms" --pages 1
+    	katcr --search "Search terms" --pages 1 --type=magnet
+    	katcr --search "Search terms" --pages 1 --type=torrent
+    	katcr --pages 1
 
 
 KATbot
