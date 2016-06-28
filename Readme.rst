@@ -18,8 +18,8 @@ KATcr uses **python3.5**'s new **async def**
 `(pep-492) <https://www.python.org/dev/peps/pep-0492/>`_ syntax.
 
 For search, it just has a simple coroutine, **search_magnets**,
-that accepts a search term, the page number to return, and a type.
-Type is either **"torrent"** or **"magnet"**
+that accepts a search term, the page number to return, and a type (
+type is either **"torrent"** or **"magnet"**)
 
 Sample code for getting the first page of results::
 
@@ -96,3 +96,16 @@ Usage
 
     Examples:
         katcr --token 123123:123123
+
+
+
+\:star2\: Notes
+----------------
+
+This project is made with the best of intentions. For that times
+you need to search for somethink shared as a torrent on KAT
+(I.E, linux images).
+
+Logo is based on robot cat by `Arsenty <https://thenounproject.com/arsenty/>_`
+
+If you like this project, show its appreciation by starring it
