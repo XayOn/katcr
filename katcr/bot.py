@@ -3,13 +3,13 @@
 Telegram bot to query kat.cr
 
 Usage:
-    katcr --token <BOT_TOKEN>
+    katcr_bot --token <BOT_TOKEN>
 
 Options:
     --token=<BOT_TOKEN> Telegram bot token
 
 Examples:
-    katcr --token 123123:123123
+    katcr_bot --token 123123:123123
 """
 
 import asyncio

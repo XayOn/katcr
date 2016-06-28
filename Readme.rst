@@ -89,13 +89,13 @@ Usage
     Telegram bot to query kat.cr
 
     Usage:
-        katcr --token <BOT_TOKEN>
+        katcr_bot --token <BOT_TOKEN>
 
     Options:
         --token=<BOT_TOKEN> Telegram bot token
 
     Examples:
-        katcr --token 123123:123123
+        katcr_bot --token 123123:123123
 
 I would recommend to read
 `official documentation on setting up your own telegram bot <https://core.telegram.org/bots#6-botfather>`_
