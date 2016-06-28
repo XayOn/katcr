@@ -97,7 +97,9 @@ Usage
     Examples:
         katcr --token 123123:123123
 
-I would recommend to read `official documentation on setting up your own telegram bot <https://core.telegram.org/bots#6-botfather>`_
+I would recommend to read
+`official documentation on setting up your own telegram bot <https://core.telegram.org/bots#6-botfather>`_
+to **get the token**
 
 
 
