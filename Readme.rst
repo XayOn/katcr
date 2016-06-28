@@ -1,13 +1,11 @@
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (kat.cr)
+Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`)
 
-It's also a telegram bot and a command line interface :wink:
+It's also a **telegram bot** and a **command line interface** :wink:
 
 .. contents:: :local:
-
-.. image:: http://i.imgur.com/vdAIPb3.png
 
 
 \:notebook\: Library Usage
@@ -41,6 +39,10 @@ Sample code for getting the first page of results::
 
 katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
+
+
+.. image:: http://i.imgur.com/vdAIPb3.png
+
 
 ::
 
