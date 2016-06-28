@@ -4,7 +4,7 @@
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`)
+Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`_)
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
@@ -106,6 +106,6 @@ This project is made with the best of intentions. For that times
 you need to search for somethink shared as a torrent on KAT
 (I.E, linux images).
 
-Logo is based on robot cat by `Arsenty <https://thenounproject.com/arsenty/>_`
+Logo is based on robot cat by `Arsenty <https://thenounproject.com/arsenty/>`_
 
 If you like this project, show its appreciation by starring it
