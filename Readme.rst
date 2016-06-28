@@ -13,7 +13,8 @@ It's also a telegram bot and a command line interface :wink:
 \:notebook\: Library Usage
 ---------------------------
 
-KATcr uses **python3.5**'s new **async def** syntax.
+KATcr uses **python3.5**'s new **async def**
+`(pep-492) <https://www.python.org/dev/peps/pep-0492/>`_ syntax.
 
 For search, it just has a simple coroutine, **search_magnets**,
 that accepts a search term, the page number to return, and a type.
@@ -34,8 +35,9 @@ Sample code for getting the first page of results::
 **This library also comes with a command line interface and a telegram bot!**
 
 
-katcr - kickasstorrents command line interface
------------------------------------------------
+
+\:tv\: katcr - kickasstorrents command line interface
+------------------------------------------------------
 
 katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
@@ -61,8 +63,8 @@ return either magnets or torrents.
     	katcr --pages 1
 
 
-KATBot - Kickasstorrents telegram bot
--------------------------------------
+\:space_invader\: KATBot - Kickasstorrents telegram bot
+--------------------------------------------------------
 
 Katcr also comes with a telegram bot entry point.
 
