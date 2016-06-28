@@ -44,6 +44,9 @@ return either magnets or torrents.
 .. image:: http://i.imgur.com/vdAIPb3.png
 
 
+Usage
++++++
+
 ::
 
     Easy-as-it-gets python3.5 library to search magnets
@@ -70,6 +73,14 @@ return either magnets or torrents.
 
 Katcr also comes with a telegram bot entry point.
 
+It's a simple bot that replies with search results for each message it gets.
+It returns links to .torrent files from KAT.cr for the first page of results.
+
+.. image:: http://i.imgur.com/qywHKHT.gif
+
+Usage
++++++
+
 ::
 
     Telegram bot to query kat.cr
@@ -82,9 +93,3 @@ Katcr also comes with a telegram bot entry point.
 
     Examples:
         katcr --token 123123:123123
-
-
-It's a simple bot that replies with search results for each message it gets.
-It returns links to .torrent files from KAT.cr for the first page of results.
-
-.. image:: http://i.imgur.com/qywHKHT.gif
