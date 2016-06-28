@@ -84,4 +84,4 @@ Katcr also comes with a telegram bot entry point.
 It's a simple bot that replies with search results for each message it gets.
 It returns links to .torrent files from KAT.cr for the first page of results.
 
-.. image:: http://i.imgur.com/qywHKHT.gifv
+.. image:: http://i.imgur.com/qywHKHT.gif
