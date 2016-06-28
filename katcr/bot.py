@@ -28,6 +28,8 @@ class KATBot(telepot.async.Bot):
     async def on_chat_message(self, msg):
         """ Answer only chat messages """
         _, _, chat_id = telepot.glance(msg)
+        if msg['text'] == "/start":
+            return
         magnets = search_magnets(msg['text'], 1, self.loop, "torrent")
         await self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
 
