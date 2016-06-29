@@ -7,7 +7,7 @@
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`)
+Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`_)
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
