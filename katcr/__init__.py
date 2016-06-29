@@ -4,24 +4,21 @@ Easy-as-it-gets python3.5 library to search magnets
 in kickasstorrents (kat.cr)
 
 Usage:
-    katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type="magnet"
+    katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
 
 Options:
     --search=<SEARCH_TERM>   Search term(s)
     --pages=<PAGES_NUM>      Number of pages to lookup
     --type=<magnet|torrent>  Type
-
-Examples:
-    katcr --search "Search terms" --pages 3
-    katcr --search "Search terms" --pages 1
-    katcr --search "Search terms" --pages 1 --type=magnet
-    katcr --search "Search terms" --pages 1 --type=torrent
-    katcr --pages 1
+    -i --interactive            Activate interactive menu to torrent selection
+    -h --help                Show this screen
 """
 
 import re
 import urllib
+import inquirer
 from docopt import docopt
+from blessings import Terminal
 import asyncio
 import aiohttp
 
@@ -92,8 +89,16 @@ def main():
     """
         Entry point
     """
-    opts = docopt(__doc__, version="0.0.1")
-    opts = (opts["--search"], int(opts["--pages"]), opts['--type'])
-
-    for (url, qst) in execute_search(*opts):
-        print("{} - {}".format(url, qst))
+    opt = docopt(__doc__, version="0.0.1")
+    opts = (opt["--search"], int(opt["--pages"]), opt['--type'])
+    search = execute_search(*opts)
+    if not opt['--interactive']:
+        for (url, qst) in search:
+            print("{} - {}".format(url, qst))
+    else:
+        ter = Terminal()
+        results = {b[:ter.width - 4]: a for a, b in search}
+        questions = [inquirer.List('Torrent', message="Choose a torrent",
+                                   choices=results.keys())]
+        answers = inquirer.prompt(questions)
+        print(results[answers['Torrent']])

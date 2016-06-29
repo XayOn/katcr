@@ -1,3 +1,4 @@
 docopt
+inquirer
 aiohttp
 telepot
