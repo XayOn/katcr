@@ -1,10 +1,14 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
+.. image:: https://img.shields.io/github/downloads/xayon/katcr/total.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/dm/katcr.svg?maxAge=2592000
+.. image:: https://img.shields.io/github/stars/xayon/katcr.svg?style=social&label=Star&maxAge=2592000
+
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`_)
+Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`)
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
@@ -21,7 +25,7 @@ For search, it just has a simple coroutine, **search_magnets**,
 that accepts a search term, the page number to return, and a type (
 type is either **"torrent"** or **"magnet"**)
 
-::
+Sample code for getting the first page of results::
 
     from katcr import search_magnets
 
@@ -89,17 +93,13 @@ Usage
     Telegram bot to query kat.cr
 
     Usage:
-        katcr_bot --token <BOT_TOKEN>
+        katcr --token <BOT_TOKEN>
 
     Options:
         --token=<BOT_TOKEN> Telegram bot token
 
     Examples:
-        katcr_bot --token 123123:123123
-
-I would recommend to read
-`official documentation on setting up your own telegram bot <https://core.telegram.org/bots#6-botfather>`_
-to **get the token**
+        katcr --token 123123:123123
 
 
 
@@ -108,7 +108,8 @@ to **get the token**
 
 This project is made with the best of intentions. For that times
 you need to search for somethink shared as a torrent on KAT
-(I.E, linux images). Logo is based on robot cat by
-`Arsenty <https://thenounproject.com/arsenty/>`_
+(I.E, linux images).
 
-If you like this project, you can show your appreciation by starring it
+Logo is based on robot cat by `Arsenty <https://thenounproject.com/arsenty/>_`
+
+If you like this project, show its appreciation by starring it
