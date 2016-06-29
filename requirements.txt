@@ -2,3 +2,4 @@ docopt
 inquirer
 aiohttp
 telepot
+torrentstream
