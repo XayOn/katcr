@@ -23,7 +23,7 @@ from docopt import docopt
 from blessings import Terminal
 import asyncio
 import aiohttp
-import torrentstream
+from torrentstream import utils
 
 TYPES = {
     'magnet': re.compile(r'\"magnet:\?xt=urn:(.+?)\"'),
@@ -108,6 +108,6 @@ def main():
                                    choices=results.keys())]
         answers = inquirer.prompt(questions)
         if opt['--stream']:
-            torrentstream.utils.await_stream(results[answers['Torrent']])
+            utils.await_stream(results[answers['Torrent']])
         else:
             print(results[answers['Torrent']])
