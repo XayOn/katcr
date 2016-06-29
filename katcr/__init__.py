@@ -5,12 +5,14 @@ in kickasstorrents (kat.cr)
 
 Usage:
     katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
+    katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> --interactive --stream
 
 Options:
     --search=<SEARCH_TERM>   Search term(s)
     --pages=<PAGES_NUM>      Number of pages to lookup
     --type=<magnet|torrent>  Type
-    -i --interactive            Activate interactive menu to torrent selection
+    -i --interactive         Activate interactive menu to torrent selection
+    -s --stream              Play the torrent in streaming mode (EXPERIMENTAL)
     -h --help                Show this screen
 """
 
@@ -21,6 +23,7 @@ from docopt import docopt
 from blessings import Terminal
 import asyncio
 import aiohttp
+import torrentstream
 
 TYPES = {
     'magnet': re.compile(r'\"magnet:\?xt=urn:(.+?)\"'),
@@ -47,7 +50,7 @@ async def search_magnets(query, page, type_):
         query = urllib.parse.parse_qs(url.query)
         query_ = query.get('dn', query.get('title', ''))[0]
         if url.scheme == "magnet":
-            return "magnet:xt={}".format(query['xt'][0]), query_
+            return "magnet:?xt={}".format(query['xt'][0]), query_
         return "http://{}{}{}".format(*url[0:3]), query_
 
     with aiohttp.ClientSession() as session:
@@ -93,6 +96,9 @@ def main():
     opts = (opt["--search"], int(opt["--pages"]), opt['--type'])
     search = execute_search(*opts)
     if not opt['--interactive']:
+        if opt['--stream']:
+            print("--stream requires --interactive")
+            return
         for (url, qst) in search:
             print("{} - {}".format(url, qst))
     else:
@@ -101,4 +107,7 @@ def main():
         questions = [inquirer.List('Torrent', message="Choose a torrent",
                                    choices=results.keys())]
         answers = inquirer.prompt(questions)
-        print(results[answers['Torrent']])
+        if opt['--stream']:
+            torrentstream.utils.await_stream(results[answers['Torrent']])
+        else:
+            print(results[answers['Torrent']])
