@@ -1,13 +1,14 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
+.. image:: https://img.shields.io/github/downloads/xayon/katcr/total.svg?maxAge=2592000
 .. image:: https://img.shields.io/pypi/dm/katcr.svg?maxAge=2592000
 .. image:: https://img.shields.io/github/stars/xayon/katcr.svg?style=social&label=Star&maxAge=2592000
 
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`)
+Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`_)
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
@@ -66,6 +67,7 @@ Usage
         --pages=<PAGES_NUM>      Number of pages to lookup
         --type=<magnet|torrent>  Type
         -i --interactive         Activate interactive menu to torrent selection
+        -s --stream              Play the torrent in streaming mode (EXPERIMENTAL)
         -h --help                Show this screen
 
     Examples:
@@ -102,6 +104,45 @@ Usage
     Examples:
         katcr --token 123123:123123
 
+
+\:white_check_mark\: Experimental torrent streaming
+---------------------------------------------------
+
+.. warning:: This is an experimental feature!!
+
+Using another library of mine, `torrentstream <http://github.com/XayOn/torrentstream>`_
+I added experimental streaming support. That requires `libtorrent <http://www.libtorrent.org/>`_.
+
+Deluge guys have a good `tutorial <http://dev.deluge-torrent.org/wiki/Building/libtorrent>`_
+on how to get libtorrent going on multiple systems`
+
+Support on windows / MacOs is probably not working on this feature.
+Please, if you've tested it on windows / MacOs contact me so we can
+work on that support.
+
+::
+
+    ..image:: TODO
+
+
+\:star\: Installation
+---------------------
+
+This is a python3.5 package available on pypi.
+
+On windows and mac `you can download python3.5 here <https://www.python.org/downloads/release/python-352/>`_.
+On linux distros, python3.5 is already on most package managers :smile:
+
+With python3.5 installed just execute::
+
+    pip3.5 install katcr
+
+
+If it asks about permissions and you don't know what to do, you should
+probably read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
+
+
+\:
 
 
 \:star2\: Notes
