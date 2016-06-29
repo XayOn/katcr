@@ -109,7 +109,7 @@ Usage
 
 This is a python3.5 package available on pypi.
 
-On windows and mac `you can download python3.5 from <https://www.python.org/downloads/release/python-352/>`_.
+On windows and mac `you can download python3.5 here <https://www.python.org/downloads/release/python-352/>`_.
 On linux distros, python3.5 is already on most package managers :smile:
 
 With python3.5 installed just execute::
