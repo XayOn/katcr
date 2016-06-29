@@ -1,7 +1,6 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
-.. image:: https://img.shields.io/github/downloads/xayon/katcr/total.svg?maxAge=2592000
 .. image:: https://img.shields.io/pypi/dm/katcr.svg?maxAge=2592000
 .. image:: https://img.shields.io/github/stars/xayon/katcr.svg?style=social&label=Star&maxAge=2592000
 
@@ -108,8 +107,10 @@ Usage
 
 This project is made with the best of intentions. For that times
 you need to search for somethink shared as a torrent on KAT
-(I.E, linux images).
+(I.E, linux images). Logo is based on robot cat by
+`Arsenty <https://thenounproject.com/arsenty/>`_
 
-Logo is based on robot cat by `Arsenty <https://thenounproject.com/arsenty/>_`
-
-If you like this project, show its appreciation by starring it
+If you like this project, show its appreciation by starring it, if you're using
+it and want to write to me personally, feel free to do so at
+opensource@davidfrancos.net. If you've got a bug to report, please use the
+github ticketing system
