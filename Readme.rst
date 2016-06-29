@@ -47,7 +47,7 @@ katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
 
 
-.. image:: http://i.imgur.com/vdAIPb3.png
+.. image:: http://i.imgur.com/gOo3mqf.gif
 
 
 Usage
@@ -59,16 +59,18 @@ Usage
     in kickasstorrents (kat.cr)
 
     Usage:
-    	katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type="magnet"
+        katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
 
     Options:
-    	--search=<SEARCH_TERM>   Search term(s)
-    	--pages=<PAGES_NUM>      Number of pages to lookup
-    	--type=<magnet|torrent>  Type
+        --search=<SEARCH_TERM>   Search term(s)
+        --pages=<PAGES_NUM>      Number of pages to lookup
+        --type=<magnet|torrent>  Type
+        -i --interactive         Activate interactive menu to torrent selection
+        -h --help                Show this screen
 
     Examples:
     	katcr --search "Search terms" --pages 3
-    	katcr --search "Search terms" --pages 1
+    	katcr --search "Search terms" --pages 1 --interactive
     	katcr --search "Search terms" --pages 1 --type=magnet
     	katcr --search "Search terms" --pages 1 --type=torrent
     	katcr --pages 1
