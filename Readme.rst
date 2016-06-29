@@ -104,6 +104,23 @@ Usage
 
 
 
+\:star\: Installation
+---------------------
+
+This is a python3.5 package available on pypi.
+On windows and mac `you can download python3.5 from  <https://www.python.org/downloads/release/python-352/`_
+On linux distros, python3.5 is already on most package managers :smile:
+
+With python3.5 installed just execute::
+
+    pip3.5 install katcr
+
+
+If it asks about permissions and you don't know what to do, you should
+probably read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
+
+
+
 \:star2\: Notes
 ----------------
 
