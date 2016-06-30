@@ -108,7 +108,7 @@ Usage
 \:white_check_mark\: Experimental torrent streaming
 ---------------------------------------------------
 
-.. warning:: This is an experimental feature!!
+**This is an experimental feature!!**
 
 Using another library of mine, `torrentstream <http://github.com/XayOn/torrentstream>`_
 I added experimental streaming support. That requires `libtorrent <http://www.libtorrent.org/>`_.
@@ -119,10 +119,6 @@ on how to get libtorrent going on multiple systems`
 Support on windows / MacOs is probably not working on this feature.
 Please, if you've tested it on windows / MacOs contact me so we can
 work on that support.
-
-::
-
-    ..image:: TODO
 
 
 \:star\: Installation
