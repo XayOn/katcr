@@ -1,10 +1,6 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
-.. image:: https://img.shields.io/github/downloads/xayon/katcr/total.svg?maxAge=2592000
-.. image:: https://img.shields.io/pypi/dm/katcr.svg?maxAge=2592000
-.. image:: https://img.shields.io/github/stars/xayon/katcr.svg?style=social&label=Star&maxAge=2592000
-
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
