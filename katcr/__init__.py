@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.5
 """
 Easy-as-it-gets python3.5 library to search magnets
-in kickasstorrents (kat.cr)
+in kickasstorrents
 
 Usage:
     katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
@@ -32,11 +32,10 @@ TYPES = {
 
 async def search_magnets(query, page, type_):
     """
-        Coroutine that searches in kat.cr and returns
-        all links
-
-        This works by simple applying a regular expression
-        to the page HTML (either for magnet or torrent).
+    Coroutine that searches in kickasstorrents and returns
+    all links
+    This works by simple applying a regular expression
+    to the page HTML (either for magnet or torrent).
     """
 
     def parse_url(url):
@@ -54,7 +53,7 @@ async def search_magnets(query, page, type_):
         return "http://{}{}{}".format(*url[0:3]), query_
 
     with aiohttp.ClientSession() as session:
-        url = 'https://kat.cr/usearch/{}/{}/'.format(query, page)
+        url = 'https://kickasstorrents.to/usearch/{}/{}/'.format(query, page)
         async with session.get(url) as response:
             assert response.status == 200
             iter_ = TYPES[type_].finditer(

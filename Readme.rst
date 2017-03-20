@@ -4,7 +4,7 @@
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`_)
+Python3.5 library to search in kickasstorrents
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
@@ -53,7 +53,7 @@ Usage
 ::
 
     Easy-as-it-gets python3.5 library to search magnets
-    in kickasstorrents (kat.cr)
+    in kickasstorrents
 
     Usage:
         katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
@@ -89,7 +89,7 @@ Usage
 
 ::
 
-    Telegram bot to query kat.cr
+    Telegram bot to query kickasstorrents
 
     Usage:
         katcr --token <BOT_TOKEN>

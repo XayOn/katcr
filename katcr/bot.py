@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.5
 """
-Telegram bot to query kat.cr
+Telegram bot to query KickassTorrents
 
 Usage:
     katcr_bot --token <BOT_TOKEN>
