@@ -1,32 +1,21 @@
 #!/usr/bin/env python3.5
-"""
-Telegram bot to query KickassTorrents
-
-Usage:
-    katcr_bot --token <BOT_TOKEN>
-
-Options:
-    --token=<BOT_TOKEN> Telegram bot token
-
-Examples:
-    katcr_bot --token 123123:123123
-"""
+"""Telegram bot to query KickassTorrents."""
 
 import asyncio
-import telepot
 from katcr import search_magnets
 from docopt import docopt
-import telepot.async
+import telepot
+import telepot.aio
 
 
-class KATBot(telepot.async.Bot):
-    """
-        KAT.cr search bot, looks only for the first
-        page.
-    """
+class KATBot(telepot.aio.Bot):
+    """KAT.cr search bot, looks only for the first page."""
+
+    # pylint: disable=too-few-public-methods
     loop = False
+
     async def on_chat_message(self, msg):
-        """ Answer only chat messages """
+        """Answer only chat messages."""
         _, _, chat_id = telepot.glance(msg)
         if msg['text'] == "/start":
             return
@@ -39,12 +28,15 @@ class KATBot(telepot.async.Bot):
 
 
 def main():
+    """Run telegram bot.
+
+    Usage: katcr_bot [options]
+
+    Options:
+        --token=<BOT_TOKEN> Telegram bot token
     """
-        Starts bot.
-    """
-    opts = docopt(__doc__, version="0.0.1")
-    bot = KATBot(opts["--token"])
     loop = asyncio.get_event_loop()
+    bot = KATBot(docopt(__doc__, version="0.0.1")["--token"])
     bot.loop = loop
     loop.create_task(bot.message_loop())
     loop.run_forever()
