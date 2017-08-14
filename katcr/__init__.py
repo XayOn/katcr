@@ -1,49 +1,30 @@
 #!/usr/bin/env python3.5
-"""
-Easy-as-it-gets python3.5 library to search magnets
-in kickasstorrents
-
-Usage:
-    katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
-    katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> --interactive --stream
-
-Options:
-    --search=<SEARCH_TERM>   Search term(s)
-    --pages=<PAGES_NUM>      Number of pages to lookup
-    --type=<magnet|torrent>  Type
-    -i --interactive         Activate interactive menu to torrent selection
-    -s --stream              Play the torrent in streaming mode (EXPERIMENTAL)
-    -h --help                Show this screen
-"""
+"""Easy async python3.5 library to search magnets."""
 
 import re
 import urllib
-import inquirer
+import asyncio
+import itertools
+from inquirer import List, prompt
 from docopt import docopt
 from blessings import Terminal
-import asyncio
+from tabulate import tabulate
 import aiohttp
-from torrentstream import utils
 
-TYPES = {
-    'magnet': re.compile(r'\"magnet:\?xt=urn:(.+?)\"'),
-    'torrent': re.compile(r'\"//torcache.net(.+?)\"')}
+TYPES = {'magnet': re.compile(r'\"magnet:\?xt=urn:(.+?)\"'),
+         'torrent': re.compile(r'\"//torcache.net(.+?)\"')}
 
 
 async def search_magnets(query, page, type_):
-    """
-    Coroutine that searches in kickasstorrents and returns
-    all links
-    This works by simple applying a regular expression
-    to the page HTML (either for magnet or torrent).
-    """
+    """Return all links found in a single KAT page.
 
+    This works by simple applying a regular expression to the page HTML
+    (either for magnet or torrent).
+    """
     def parse_url(url):
-        """
-            Parse url, either a magnet or a normal url.
-            Returns the query string and the torrent title
+        """Parse url, either a magnet or a normal url.
 
-            returns url, torrenttitle
+        Returns the query string and the torrent title
         """
         url = urllib.parse.urlparse(url)
         query = urllib.parse.parse_qs(url.query)
@@ -53,7 +34,7 @@ async def search_magnets(query, page, type_):
         return "http://{}{}{}".format(*url[0:3]), query_
 
     with aiohttp.ClientSession() as session:
-        url = 'https://kickasstorrents.to/usearch/{}/{}/'.format(query, page)
+        url = 'https://thekat.info/usearch/{}/{}/'.format(query, page)
         async with session.get(url) as response:
             assert response.status == 200
             iter_ = TYPES[type_].finditer(
@@ -61,52 +42,31 @@ async def search_magnets(query, page, type_):
             return [parse_url(url.group(0)[1:-1]) for url in iter_]
 
 
-def execute_search(query, pagelen=1, type_="magnet"):
-    """
-        Simple search manager, runs loop and gets all
-        the results back.
-
-        Be careful with pagelength as I'm not
-        implementing proper page handling or groups,
-        so all the pages are going to be queried at
-        the same time
-
-    """
-    tasks = []
+def search(query, pagelen=1, type_="magnet"):
+    """Manage complete search for specified pages."""
     loop = asyncio.get_event_loop()
-
-    for page in range(0, pagelen):
-        future = asyncio.ensure_future(
-            search_magnets(query, page + 1, type_))
-        tasks.append(future)
-
+    tasks = [asyncio.ensure_future(search_magnets(query, page + 1, type_))
+             for page in range(0, pagelen)]
     loop.run_until_complete(asyncio.wait(tasks))
-
-    for task in tasks:
-        for magnet in task.result():
-            yield magnet
+    return itertools.chain(*(a.result() for a in tasks))
 
 
 def main():
+    """Search in KickAssTorrents.
+
+    Usage: katcr [options]
+
+    Options:
+        --search=<SEARCH_TERM>   Search term(s)
+        --pages=<PAGES_NUM>      Number of pages to lookup
+        --type=<magnet|torrent>  Preferred magnet type to look for
+        -i --interactive         Enable interactive menu
+        -h --help                Show this screen
     """
-        Entry point
-    """
-    opt = docopt(__doc__, version="0.0.1")
-    opts = (opt["--search"], int(opt["--pages"]), opt['--type'])
-    search = execute_search(*opts)
+    opt = docopt(main.__doc__, version="0.0.1")
+    search_res = search(opt["--search"], int(opt["--pages"]), opt['--type'])
     if not opt['--interactive']:
-        if opt['--stream']:
-            print("--stream requires --interactive")
-            return
-        for (url, qst) in search:
-            print("{} - {}".format(url, qst))
-    else:
-        ter = Terminal()
-        results = {b[:ter.width - 4]: a for a, b in search}
-        questions = [inquirer.List('Torrent', message="Choose a torrent",
-                                   choices=results.keys())]
-        answers = inquirer.prompt(questions)
-        if opt['--stream']:
-            utils.await_stream(results[answers['Torrent']])
-        else:
-            print(results[answers['Torrent']])
+        return print(tabulate(search_res))
+    results = {b[:Terminal().width - 4]: a for a, b in search_res}
+    print(results[prompt([List('Torrent', message="Choose",
+                               choices=results.keys())])['Torrent']])

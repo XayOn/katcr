@@ -1,4 +1,5 @@
 docopt
+tabulate
 inquirer
 aiohttp
 telepot
