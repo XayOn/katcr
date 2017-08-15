@@ -1,7 +1,6 @@
 docopt
-bs4
 tabulate
 inquirer
-aiohttp
 telepot
+robobrowser
 torrentmirror

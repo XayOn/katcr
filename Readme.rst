@@ -14,23 +14,11 @@ It's also a **telegram bot** and a **command line interface** :wink:
 \:notebook\: Library Usage
 ---------------------------
 
-KATcr uses **python3.5**'s new **async def**
-`(pep-492) <https://www.python.org/dev/peps/pep-0492/>`_ syntax.
-
-For search, it just has a simple coroutine, **search_magnets**,
-that accepts a search term, the page number to return, and a type (
-type is either **"torrent"** or **"magnet"**)
-
 Sample code for getting the first page of results::
 
-    from katcr import search_magnets
+    from katcr import search
+    print(search("ubuntu"))
 
-    loop = asyncio.get_event_loop()
-    result = loop.run_until_complete(
-        search_magnets("ubuntu", 1, loop, "torrent"))
-
-    for url, name in result:
-        print("{}: {}".format(name, url))
 
 
 **This library also comes with a command line interface and a telegram bot!**
