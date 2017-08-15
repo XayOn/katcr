@@ -6,7 +6,7 @@ from docopt import docopt
 import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
-import urllib
+
 class KATBot(telepot.Bot):
     """KAT.cr search bot, looks only for the first page."""
 
