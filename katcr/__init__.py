@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.5
 """Easy async python3.5 library to search magnets."""
 
+import re
 import asyncio
 import itertools
 from inquirer import List, prompt
@@ -9,6 +10,7 @@ from blessings import Terminal
 from tabulate import tabulate
 from bs4 import BeautifulSoup
 import aiohttp
+import torrentmirror
 
 
 async def search_magnets(query: str, page: int):
@@ -25,10 +27,12 @@ async def search_magnets(query: str, page: int):
                 link.find('a', title='Torrent magnet link')['href'])
 
     with aiohttp.ClientSession() as session:
-        url = 'https://thekat.info/usearch/{}/{}/'.format(query, page)
+        base_url = torrentmirror.get_proxies()['Kickass Torrents'][0][0]
+        http = '' if 'http' in base_url else 'http://'
+        url = '{}{}/search.php?q={}&p={}'.format(http, base_url, query, page)
         async with session.get(url) as response:
             torrents = BeautifulSoup(await response.text()).find_all(
-                id='torrent_latest_torrents')
+                id=re.compile('torrent_latest_torrents(.*)'))
             return [make_printable(torrent) for torrent in torrents]
 
 

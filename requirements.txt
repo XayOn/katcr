@@ -4,4 +4,4 @@ tabulate
 inquirer
 aiohttp
 telepot
-torrentstream
+torrentmirror
