@@ -1,0 +1,82 @@
+CHANGES
+=======
+
+0.2.0
+-----
+
+* Moved from aiohttp to robobrowser
+* Moved into torrentmirror library
+* Fixed Bot style
+* Finished refactor. Now using bs4
+* Added tox and fixed style
+* Refactor, changed host
+* Using one alternative katcr domain
+* Shields were back =/
+
+0.1.6
+-----
+
+* Removed todo from readme
+
+0.1.5
+-----
+
+
+0.1.4
+-----
+
+* Added missing dep
+* Fixed import
+* fix in magnet url
+* No more shields
+* Fixed kat link
+* s/from/here/g
+* Typo in readme
+* Typo in readme
+* Install
+
+0.1.2
+-----
+
+* Readme actualizado
+
+0.1.1
+-----
+
+* Minor doc fixes
+* Added shields to readme
+* Added basic menu
+* \*Show your
+* Fixed usage of katcr\_bot
+* more clear
+* link to botfather docs
+* Improved readme
+* Fixed links sintax in readme
+
+0.1.0
+-----
+
+* useless changelog
+* empty authors.
+* Forgot to add attributions to the logo
+* align
+* logo
+* Moar icons and links
+* Moar icons and links
+* Moar icons and links
+* readme
+* Readme
+* test
+* Handle start in bot
+* test
+* test
+* Updated bot
+* Made search logic more consistent
+* Implemented KATBot
+
+0.0.2
+-----
+
+* Authors and changelog
+* Added basic documentation
+* Initial commit
