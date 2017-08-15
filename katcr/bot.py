@@ -1,50 +1,39 @@
 #!/usr/bin/env python3.5
-"""
-Telegram bot to query kat.cr
-
-Usage:
-    katcr_bot --token <BOT_TOKEN>
-
-Options:
-    --token=<BOT_TOKEN> Telegram bot token
-
-Examples:
-    katcr_bot --token 123123:123123
-"""
+"""Telegram bot to query KickassTorrents."""
 
 import asyncio
-import telepot
 from katcr import search_magnets
 from docopt import docopt
-import telepot.async
+import telepot
+import telepot.aio
 
 
-class KATBot(telepot.async.Bot):
-    """
-        KAT.cr search bot, looks only for the first
-        page.
-    """
-    loop = False
+class KATBot(telepot.aio.Bot):
+    """KAT.cr search bot, looks only for the first page."""
+
+    # pylint: disable=too-few-public-methods
+
     async def on_chat_message(self, msg):
-        """ Answer only chat messages """
-        _, _, chat_id = telepot.glance(msg)
+        """Answer only chat messages."""
         if msg['text'] == "/start":
             return
-        magnets = search_magnets(msg['text'], 1, "torrent")
+        _, _, chat_id = telepot.glance(msg)
         await self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
-
-        for magnet in await magnets:
-            response = "<a href=\"{}\">{}</a>".format(*magnet)
-            await self.sendMessage(chat_id, response, parse_mode="html")
+        for magnet in await search_magnets(msg['text'], 1):
+            await self.sendMessage(
+                chat_id, "<a href=\"{}\">{}</a>".format(*magnet),
+                parse_mode="html")
 
 
 def main():
+    """Run telegram bot.
+
+    Usage: katcr_bot [options]
+
+    Options:
+        --token=<BOT_TOKEN> Telegram bot token
     """
-        Starts bot.
-    """
-    opts = docopt(__doc__, version="0.0.1")
-    bot = KATBot(opts["--token"])
+    token = docopt(__doc__, version="0.0.1")["--token"]
     loop = asyncio.get_event_loop()
-    bot.loop = loop
-    loop.create_task(bot.message_loop())
+    loop.create_task(KATBot(token).message_loop())
     loop.run_forever()

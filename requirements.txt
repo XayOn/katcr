@@ -1,5 +1,6 @@
 docopt
+tabulate
 inquirer
-aiohttp
 telepot
-torrentstream
+robobrowser
+torrentmirror

@@ -1,14 +1,10 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
-.. image:: https://img.shields.io/github/downloads/xayon/katcr/total.svg?maxAge=2592000
-.. image:: https://img.shields.io/pypi/dm/katcr.svg?maxAge=2592000
-.. image:: https://img.shields.io/github/stars/xayon/katcr.svg?style=social&label=Star&maxAge=2592000
-
 \:tv\: Python3 + KickAssTorrents | CLI | Telegram
 =================================================
 
-Python3.5 library to search in kickasstorrents (`kat.cr <http://kat.cr>`_)
+Python3.5 library to search in kickasstorrents
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
@@ -18,23 +14,11 @@ It's also a **telegram bot** and a **command line interface** :wink:
 \:notebook\: Library Usage
 ---------------------------
 
-KATcr uses **python3.5**'s new **async def**
-`(pep-492) <https://www.python.org/dev/peps/pep-0492/>`_ syntax.
-
-For search, it just has a simple coroutine, **search_magnets**,
-that accepts a search term, the page number to return, and a type (
-type is either **"torrent"** or **"magnet"**)
-
 Sample code for getting the first page of results::
 
-    from katcr import search_magnets
+    from katcr import search
+    print(search("ubuntu"))
 
-    loop = asyncio.get_event_loop()
-    result = loop.run_until_complete(
-        search_magnets("ubuntu", 1, loop, "torrent"))
-
-    for url, name in result:
-        print("{}: {}".format(name, url))
 
 
 **This library also comes with a command line interface and a telegram bot!**
@@ -57,7 +41,7 @@ Usage
 ::
 
     Easy-as-it-gets python3.5 library to search magnets
-    in kickasstorrents (kat.cr)
+    in kickasstorrents
 
     Usage:
         katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
@@ -93,7 +77,7 @@ Usage
 
 ::
 
-    Telegram bot to query kat.cr
+    Telegram bot to query kickasstorrents
 
     Usage:
         katcr --token <BOT_TOKEN>
