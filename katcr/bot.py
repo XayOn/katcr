@@ -12,19 +12,17 @@ class KATBot(telepot.aio.Bot):
     """KAT.cr search bot, looks only for the first page."""
 
     # pylint: disable=too-few-public-methods
-    loop = False
 
     async def on_chat_message(self, msg):
         """Answer only chat messages."""
-        _, _, chat_id = telepot.glance(msg)
         if msg['text'] == "/start":
             return
-        magnets = search_magnets(msg['text'], 1, "torrent")
+        _, _, chat_id = telepot.glance(msg)
         await self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
-
-        for magnet in await magnets:
-            response = "<a href=\"{}\">{}</a>".format(*magnet)
-            await self.sendMessage(chat_id, response, parse_mode="html")
+        for magnet in await search_magnets(msg['text'], 1):
+            await self.sendMessage(
+                chat_id, "<a href=\"{}\">{}</a>".format(*magnet),
+                parse_mode="html")
 
 
 def main():
@@ -35,8 +33,7 @@ def main():
     Options:
         --token=<BOT_TOKEN> Telegram bot token
     """
+    token = docopt(__doc__, version="0.0.1")["--token"]
     loop = asyncio.get_event_loop()
-    bot = KATBot(docopt(__doc__, version="0.0.1")["--token"])
-    bot.loop = loop
-    loop.create_task(bot.message_loop())
+    loop.create_task(KATBot(token).message_loop())
     loop.run_forever()
