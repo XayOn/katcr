@@ -1,4 +1,5 @@
 docopt
+bs4
 tabulate
 inquirer
 aiohttp
