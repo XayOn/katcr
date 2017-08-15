@@ -80,13 +80,13 @@ Usage
     Telegram bot to query kickasstorrents
 
     Usage:
-        katcr --token <BOT_TOKEN>
+        katcr_bot [options]
 
     Options:
         --token=<BOT_TOKEN> Telegram bot token
 
     Examples:
-        katcr --token 123123:123123
+        katcr_bot --token 123123:123123
 
 
 \:white_check_mark\: Experimental torrent streaming
