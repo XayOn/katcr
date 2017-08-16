@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
 import re
+import gc
 from katcr import Katcr
 from docopt import docopt
 import telepot
@@ -30,6 +31,7 @@ class KATBot(telepot.Bot):
         keyboard = InlineKeyboardMarkup(inline_keyboard=key)
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
                          reply_markup=keyboard, parse_mode="html")
+        gc.collect()
 
     def on_callback_query(self, msg):
         """Get the button data."""
@@ -37,6 +39,7 @@ class KATBot(telepot.Bot):
         name = re.search(r"-(.*)-", query_data).group(1)
         for _, value in self.katcr.search(name, 1):
             self.sendMessage(from_id, value)
+        gc.collect()
 
 
 def main():
