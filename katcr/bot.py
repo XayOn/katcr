@@ -1,10 +1,11 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
-
+import re
 from katcr import search
 from docopt import docopt
 import telepot
 from telepot.loop import MessageLoop
+from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 class KATBot(telepot.Bot):
@@ -17,9 +18,20 @@ class KATBot(telepot.Bot):
             return
         _, _, chat_id = telepot.glance(msg)
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
-        for magnet in search(msg['text'], 1):
-            self.sendMessage(chat_id, "<a href=\"{}\">{}</a>".format(*magnet),
-                             parse_mode="html")
+        key = []
+        for key, _ in search(msg['text'], 1):
+            key.append([
+                InlineKeyboardButton(text=key, callback_data=key[:63])])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=key)
+        self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
+                         reply_markup=keyboard, parse_mode="html")
+
+    def on_callback_query(self, msg):
+        """Get the button data."""
+        _, from_id, query_data = telepot.glance(msg, flavor='callback_query')
+        name = re.search(r"-(.*)-", query_data).group(1)
+        for _, value in search(name, 1):
+            self.sendMessage(from_id, value)
 
 
 def main():
