@@ -1,28 +1,37 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
-
-import asyncio
-from katcr import search_magnets
+import re
+from katcr import search
 from docopt import docopt
 import telepot
-import telepot.aio
+from telepot.loop import MessageLoop
+from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-class KATBot(telepot.aio.Bot):
+class KATBot(telepot.Bot):
     """KAT.cr search bot, looks only for the first page."""
 
     # pylint: disable=too-few-public-methods
-
-    async def on_chat_message(self, msg):
+    def on_chat_message(self, msg):
         """Answer only chat messages."""
         if msg['text'] == "/start":
             return
         _, _, chat_id = telepot.glance(msg)
-        await self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
-        for magnet in await search_magnets(msg['text'], 1):
-            await self.sendMessage(
-                chat_id, "<a href=\"{}\">{}</a>".format(*magnet),
-                parse_mode="html")
+        self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
+        key = []
+        for key, _ in search(msg['text'], 1):
+            key.append([
+                InlineKeyboardButton(text=key, callback_data=key[:63])])
+        keyboard = InlineKeyboardMarkup(inline_keyboard=key)
+        self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
+                         reply_markup=keyboard, parse_mode="html")
+
+    def on_callback_query(self, msg):
+        """Get the button data."""
+        _, from_id, query_data = telepot.glance(msg, flavor='callback_query')
+        name = re.search(r"-(.*)-", query_data).group(1)
+        for _, value in search(name, 1):
+            self.sendMessage(from_id, value)
 
 
 def main():
@@ -33,7 +42,5 @@ def main():
     Options:
         --token=<BOT_TOKEN> Telegram bot token
     """
-    token = docopt(__doc__, version="0.0.1")["--token"]
-    loop = asyncio.get_event_loop()
-    loop.create_task(KATBot(token).message_loop())
-    loop.run_forever()
+    bot = KATBot(docopt(main.__doc__, version="0.0.1")["--token"])
+    MessageLoop(bot).run_forever()

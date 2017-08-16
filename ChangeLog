@@ -1,9 +1,10 @@
 CHANGES
 =======
 
-0.2.0
------
-
+* Fixed search of magnets
+* Removed asyncio from bot
+* Readme fix
+* Added changelog
 * Moved from aiohttp to robobrowser
 * Moved into torrentmirror library
 * Fixed Bot style

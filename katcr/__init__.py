@@ -2,7 +2,6 @@
 """Easy async python3.5 library to search magnets."""
 
 import re
-import asyncio
 import itertools
 from inquirer import List, prompt
 from docopt import docopt
