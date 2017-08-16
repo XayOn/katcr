@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
 import re
-from katcr import search
+from katcr import Katcr
 from docopt import docopt
 import telepot
 from telepot.loop import MessageLoop
@@ -11,6 +11,11 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 class KATBot(telepot.Bot):
     """KAT.cr search bot, looks only for the first page."""
 
+    def __init__(self, token):
+        """Initialize of KATBot."""
+        super().__init__(token)
+        self.katcr = Katcr()
+
     # pylint: disable=too-few-public-methods
     def on_chat_message(self, msg):
         """Answer only chat messages."""
@@ -19,7 +24,7 @@ class KATBot(telepot.Bot):
         _, _, chat_id = telepot.glance(msg)
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
         key = []
-        for key, _ in search(msg['text'], 1):
+        for key, _ in self.katcr.search(msg['text'], 1):
             key.append([
                 InlineKeyboardButton(text=key, callback_data=key[:63])])
         keyboard = InlineKeyboardMarkup(inline_keyboard=key)
@@ -30,7 +35,7 @@ class KATBot(telepot.Bot):
         """Get the button data."""
         _, from_id, query_data = telepot.glance(msg, flavor='callback_query')
         name = re.search(r"-(.*)-", query_data).group(1)
-        for _, value in search(name, 1):
+        for _, value in self.katcr.search(name, 1):
             self.sendMessage(from_id, value)
 
 

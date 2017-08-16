@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+* fixed styles
+* Fixed Style
+* Remove import Asyncio
+* Update bot.py
 * Fixed search of magnets
 * Removed asyncio from bot
 * Readme fix
