@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Added some tests
 * Added ThePirateBay
 * Fixed Callback Query
 * Aded Garbage collector

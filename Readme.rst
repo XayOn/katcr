@@ -1,28 +1,14 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
-\:tv\: Python3 + KickAssTorrents | CLI | Telegram
-=================================================
+\:tv\: Multi-site torrent search library | CommandLine | Telegram Bot
+======================================================================
 
-Python3.5 library to search in kickasstorrents
+Python library to search in kickasstorrents
 
 It's also a **telegram bot** and a **command line interface** :wink:
 
 .. contents:: :local:
-
-
-\:notebook\: Library Usage
----------------------------
-
-Sample code for getting the first page of results::
-
-    from katcr import search
-    print(search("ubuntu"))
-
-
-
-**This library also comes with a command line interface and a telegram bot!**
-
 
 
 \:tv\: katcr - kickasstorrents command line interface
@@ -40,26 +26,32 @@ Usage
 
 ::
 
-    Easy-as-it-gets python3.5 library to search magnets
-    in kickasstorrents
+    Search in multiple torrent sites.
 
-    Usage:
-        katcr --search=<SEARCH_TERM> --pages=<PAGES_NUM> --type=<TYPE> [--interactive]
+        Usage: katcr --plugin=<PLUGIN> [options] <SEARCH_TERM>
 
-    Options:
-        --search=<SEARCH_TERM>   Search term(s)
-        --pages=<PAGES_NUM>      Number of pages to lookup
-        --type=<magnet|torrent>  Type
-        -i --interactive         Activate interactive menu to torrent selection
-        -s --stream              Play the torrent in streaming mode (EXPERIMENTAL)
-        -h --help                Show this screen
+        Options:
+    	--search=<SEARCH_TERM>   Search term(s)
+    	--pages=<PAGES_NUM>      Number of pages to lookup
+    	-i --interactive         Enable interactive menu
+    	-p --plugin=<PLUGIN>     Plugin to use for search <Katcr|ThePirateBay>
+    	-h --help                Show this screen
+    	-o --open                Use xdg-open to launch the default torrent app
 
-    Examples:
-    	katcr --search "Search terms" --pages 3
-    	katcr --search "Search terms" --pages 1 --interactive
-    	katcr --search "Search terms" --pages 1 --type=magnet
-    	katcr --search "Search terms" --pages 1 --type=torrent
-    	katcr --pages 1
+
+
+\:notebook\: Library Usage
+---------------------------
+
+You can directly import any ``plugin`` from the katcr library:
+
+- ThePirateBay
+- Katcr
+
+Sample code for getting the first page of results from kickasstorrents::
+
+    from katcr import Katcr
+    print(Katcr().search("ubuntu", 1))
 
 
 \:space_invader\: KATBot - Kickasstorrents telegram bot
