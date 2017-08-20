@@ -4,8 +4,7 @@
 \:tv\: Multi-site torrent search library | CommandLine | Telegram Bot
 ======================================================================
 
-Python library to search in kickasstorrents
-
+This is a simple **python library to search in kickasstorrents and thepiratebay**.
 It's also a **telegram bot** and a **command line interface** :wink:
 
 .. contents:: :local:
@@ -16,10 +15,6 @@ It's also a **telegram bot** and a **command line interface** :wink:
 
 katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
-
-
-.. image:: http://i.imgur.com/gOo3mqf.gif
-
 
 Usage
 +++++
@@ -38,6 +33,8 @@ Usage
     	-h --help                Show this screen
     	-o --open                Use xdg-open to launch the default torrent app
 
+
+.. image:: http://i.imgur.com/gOo3mqf.gif
 
 
 \:notebook\: Library Usage
@@ -81,26 +78,10 @@ Usage
         katcr_bot --token 123123:123123
 
 
-\:white_check_mark\: Experimental torrent streaming
----------------------------------------------------
-
-**This is an experimental feature!!**
-
-Using another library of mine, `torrentstream <http://github.com/XayOn/torrentstream>`_
-I added experimental streaming support. That requires `libtorrent <http://www.libtorrent.org/>`_.
-
-Deluge guys have a good `tutorial <http://dev.deluge-torrent.org/wiki/Building/libtorrent>`_
-on how to get libtorrent going on multiple systems`
-
-Support on windows / MacOs is probably not working on this feature.
-Please, if you've tested it on windows / MacOs contact me so we can
-work on that support.
-
-
 \:star\: Installation
 ---------------------
 
-This is a python3.5 package available on pypi.
+This is a python package available on pypi.
 
 On windows and mac `you can download python3.5 here <https://www.python.org/downloads/release/python-352/>`_.
 On linux distros, python3.5 is already on most package managers :smile:
@@ -112,9 +93,6 @@ With python3.5 installed just execute::
 
 If it asks about permissions and you don't know what to do, you should
 probably read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
-
-
-\:
 
 
 \:star2\: Notes
