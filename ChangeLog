@@ -1,8 +1,12 @@
 CHANGES
 =======
 
+* Added missing files
+* Updated readme
+* Updated readme and tox
 * Added some tests
 * Added ThePirateBay
+* Update Readme.rst
 * Fixed Callback Query
 * Aded Garbage collector
 * Fixed browsing

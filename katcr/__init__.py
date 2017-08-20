@@ -117,4 +117,3 @@ def main():
                                   choices=results.keys())])['Torrent']]
     if opt['--open']:
         return subprocess.check_call(['xdg-open', result])
-    print(result)
