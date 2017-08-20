@@ -1,2 +1,6 @@
+"""Test base import."""
+
+
 def test_import():
-    import katcr
+    """Import katcr."""
+    import katcr  # noqa

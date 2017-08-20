@@ -1,8 +1,11 @@
 CHANGES
 =======
 
+* Added ThePirateBay
+* Fixed Callback Query
 * Aded Garbage collector
 * Fixed browsing
+* Update .travis.yml
 * fixed styles
 * Fixed Style
 * Remove import Asyncio
@@ -10,6 +13,10 @@ CHANGES
 * Fixed search of magnets
 * Removed asyncio from bot
 * Readme fix
+
+0.2.0
+-----
+
 * Added changelog
 * Moved from aiohttp to robobrowser
 * Moved into torrentmirror library
