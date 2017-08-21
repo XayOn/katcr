@@ -1,7 +1,6 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
 
-import gc
 from katcr import Katcr
 from docopt import docopt
 import telepot
@@ -16,30 +15,29 @@ class KATBot(telepot.Bot):
         """Initialize of KATBot."""
         super().__init__(token)
         self.katcr = Katcr()
-        self.torrent_by_name_dict = {}
+        self.responses = {}
 
     # pylint: disable=too-few-public-methods
     def on_chat_message(self, msg):
         """Answer only chat messages."""
         if msg['text'] == "/start":
             return
-        _, _, chat_id = telepot.glance(msg)
-        self.sendMessage(chat_id, "Results for: {}".format(msg['text']))
-        keys = []
-        for key, value in self.katcr.search(msg['text'], 1):
-            self.torrent_by_name_dict[key[:63]] = value
-            keys.append([
-                InlineKeyboardButton(text=key, callback_data=key[:63])])
-        keyboard = InlineKeyboardMarkup(inline_keyboard=keys)
+
+        chat_id = telepot.glance(msg)[2]
+        res = tuple(self.katcr.search(msg['text'], 1))
+
+        keyboard = InlineKeyboardMarkup(inline_keyboard=list(
+            [InlineKeyboardButton(text=k, callback_data=str(r))]
+            for r, (k, _) in enumerate(res)))
+
+        self.responses[chat_id] = {r: v for r, (_, v) in enumerate(res)}
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
                          reply_markup=keyboard, parse_mode="html")
-        gc.collect()
 
     def on_callback_query(self, msg):
         """Get the button data."""
         _, from_id, query_data = telepot.glance(msg, flavor='callback_query')
-        self.sendMessage(from_id, self.torrent_by_name_dict[query_data])
-        gc.collect()
+        self.sendMessage(from_id, self.responses[from_id][int(query_data)])
 
 
 def main():

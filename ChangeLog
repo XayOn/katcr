@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+
+0.2.1
+-----
+
+* 100% coverage on \_\_init\_\_. B Bot still pending
+* Added more tests
 * Added missing files
 * Updated readme
 * Updated readme and tox
