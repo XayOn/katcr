@@ -3,6 +3,7 @@
 
 from katcr import Katcr
 from docopt import docopt
+import requests
 import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -30,14 +31,18 @@ class KATBot(telepot.Bot):
             [InlineKeyboardButton(text=k, callback_data=str(r))]
             for r, (k, _) in enumerate(res)))
 
-        self.responses[chat_id] = {r: v for r, (_, v) in enumerate(res)}
+        self.responses[chat_id] = {r: (k, v) for r, (k, v) in enumerate(res)}
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
                          reply_markup=keyboard, parse_mode="html")
 
     def on_callback_query(self, msg):
         """Get the button data."""
         _, from_id, query_data = telepot.glance(msg, flavor='callback_query')
-        self.sendMessage(from_id, self.responses[from_id][int(query_data)])
+        key, value = self.responses[from_id][int(query_data)]
+        res = requests.get('http://mgnet.me/api/create?m={}'.format(value))
+        url = res.json()['shorturl']
+        self.sendMessage(from_id, "<a href=\"{}\">{}</a>".format(url, key),
+                         parse_mode="html")
 
 
 def main():
