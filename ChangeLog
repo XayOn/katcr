@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* Added magnet shortener
+* Limited searches at one per-user
 
 0.2.1
 -----
