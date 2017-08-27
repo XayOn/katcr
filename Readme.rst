@@ -6,7 +6,7 @@
     :target: https://travis-ci.org/XayOn/katcr
 
 .. image:: https://coveralls.io/repos/github/XayOn/katcr/badge.svg?branch=master
-    :target: https://coveralls.io/XayOn/katcr?branch=master
+    :target: https://coveralls.io/github/XayOn/katcr?branch=master
 
 .. image:: https://badge.fury.io/py/katcr.svg
     :target: https://badge.fury.io/py/katcr
