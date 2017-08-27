@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Fixed cov report on tox
 * Added magnet shortener
 * Limited searches at one per-user
 
