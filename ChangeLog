@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+
+0.2.2
+-----
+
+* Fixed travis
 * Added \_\_init\_\_.py to make pytest-cov work
 * Added python setup.py test
 * Fixed cov report on tox
