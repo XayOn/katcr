@@ -20,8 +20,8 @@ Easily **search torrents** in multiple providers.
 .. contents:: :local:
 
 
-\:tv\: katcr - kickasstorrents command line interface
-------------------------------------------------------
+Command Line Interface
+----------------------
 
 katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
@@ -47,8 +47,8 @@ Usage
 .. image:: http://i.imgur.com/gOo3mqf.gif
 
 
-\:star\: Installation
----------------------
+Installation
+--------------
 
 This is a python package available on pypi.
 
@@ -106,8 +106,8 @@ Usage
         katcr_bot --token 123123:123123
 
 
-\:star2\: Notes
-----------------
+Notes
+----------
 
 This project is made with the best of intentions. For that times
 you need to search for somethink shared as a torrent on KAT
