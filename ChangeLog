@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Added \_\_init\_\_.py to make pytest-cov work
 * Added python setup.py test
 * Fixed cov report on tox
 * Added magnet shortener
