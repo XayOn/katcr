@@ -1,6 +1,17 @@
 CHANGES
 =======
 
+* Added \_\_init\_\_.py to make pytest-cov work
+* Added python setup.py test
+* Fixed cov report on tox
+* Added magnet shortener
+* Limited searches at one per-user
+
+0.2.1
+-----
+
+* 100% coverage on \_\_init\_\_. B Bot still pending
+* Added more tests
 * Added missing files
 * Updated readme
 * Updated readme and tox

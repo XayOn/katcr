@@ -1,4 +1,5 @@
 docopt
+requests
 tabulate
 inquirer
 telepot
