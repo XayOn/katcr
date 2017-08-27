@@ -1,6 +1,17 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
+
+.. image:: https://travis-ci.org/XayOn/katcr.svg?branch=master
+    :target: https://travis-ci.org/XayOn/katcr
+
+.. image:: https://coveralls.io/repos/github/XayOn/katcr/badge.svg?branch=master
+    :target: https://coveralls.io/XayOn/katcr?branch=master
+
+.. image:: https://badge.fury.io/py/katcr
+    :target: https://badge.fury.io/py/katcr
+
+
 \:tv\: Multi-site torrent search library | CommandLine | Telegram Bot
 ======================================================================
 
