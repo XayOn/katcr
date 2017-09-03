@@ -1,5 +1,5 @@
 pytest==3.2.1
-pytest-flake8
+pytest-flake8==0.8.1
 pytest-cov
 pylint
 flake8
