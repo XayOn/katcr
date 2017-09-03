@@ -1,6 +1,6 @@
 pytest==3.2.1
 pytest-flake8==0.8.1
-pytest-cov
+pytest-cov==2.5.1
 pylint
 flake8
 flake8_docstrings
