@@ -3,5 +3,5 @@ requests==2.18.4
 tabulate==0.7.7
 inquirer==2.1.11
 telepot==12.3
-robobrowser
+robobrowser==0.5.3
 torrentmirror
