@@ -1,4 +1,4 @@
-pytest
+pytest==3.2.1
 pytest-flake8
 pytest-cov
 pylint
