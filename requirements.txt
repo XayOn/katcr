@@ -1,5 +1,5 @@
 docopt==0.6.2
-requests
+requests==2.18.4
 tabulate
 inquirer
 telepot
