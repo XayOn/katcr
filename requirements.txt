@@ -1,6 +1,6 @@
 docopt==0.6.2
 requests==2.18.4
-tabulate
+tabulate==0.7.7
 inquirer
 telepot
 robobrowser
