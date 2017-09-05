@@ -86,7 +86,7 @@ class ThePirateBay(BaseSearch):
         """Make a given a href link parsed on bs4 printable."""
         return (link.parent.find(class_='detName').text,
                 link.parent.find(class_='detDesc').text,
-                link['href'].split('&')[0])
+                link['href'])
 
     def get_torrents(self):
         """Return a list of torrents, printable."""
@@ -109,7 +109,7 @@ class Katcr(BaseSearch):
         magnet = link.find('a', title='Torrent magnet link')
         return (link.find(class_='cellMainLink').text,
                 link.find_all('td')[1].text,
-                magnet['href'].split('&')[0])
+                magnet['href'])
 
     def get_torrents(self):
         """Return a list of torrents, printable."""
