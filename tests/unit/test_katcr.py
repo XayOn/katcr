@@ -6,7 +6,7 @@ def test_katcr_search_magnets():
     from katcr import Katcr
     from robobrowser import RoboBrowser
     from unittest.mock import patch
-    proxies = {'Kickass Torrents': ['foo']}
+    proxies = {'Kickass Torrents': [['foo', None]]}
 
     with patch('katcr.torrentmirror.get_proxies',
                side_effect=(proxies,)) as mock:
@@ -15,8 +15,8 @@ def test_katcr_search_magnets():
             assert mock.open.called_once_with('foo')
 
 
-def test_katcr_make_printable():
-    """Test make_printable method given a known structure.
+def test_katcr_tabulate():
+    """Test tabulate method given a known structure.
 
     Note that this structure may change in the future or even between
     different proxied sites... This needs to be handled somehow.
@@ -26,5 +26,5 @@ def test_katcr_make_printable():
     to_parse = """<div class=cellMainLink>Foo</div><td>Nope</td><td>Bar</td>
                   <a title='Torrent magnet link' href='foo'></a>"""
     fakelink = bs4.BeautifulSoup(to_parse, "html.parser")
-    result = Katcr.make_printable(fakelink)
-    assert result == ('Foo - Bar', 'foo')
+    result = Katcr.tabulate(fakelink)
+    assert result == ('Foo', 'Bar', 'foo')

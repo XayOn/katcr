@@ -149,6 +149,7 @@ def main():
 
     search_res = list(globals()[opt['--plugin']]().search(
         opt["<SEARCH_TERM>"], int(opt.get("--pages") or 1)))
+
     if opt['--enable-shortener']:
         def get_from_short(search_res):
             """Get new search res from shortened urls."""
@@ -156,6 +157,9 @@ def main():
                 yield elem[:-1] + (get_short(opt['--sortener'], elem[-1]),)
 
         search_res = list(get_from_short(search_res))
+
+    if not search_res:
+        return
 
     lengths = [max(len(a[pos]) for a in search_res)
                for pos in range(0, len(search_res[0]))]
