@@ -1,9 +1,8 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
 
-from katcr import Katcr
+from katcr import Katcr, get_short
 from docopt import docopt
-import requests
 import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -12,9 +11,10 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 class KATBot(telepot.Bot):
     """KAT.cr search bot, looks only for the first page."""
 
-    def __init__(self, token):
+    def __init__(self, opts):
         """Initialize of KATBot."""
-        super().__init__(token)
+        super().__init__(opts['--token'])
+        self.shortener = opts['--shortener']
         self.katcr = Katcr()
         self.responses = {}
 
@@ -39,10 +39,9 @@ class KATBot(telepot.Bot):
         """Get the button data."""
         _, from_id, query_data = telepot.glance(msg, flavor='callback_query')
         key, value = self.responses[from_id][int(query_data)]
-        res = requests.get('http://mgnet.me/api/create?m={}'.format(value))
-        url = res.json()['shorturl']
-        self.sendMessage(from_id, "<a href=\"{}\">{}</a>".format(url, key),
-                         parse_mode="html")
+        href = "<a href=\"{}\">{}</a>".format(
+            get_short(self.shortener, value), key)
+        self.sendMessage(from_id, href, parse_mode="html")
 
 
 def main():
@@ -51,7 +50,9 @@ def main():
     Usage: katcr_bot [options]
 
     Options:
-        --token=<BOT_TOKEN> Telegram bot token
+        --token=<BOT_TOKEN>             Telegram bot token
+        --shortener=<URL_SHORTENER>     Url shortener to use
+                                        [default: http://shortmag.net]
     """
-    bot = KATBot(docopt(main.__doc__, version="0.0.1")["--token"])
+    bot = KATBot(docopt(main.__doc__, version="0.0.1"))
     MessageLoop(bot).run_forever()

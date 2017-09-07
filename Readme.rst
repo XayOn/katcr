@@ -44,7 +44,7 @@ Usage
     	-o --open                Use xdg-open to launch the default torrent app
 
 
-.. image:: http://i.imgur.com/gOo3mqf.gif
+.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.png
 
 
 Installation

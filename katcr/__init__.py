@@ -135,9 +135,9 @@ def main():
         --pages=<PAGES_NUM>                Number of pages to lookup
         -i --interactive                   Enable interactive menu
         -p --plugin=<Katcr|ThePirateBay>   Download method [default: Katcr]
-        --enable-shortener                 Enable url shortener
+        -e --enable-shortener              Enable url shortener
         -s --sortener=<SHORTENER_URL>      Use given magnet shortener
-                                           [default: shortmag.net]
+                                           [default: http://www.shortmag.net]
         -h --help                          Show this screen
         -o --open                          Launch with default torrent app
         -d                                 Debug mode.
