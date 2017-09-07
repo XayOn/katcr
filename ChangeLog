@@ -1,6 +1,32 @@
 CHANGES
 =======
 
+* Changed docstrings
+* Refactor
+* Readme accuracy
+* Cleaner readme
+* Readme updated with new usage
+* Changed readme image and added shortener to bot
+* Shortmag.net use
+* Update inquirer from 2.1.11 to 2.2.0
+* Fixed tests
+* updated\_requirements
+* Not removing parts of the magnet link
+* Added url shortener
+* Pin flake8\_docstrings to latest version 1.1.0
+* Pin flake8 to latest version 3.4.1
+* Pin pylint to latest version 1.7.2
+* Pin pytest-cov to latest version 2.5.1
+* Pin pytest-flake8 to latest version 0.8.1
+* Pin pytest to latest version 3.2.1
+* Pin torrentmirror to latest version 0.0.1.dev5
+* Pin robobrowser to latest version 0.5.3
+* Pin telepot to latest version 12.3
+* Pin inquirer to latest version 2.1.11
+* Pin tabulate to latest version 0.7.7
+* Pin requests to latest version 2.18.4
+* Pin docopt to latest version 0.6.2
+
 0.3.0
 -----
 

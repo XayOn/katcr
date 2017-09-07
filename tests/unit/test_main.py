@@ -7,7 +7,7 @@ def test_main():
     from unittest.mock import patch
     opts = {'<SEARCH_TERM>': "foo", '--plugin': 'Katcr',
             '--interactive': False, '--open': False, '-d': False,
-            '--enable-shortener': False}
+            '--enable-shortener': False, '--pages': 1}
     with patch('katcr.Katcr') as mock:
         with patch('katcr.docopt', side_effect=(opts,)):
             main()
@@ -15,13 +15,13 @@ def test_main():
 
     opts = {'<SEARCH_TERM>': "foo", '--plugin': 'Katcr',
             '--interactive': True, '--open': True, '-d': False,
-            '--enable-shortener': False}
-    torr = {'Torrent': 'foo'}
+            '--enable-shortener': False, '--pages': 1}
+    torr = {'Link': 'foo'}
     args = opts['<SEARCH_TERM>'], 1
 
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
-            tmock().width = 10
+            tmock().width = 50
             mock().search.side_effect = ((('foo', 'bar'),),)
             with patch('katcr.subprocess') as smock:
                 with patch('katcr.docopt', side_effect=(opts,)):
@@ -33,11 +33,11 @@ def test_main():
 
     opts = {'<SEARCH_TERM>': "foo", '--plugin': 'Katcr',
             '--interactive': True, '--open': False, '-d': False,
-            '--enable-shortener': False}
+            '--enable-shortener': False, '--pages': 1}
 
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
-            tmock().width = 10
+            tmock().width = 50
             mock().search.side_effect = ((('foo', 'bar'),),)
             with patch('katcr.subprocess') as smock:
                 with patch('katcr.docopt', side_effect=(opts,)):
@@ -48,11 +48,11 @@ def test_main():
 
     opts = {'<SEARCH_TERM>': "foo", '--plugin': 'Katcr',
             '--interactive': True, '--open': False, '-d': True,
-            '--enable-shortener': False}
+            '--enable-shortener': False, '--pages': 1}
 
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
-            tmock().width = 10
+            tmock().width = 50
             mock().search.side_effect = ((('foo', 'bar'),),)
             with patch('katcr.subprocess') as smock:
                 with patch('katcr.docopt', side_effect=(opts,)):
@@ -73,20 +73,15 @@ def test_basesearch():
 
     with unittest.mock.patch('katcr.BaseSearch.search_magnets',
                              side_effect=(['foo'],)) as mock:
-        BaseSearch().search('foo', 2)
+        class FakeSearch(BaseSearch):
+            def get_torrents(self):
+                return "foo"
+            proxy_name = "The Pirate Bay"
+            url = "Foo"
+            url_format = None
+
+        FakeSearch().search('foo', 2)
         assert mock.call_count == 2
-
-    proxies = {'The Pirate Bay': [['foo', None]]}
-    BaseSearch.proxy_name = "The Pirate Bay"
-    BaseSearch.url = "Foo"
-    BaseSearch.url_format = "None"
-
-    with unittest.mock.patch('katcr.torrentmirror.get_proxies',
-                             side_effect=(proxies,)) as mock:
-        with unittest.mock.patch('katcr.BaseSearch.get_torrents',
-                                 side_effect=(['foo'],)) as mock:
-            with unittest.mock.patch('katcr.robobrowser.RoboBrowser'):
-                BaseSearch().search('foo', 2)
 
 
 def test_cli_help():

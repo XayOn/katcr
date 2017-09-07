@@ -29,7 +29,7 @@ import tableprint
 import torrentmirror
 
 
-class BaseSearch:
+class BaseSearch(metaclass=abc.ABCMeta):
     """Base Search."""
 
     def __init__(self):
@@ -75,7 +75,12 @@ class BaseSearch:
 
 
 class ThePirateBay(BaseSearch):
-    """Katcr main class."""
+    """ThePirateBay search engine.
+
+    Search on any of the pirate bay proxies or thepiratebay itself if
+    available. Extract torrents, description and return it tabulated and ready
+    to be printed
+    """
 
     proxy_name = 'The Pirate Bay'
     url_format = '{}{}/search/{}/{}/99'
@@ -97,7 +102,12 @@ class ThePirateBay(BaseSearch):
 
 
 class Katcr(BaseSearch):
-    """Katcr main class."""
+    """KickAssTorrents search engine.
+
+    Search on any of the pirate bay proxies or thepiratebay itself if
+    available. Extract torrents, description and return it tabulated and ready
+    to be printed
+    """
 
     proxy_name = 'Kickass Torrents'
     url_format = '{}{}/search.php?q={}&p={}'
@@ -125,22 +135,38 @@ def get_short(where, what):
         where, requests.post(where, data={'magnet': what}).text)
 
 
+def get_from_short(search_res):
+    """Get new search res from shortened urls."""
+    for elem in search_res:
+        yield elem[:-1] + (get_short(opt['--sortener'], elem[-1]),)
+
+
 def main():
     """Search in multiple torrent sites.
 
-    Usage: katcr [options] <SEARCH_TERM>
+    Usage: katcr [options] [interactive options] <SEARCH_TERM>
+
+    Currently available search engines:
+
+    - Katcr
+    - ThePirateBay
 
     Options:
-        --search=<SEARCH_TERM>             Search term(s)
-        --pages=<PAGES_NUM>                Number of pages to lookup
-        -i --interactive                   Enable interactive menu
-        -p --plugin=<Katcr|ThePirateBay>   Download method [default: Katcr]
-        -e --enable-shortener              Enable url shortener
-        -s --sortener=<SHORTENER_URL>      Use given magnet shortener
+        -e --search-engine=<SearchEngine>  Torrent search engine to use
+                                           [default: Any].
+        -p --pages=<PAGES_NUM>             Number of pages to lookup
+                                           [default: 1]
+        -d --disable-shortener             Disable url shortener
+        -s --sortener=<SHORTENER_URL>      Use given magnet shortener to
+                                           prettify urls.
                                            [default: http://www.shortmag.net]
-        -h --help                          Show this screen
+
+    Interactive Options:
+        -i --interactive                   Enable interactive mode
         -o --open                          Launch with default torrent app
-        -d                                 Debug mode.
+                                           in interactive mode [default: True]
+        -h --help                          Show this help screen
+        -d --debug                         Enable debug mode
     """
     opt = docopt(main.__doc__, version="0.0.1")
 
@@ -148,29 +174,25 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
 
     search_res = list(globals()[opt['--plugin']]().search(
-        opt["<SEARCH_TERM>"], int(opt.get("--pages") or 1)))
+        opt["<SEARCH_TERM>"], int(opt.get("--pages"))))
 
     if opt['--enable-shortener']:
-        def get_from_short(search_res):
-            """Get new search res from shortened urls."""
-            for elem in search_res:
-                yield elem[:-1] + (get_short(opt['--sortener'], elem[-1]),)
-
         search_res = list(get_from_short(search_res))
 
     if not search_res:
         return
 
-    lengths = [max(len(a[pos]) for a in search_res)
-               for pos in range(0, len(search_res[0]))]
-
     if not opt['--interactive']:
+        lengths = [max(len(a[pos]) for a in search_res)
+                   for pos in range(0, len(search_res[0]))]
         return tableprint.table(search_res, ['Description', 'Size', 'Link'],
                                 width=lengths)
-
-    results = {a[:Terminal().width - 4]: b for a, b in search_res}
-    result = results[prompt([List('Torrent', message="Choose",
-                                  choices=results.keys())])['Torrent']]
+    res = {a[:Terminal().width - 20]: b for a, b in search_res}
+    print(res)
+    result = res[prompt([List('Link', message="",
+                              choices=res.keys())])['Link']]
 
     if opt['--open']:
         return subprocess.check_call(['xdg-open', result])
+
+    print(result)
