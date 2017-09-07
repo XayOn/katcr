@@ -17,8 +17,6 @@
 
 Easily **search torrents** in multiple providers.
 
-.. contents:: :local:
-
 
 Command Line Interface
 ----------------------
@@ -26,8 +24,8 @@ Command Line Interface
 katcr comes with a simple but powerful command line interface, able to
 return either magnets or torrents.
 
-Usage
-+++++
+
+.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.png
 
 ::
 
@@ -48,8 +46,6 @@ Usage
             -d                                 Debug mode.
 
 
-.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.png
-
 
 Installation
 --------------
@@ -68,20 +64,6 @@ If it asks about permissions and you don't know what to do, you should
 probably read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
 
 
-Library Usage
---------------
-
-You can directly import any ``plugin`` from the library:
-
-- ThePirateBay
-- Katcr
-
-Sample code for getting the first page of results from kickasstorrents::
-
-    from katcr import Katcr
-    print(Katcr().search("ubuntu", 1))
-
-
 KATBot - Kickasstorrents telegram bot
 --------------------------------------
 
@@ -91,10 +73,6 @@ It's a simple bot that replies with search results for each message it gets.
 It returns links to .torrent files from KAT.cr for the first page of results.
 
 .. image:: http://i.imgur.com/7FxplBs.gif
-
-
-Usage
-+++++
 
 ::
 
@@ -108,7 +86,7 @@ Usage
                                         [default: http://shortmag.net]
 
 Notes
-----------
+------
 
 This project is made with the best of intentions. For that times
 you need to search for somethink shared as a torrent on KAT
