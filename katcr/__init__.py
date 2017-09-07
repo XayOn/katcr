@@ -137,7 +137,7 @@ def main():
         -p --plugin=<Katcr|ThePirateBay>   Download method [default: Katcr]
         --enable-shortener                 Enable url shortener
         -s --sortener=<SHORTENER_URL>      Use given magnet shortener
-                                           [default: humanl.es]
+                                           [default: shortmag.net]
         -h --help                          Show this screen
         -o --open                          Launch with default torrent app
         -d                                 Debug mode.
