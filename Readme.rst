@@ -33,15 +33,19 @@ Usage
 
     Search in multiple torrent sites.
 
-        Usage: katcr --plugin=<PLUGIN> [options] <SEARCH_TERM>
+        Usage: katcr [options] <SEARCH_TERM>
 
         Options:
-    	--search=<SEARCH_TERM>   Search term(s)
-    	--pages=<PAGES_NUM>      Number of pages to lookup
-    	-i --interactive         Enable interactive menu
-    	-p --plugin=<PLUGIN>     Plugin to use for search <Katcr|ThePirateBay>
-    	-h --help                Show this screen
-    	-o --open                Use xdg-open to launch the default torrent app
+            --search=<SEARCH_TERM>             Search term(s)
+            --pages=<PAGES_NUM>                Number of pages to lookup
+            -i --interactive                   Enable interactive menu
+            -p --plugin=<Katcr|ThePirateBay>   Download method [default: Katcr]
+            -e --enable-shortener              Enable url shortener
+            -s --sortener=<SHORTENER_URL>      Use given magnet shortener
+                                               [default: http://www.shortmag.net]
+            -h --help                          Show this screen
+            -o --open                          Launch with default torrent app
+            -d                                 Debug mode.
 
 
 .. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.png
@@ -94,17 +98,14 @@ Usage
 
 ::
 
-    Telegram bot to query kickasstorrents
+    Run telegram bot.
 
-    Usage:
-        katcr_bot [options]
+        Usage: katcr_bot [options]
 
-    Options:
-        --token=<BOT_TOKEN> Telegram bot token
-
-    Examples:
-        katcr_bot --token 123123:123123
-
+        Options:
+            --token=<BOT_TOKEN>             Telegram bot token
+            --shortener=<URL_SHORTENER>     Url shortener to use
+                                        [default: http://shortmag.net]
 
 Notes
 ----------
