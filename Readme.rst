@@ -21,8 +21,7 @@ Easily **search torrents** in multiple providers.
 Command Line Interface
 ----------------------
 
-katcr comes with a simple but powerful command line interface, able to
-return either magnets or torrents.
+katcr comes with a simple but powerful command line interface
 
 
 .. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.png
