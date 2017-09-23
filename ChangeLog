@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+0.1.0
+-----
+
+* Added logging
+* Fixes on docopt parsing
 * Updated readme
 
 0.5
