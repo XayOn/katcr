@@ -1,6 +1,12 @@
 .. image:: http://i.imgur.com/ofx75lO.png
    :align: center
 
+Multi-site torrent search
+=================================
+
+Easily **search torrents** in multiple providers such as KickAssTorrents and
+ThePirateBay.
+
 
 .. image:: https://travis-ci.org/XayOn/katcr.svg?branch=master
     :target: https://travis-ci.org/XayOn/katcr
@@ -10,12 +16,6 @@
 
 .. image:: https://badge.fury.io/py/katcr.svg
     :target: https://badge.fury.io/py/katcr
-
-
-\:tv\: Multi-site torrent search
-=================================
-
-Easily **search torrents** in multiple providers.
 
 
 Command Line Interface
@@ -30,24 +30,33 @@ katcr comes with a simple but powerful command line interface
 
     Search in multiple torrent sites.
 
-        Usage: katcr [options] <SEARCH_TERM>
+        Usage: katcr [options] [interactive options] <SEARCH_TERM>
+
+        Currently available search engines:
+
+        - Katcr
+        - ThePirateBay
 
         Options:
-            --search=<SEARCH_TERM>             Search term(s)
-            --pages=<PAGES_NUM>                Number of pages to lookup
-            -i --interactive                   Enable interactive menu
-            -p --plugin=<Katcr|ThePirateBay>   Download method [default: Katcr]
-            -e --enable-shortener              Enable url shortener
-            -s --sortener=<SHORTENER_URL>      Use given magnet shortener
+            -e --search-engine=<SearchEngine>  Torrent search engine to use
+                                               [default: Any].
+            -p --pages=<PAGES_NUM>             Number of pages to lookup
+                                               [default: 1]
+            -d --disable-shortener             Disable url shortener
+            -s --sortener=<SHORTENER_URL>      Use given magnet shortener to
+                                               prettify urls.
                                                [default: http://www.shortmag.net]
-            -h --help                          Show this screen
-            -o --open                          Launch with default torrent app
-            -d                                 Debug mode.
 
+        Interactive Options:
+            -i --interactive                   Enable interactive mode
+            -o --open                          Launch with default torrent app
+                                               in interactive mode [default: True]
+            -h --help                          Show this help screen
+            -d --debug                         Enable debug mode
 
 
 Installation
---------------
+------------
 
 This is a python package available on pypi.
 
