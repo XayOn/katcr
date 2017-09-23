@@ -6,7 +6,8 @@ def test_katbot_isinstance():
     from telepot import Bot
     from katcr.bot import KATBot
     assert issubclass(KATBot, Bot)
-    assert isinstance(KATBot("foo"), Bot)
+    opts = {'--token': "foo", '--shortener': ''}
+    assert isinstance(KATBot(opts), Bot)
 
 
 def test_katbot_main():
@@ -20,7 +21,7 @@ def test_katbot_main():
         with patch('katcr.bot.KATBot') as bot:
             with patch('katcr.bot.MessageLoop'):
                 main()
-                bot.assert_called_with('foo')
+                bot.assert_called_with({'--token': 'foo'})
 
 
 def test_on_chat_message_start():
@@ -33,12 +34,48 @@ def test_on_chat_message_start():
         def __init__(self, token):
             """Set token."""
             self.token = token
+            self.shortener = "foo"
 
     fkb = FakeKATBot("foo")
     assert not fkb.on_chat_message({'text': '/start'})
 
 
 def test_on_chat_message():
+    """Test on chat message handler."""
+    from katcr.bot import KATBot
+    from unittest.mock import patch, MagicMock
+    from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
+
+    class FakeKATBot(KATBot):
+        """Fake kat bot to avoid initializing telepot."""
+
+        def __init__(self, token):
+            """Set token."""
+            self.token = token
+            self.katcr = MagicMock()
+            self.katcr.search.return_value = (('foo', 'bar'),)
+            self.shortener = "http://foo"
+            self.responses = {}
+            self.sendMessage = MagicMock()
+
+    with patch('katcr.bot.telepot.glance', return_value=((0, 0, 1))):
+        fkb = FakeKATBot("foo")
+        assert not fkb.on_chat_message({'text': 'debian'})
+        fkb.sendMessage.assert_called_with(
+            1, 'Results for: debian',
+            parse_mode='html',
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[[
+                    InlineKeyboardButton(
+                        text='foo',
+                        url=None, callback_data='0',
+                        switch_inline_query=None,
+                        switch_inline_query_current_chat=None,
+                        callback_game=None, pay=None)]]))
+        assert fkb.responses
+
+
+def test_on_chat_message_empty():
     """Test on chat message handler."""
     from katcr.bot import KATBot
     from unittest.mock import patch, MagicMock
@@ -51,6 +88,7 @@ def test_on_chat_message():
             """Set token."""
             self.token = token
             self.katcr = MagicMock()
+            self.shortener = "http://foo"
             self.responses = {}
             self.sendMessage = MagicMock()
 
@@ -76,10 +114,11 @@ def test_on_callback_query():
             self.token = token
             self.katcr = MagicMock()
             self.responses = {1: {1: ['foo', 'foo']}}
+            self.shortener = "http://foo"
             self.sendMessage = MagicMock()
 
     with patch('katcr.bot.telepot.glance', return_value=((0, 1, 1))):
-        with patch('katcr.bot.requests'):
+        with patch('katcr.bot.get_short', return_value=(('foo'))):
             fkb = FakeKATBot("foo")
             assert not fkb.on_callback_query({'text': 'debian'})
             assert fkb.sendMessage.called

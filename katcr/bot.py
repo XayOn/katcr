@@ -30,6 +30,7 @@ class KATBot(telepot.Bot):
         keyboard = InlineKeyboardMarkup(inline_keyboard=list(
             [InlineKeyboardButton(text=k, callback_data=str(r))]
             for r, (k, _) in enumerate(res)))
+        print(keyboard)
 
         self.responses[chat_id] = {r: (k, v) for r, (k, v) in enumerate(res)}
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
