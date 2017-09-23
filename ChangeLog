@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+* Updated readme
+
+0.5
+---
+
+* Added a few tests
 * Refactor, fixed almost all tests
 * Readme accuracy
 * Cleaner readme

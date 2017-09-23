@@ -13,13 +13,14 @@ Currently supported sites:
 from contextlib import suppress
 import abc
 import itertools
-import logging
 import re
 import subprocess
 
 from blessings import Terminal
 from docopt import docopt
-from inquirer import List, prompt
+from inquirer import List
+from inquirer import prompt
+from pygogo import Gogo
 
 from requests import Session
 import requests
@@ -32,10 +33,11 @@ import torrentmirror
 class BaseSearch(metaclass=abc.ABCMeta):
     """Base Search."""
 
-    def __init__(self):
+    def __init__(self, logger):
         """Initialize browser instance."""
         session = Session()
         session.verify = False
+        self.logger = logger
         self.browser = robobrowser.RoboBrowser(
             session=session, parser='html.parser', timeout=50)
 
@@ -60,12 +62,14 @@ class BaseSearch(metaclass=abc.ABCMeta):
         proxies = torrentmirror.get_proxies()[self.proxy_name]
         proxies.insert(0, [self.url, None])
         for site, _ in proxies:
+            self.logger.debug("Searching in %s", site)
             with suppress(requests.exceptions.ReadTimeout, AssertionError):
                 http = '' if site.startswith('http') else 'http://'
                 self.browser.open(self.url_format.format(
                     http, site, query, page))
                 torrents = self.get_torrents()
                 assert torrents
+                self.logger.debug("Got torrents %s", torrents)
                 return torrents
 
     def search(self, query: str, pagelen: int = 1):
@@ -141,6 +145,11 @@ def get_from_short(shortener, search_res):
         yield elem[:-1] + (get_short(shortener, elem[-1]),)
 
 
+def limit_terminal_size(what, limit=-20):
+    """Limit a string to current terminal size, plus limit."""
+    return what[:Terminal().width + limit]
+
+
 def main():
     """Search in multiple torrent sites.
 
@@ -166,14 +175,12 @@ def main():
         -o --open                          Launch with default torrent app
                                            in interactive mode [default: True]
         -h --help                          Show this help screen
-        -d --debug                         Enable debug mode
+        -v --verbose                       Enable debug mode
     """
     opt = docopt(main.__doc__, version="0.0.1")
+    logger = Gogo(__name__, verbose=opt.get('--verbose')).logger
 
-    if opt.get('-d'):
-        logging.basicConfig(level=logging.DEBUG)
-
-    search_res = list(globals()[opt['--search-engine'][0]]().search(
+    search_res = list(globals()[opt['--search-engine'][0]](logger).search(
         opt["<SEARCH_TERM>"], int(opt.get("--pages")[0])))
 
     if not opt['--disable-shortener']:
@@ -183,15 +190,14 @@ def main():
         return
 
     if not opt['--interactive']:
-        lengths = [max(len(a[pos]) for a in search_res)
-                   for pos in range(0, len(search_res[0]))]
         return tableprint.table(search_res, ['Description', 'Size', 'Link'],
-                                width=lengths)
-    res = {a[:Terminal().width - 20]: b for a, b in search_res}
+                                width=[max(len(a[p]) for a in search_res)
+                                       for p in range(0, len(search_res[0]))])
+
+    res = {limit_terminal_size(a): b for a, b in search_res}
     result = res[prompt([List('Link', message="",
                               choices=res.keys())])['Link']]
+    print(result)
 
     if opt['--open']:
         return subprocess.check_call(['xdg-open', result])
-
-    print(result)
