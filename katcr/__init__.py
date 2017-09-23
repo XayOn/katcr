@@ -135,10 +135,10 @@ def get_short(where, what):
         where, requests.post(where, data={'magnet': what}).text)
 
 
-def get_from_short(search_res):
+def get_from_short(shortener, search_res):
     """Get new search res from shortened urls."""
     for elem in search_res:
-        yield elem[:-1] + (get_short(opt['--sortener'], elem[-1]),)
+        yield elem[:-1] + (get_short(shortener, elem[-1]),)
 
 
 def main():
@@ -177,7 +177,7 @@ def main():
         opt["<SEARCH_TERM>"], int(opt.get("--pages"))))
 
     if opt['--enable-shortener']:
-        search_res = list(get_from_short(search_res))
+        search_res = list(get_from_short(opt['--shortener'], search_res))
 
     if not search_res:
         return
@@ -188,7 +188,6 @@ def main():
         return tableprint.table(search_res, ['Description', 'Size', 'Link'],
                                 width=lengths)
     res = {a[:Terminal().width - 20]: b for a, b in search_res}
-    print(res)
     result = res[prompt([List('Link', message="",
                               choices=res.keys())])['Link']]
 

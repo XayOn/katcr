@@ -44,6 +44,41 @@ def test_on_chat_message():
     """Test on chat message handler."""
     from katcr.bot import KATBot
     from unittest.mock import patch, MagicMock
+    from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
+
+    class FakeKATBot(KATBot):
+        """Fake kat bot to avoid initializing telepot."""
+
+        def __init__(self, token):
+            """Set token."""
+            self.token = token
+            self.katcr = MagicMock()
+            self.katcr.search.return_value = (('foo', 'bar'),)
+            self.shortener = "http://foo"
+            self.responses = {}
+            self.sendMessage = MagicMock()
+
+    with patch('katcr.bot.telepot.glance', return_value=((0, 0, 1))):
+        fkb = FakeKATBot("foo")
+        assert not fkb.on_chat_message({'text': 'debian'})
+        fkb.sendMessage.assert_called_with(
+            1, 'Results for: debian',
+            parse_mode='html',
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[[
+                    InlineKeyboardButton(
+                        text='foo',
+                        url=None, callback_data='0',
+                        switch_inline_query=None,
+                        switch_inline_query_current_chat=None,
+                        callback_game=None, pay=None)]]))
+        assert fkb.responses
+
+
+def test_on_chat_message_empty():
+    """Test on chat message handler."""
+    from katcr.bot import KATBot
+    from unittest.mock import patch, MagicMock
     from telepot.namedtuple import InlineKeyboardMarkup
 
     class FakeKATBot(KATBot):
@@ -83,9 +118,10 @@ def test_on_callback_query():
             self.sendMessage = MagicMock()
 
     with patch('katcr.bot.telepot.glance', return_value=((0, 1, 1))):
-        fkb = FakeKATBot("foo")
-        assert not fkb.on_callback_query({'text': 'debian'})
-        assert fkb.sendMessage.called
-        assert fkb.sendMessage.call_args[0][0] == 1
-        assert 'href' in fkb.sendMessage.call_args[0][1]
-        assert fkb.sendMessage.call_args[1]['parse_mode'] == 'html'
+        with patch('katcr.bot.get_short', return_value=(('foo'))):
+            fkb = FakeKATBot("foo")
+            assert not fkb.on_callback_query({'text': 'debian'})
+            assert fkb.sendMessage.called
+            assert fkb.sendMessage.call_args[0][0] == 1
+            assert 'href' in fkb.sendMessage.call_args[0][1]
+            assert fkb.sendMessage.call_args[1]['parse_mode'] == 'html'

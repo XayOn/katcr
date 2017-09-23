@@ -1,8 +1,7 @@
 CHANGES
 =======
 
-* Changed docstrings
-* Refactor
+* Refactor, fixed almost all tests
 * Readme accuracy
 * Cleaner readme
 * Readme updated with new usage
