@@ -1,8 +1,4 @@
 .. image:: http://i.imgur.com/ofx75lO.png
-   :align: center
-
-Multi-site torrent search
-=================================
 
 Easily **search torrents** in multiple providers such as KickAssTorrents and
 ThePirateBay.
