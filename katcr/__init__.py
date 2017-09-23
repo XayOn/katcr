@@ -153,11 +153,11 @@ def main():
 
     Options:
         -e --search-engine=<SearchEngine>  Torrent search engine to use
-                                           [default: Any].
+                                           [default: Katcr].
         -p --pages=<PAGES_NUM>             Number of pages to lookup
                                            [default: 1]
         -d --disable-shortener             Disable url shortener
-        -s --sortener=<SHORTENER_URL>      Use given magnet shortener to
+        -s --shortener=<SHORTENER_URL>     Use given magnet shortener to
                                            prettify urls.
                                            [default: http://www.shortmag.net]
 
@@ -170,14 +170,14 @@ def main():
     """
     opt = docopt(main.__doc__, version="0.0.1")
 
-    if opt['-d']:
+    if opt.get('-d'):
         logging.basicConfig(level=logging.DEBUG)
 
-    search_res = list(globals()[opt['--plugin']]().search(
-        opt["<SEARCH_TERM>"], int(opt.get("--pages"))))
+    search_res = list(globals()[opt['--search-engine'][0]]().search(
+        opt["<SEARCH_TERM>"], int(opt.get("--pages")[0])))
 
-    if opt['--enable-shortener']:
-        search_res = list(get_from_short(opt['--shortener'], search_res))
+    if not opt['--disable-shortener']:
+        search_res = list(get_from_short(opt['--shortener'][0], search_res))
 
     if not search_res:
         return
