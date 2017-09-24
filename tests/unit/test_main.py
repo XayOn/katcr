@@ -46,7 +46,7 @@ def test_main():
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
             tmock().width = 50
-            mock().search.side_effect = ((('foo', 'bar'),),)
+            mock().search.side_effect = ((('foo', "3", 'bar'),),)
             with patch('katcr.subprocess') as smock:
                 with patch('katcr.docopt', side_effect=(opts,)):
                     with patch('katcr.prompt', side_effect=(torr,)):
@@ -63,7 +63,7 @@ def test_main():
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
             tmock().width = 50
-            mock().search.side_effect = ((('foo', 'bar'),),)
+            mock().search.side_effect = ((('foo', "3", 'bar'),),)
             with patch('katcr.subprocess') as smock:
                 with patch('katcr.docopt', side_effect=(opts,)):
                     with patch('katcr.prompt', side_effect=(torr,)):
@@ -79,7 +79,7 @@ def test_main():
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
             tmock().width = 50
-            mock().search.side_effect = ((('foo', 'bar'),),)
+            mock().search.side_effect = ((('foo', "3", 'bar'),),)
             with patch('katcr.subprocess') as smock:
                 with patch('katcr.docopt', side_effect=(opts,)):
                     with patch('katcr.prompt', side_effect=(torr,)):
@@ -108,8 +108,10 @@ def test_main():
 
 def test_basesearch():
     """Test basesearch has required methods."""
-    import unittest.mock
     from katcr import BaseSearch
+    import unittest.mock
+    import warnings
+    warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 
     assert hasattr(BaseSearch, "search")
     assert hasattr(BaseSearch, "search_magnets")

@@ -194,7 +194,7 @@ def main():
                                 width=[max(len(a[p]) for a in search_res)
                                        for p in range(0, len(search_res[0]))])
 
-    res = {limit_terminal_size(a): b for a, b in search_res}
+    res = {limit_terminal_size(a): b for a, _, b in search_res}
     result = res[prompt([List('Link', message="",
                               choices=res.keys())])['Link']]
     print(result)
