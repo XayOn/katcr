@@ -4,4 +4,4 @@ pytest-cov==2.5.1
 pylint==1.7.2
 flake8==3.4.1
 flake8_docstrings==1.1.0
-pytest-sugar
+pytest-sugar==0.9.0
