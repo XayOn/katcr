@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+* Added (not working yet) Dockerfile and docker-compose
+* Fixed KatBot
+* Clean up readme
+* Added readme to asciinema
+* Pin pytest-sugar to latest version 0.9.0
+
 1.0.2
 -----
 

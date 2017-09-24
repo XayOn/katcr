@@ -45,7 +45,6 @@ class KATBot(telepot.Bot):
         key, value = self.responses[from_id][int(query_data)]
         href = "<a href=\"{}\">{}</a>".format(
             get_short(self.shortener, value), key)
-        self.logger.debug(href)
         self.sendMessage(from_id, href, parse_mode="html")
 
 
