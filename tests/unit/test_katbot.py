@@ -53,7 +53,7 @@ def test_on_chat_message():
             """Set token."""
             self.token = token
             self.katcr = MagicMock()
-            self.katcr.search.return_value = (('foo', 'bar'),)
+            self.katcr.search.return_value = (('foo', '3', 'bar'),)
             self.shortener = "http://foo"
             self.responses = {}
             self.sendMessage = MagicMock()
