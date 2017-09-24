@@ -56,23 +56,18 @@ Installation
 
 This is a python package available on pypi.
 
-On windows and mac `you can download python3.5 here <https://www.python.org/downloads/release/python-352/>`_.
-On linux distros, python3.5 is already on most package managers :smile:
+Just execute::
 
-With python3.5 installed just execute::
-
-    pip3.5 install katcr
+    pip install katcr
 
 
-If it asks about permissions and you don't know what to do, you should
-probably read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
+If you don't already know about virtualenvs, you should read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
 
 
 KATBot - Kickasstorrents telegram bot
 --------------------------------------
 
 Katcr also comes with a telegram bot entry point.
-
 It's a simple bot that replies with search results for each message it gets.
 It returns links to .torrent files from KAT.cr for the first page of results.
 
@@ -92,8 +87,9 @@ It returns links to .torrent files from KAT.cr for the first page of results.
 Notes
 ------
 
-This project is made with the best of intentions. For that times
-you need to search for somethink shared as a torrent on KAT
+This project is made with the best of intentions.
+
+For that times you need to search for somethink shared as a torrent on KAT
 (I.E, linux images). Logo is based on robot cat by
 `Arsenty <https://thenounproject.com/arsenty/>`_
 
