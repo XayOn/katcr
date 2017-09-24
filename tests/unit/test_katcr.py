@@ -5,13 +5,13 @@ def test_katcr_search_magnets():
     """Test katcr search magnets method."""
     from katcr import Katcr
     from robobrowser import RoboBrowser
-    from unittest.mock import patch
+    from unittest.mock import patch, MagicMock
     proxies = {'Kickass Torrents': [['foo', None]]}
 
     with patch('katcr.torrentmirror.get_proxies',
                side_effect=(proxies,)) as mock:
         with patch('katcr.robobrowser.RoboBrowser', spec=RoboBrowser) as mock:
-            Katcr().search_magnets('foo', 1)
+            Katcr(MagicMock()).search_magnets('foo', 1)
             assert mock.open.called_once_with('foo')
 
 

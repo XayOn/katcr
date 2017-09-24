@@ -3,6 +3,7 @@
 
 from katcr import Katcr, get_short
 from docopt import docopt
+from pygogo import Gogo
 import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -14,8 +15,9 @@ class KATBot(telepot.Bot):
     def __init__(self, opts):
         """Initialize of KATBot."""
         super().__init__(opts['--token'])
+        logger = Gogo(__name__, verbose=True)
         self.shortener = opts['--shortener']
-        self.katcr = Katcr()
+        self.katcr = Katcr(logger)
         self.responses = {}
 
     # pylint: disable=too-few-public-methods

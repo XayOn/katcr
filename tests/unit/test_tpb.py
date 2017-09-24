@@ -5,13 +5,13 @@ def test_tpb_search_magnets():
     """Test tpb search magnets method."""
     from katcr import ThePirateBay
     from robobrowser import RoboBrowser
-    from unittest.mock import patch
+    from unittest.mock import patch, MagicMock
     proxies = {'The Pirate Bay': [['foo', None]]}
 
     with patch('katcr.torrentmirror.get_proxies',
                side_effect=(proxies,)) as mock:
         with patch('katcr.robobrowser.RoboBrowser', spec=RoboBrowser) as mock:
-            ThePirateBay().search_magnets('foo', 1)
+            ThePirateBay(MagicMock()).search_magnets('foo', 1)
             assert mock.open.called_once_with('foo')
 
 
