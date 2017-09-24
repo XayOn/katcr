@@ -54,14 +54,13 @@ katcr comes with a simple but powerful command line interface
 Installation
 ------------
 
-This is a python package available on pypi.
+If you don't already know about virtualenvs, you should read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
 
-Just execute::
+
+This is a python package available on pypi. Just execute::
 
     pip install katcr
 
-
-If you don't already know about virtualenvs, you should read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
 
 
 KATBot - Kickasstorrents telegram bot

@@ -15,9 +15,9 @@ class KATBot(telepot.Bot):
     def __init__(self, opts):
         """Initialize of KATBot."""
         super().__init__(opts['--token'])
-        logger = Gogo(__name__, verbose=True)
+        self.logger = Gogo(__name__, verbose=True).logger
         self.shortener = opts['--shortener']
-        self.katcr = Katcr(logger)
+        self.katcr = Katcr(self.logger)
         self.responses = {}
 
     # pylint: disable=too-few-public-methods
@@ -31,10 +31,11 @@ class KATBot(telepot.Bot):
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=list(
             [InlineKeyboardButton(text=k, callback_data=str(r))]
-            for r, (k, _) in enumerate(res)))
+            for r, (k, _, _) in enumerate(res)))
         print(keyboard)
 
-        self.responses[chat_id] = {r: (k, v) for r, (k, v) in enumerate(res)}
+        self.responses[chat_id] = {r: (k, v) for r, (k, _, v)
+                                   in enumerate(res)}
         self.sendMessage(chat_id, "Results for: {}".format(msg['text']),
                          reply_markup=keyboard, parse_mode="html")
 
@@ -44,6 +45,7 @@ class KATBot(telepot.Bot):
         key, value = self.responses[from_id][int(query_data)]
         href = "<a href=\"{}\">{}</a>".format(
             get_short(self.shortener, value), key)
+        self.logger.debug(href)
         self.sendMessage(from_id, href, parse_mode="html")
 
 
