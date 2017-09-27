@@ -4,6 +4,7 @@
 from pathlib import Path
 
 from katcr import Katcr
+from katcr import ThePirateBay
 from katcr import get_short
 
 from docopt import docopt
@@ -18,12 +19,15 @@ class KATBot(telepot.Bot):
 
     def __init__(self, opts):
         """Initialize of KATBot."""
-        super().__init__(
-            opts.get('--token', Path(opts.get('--token-file')).read_text()))
+        token = opts.get('--token')
+        if not token:
+            token = Path(opts.get('--token-file')).read_text().strip()
+        super().__init__(token)
         self.logger = Gogo(__name__, verbose=True).logger
         self.logger.debug("Starting service.")
         self.shortener = opts['--shortener']
         self.katcr = Katcr(self.logger)
+        self.thepiratebay = ThePirateBay(self.logger)
         self.responses = {}
 
     # pylint: disable=too-few-public-methods
@@ -33,7 +37,11 @@ class KATBot(telepot.Bot):
             return
 
         chat_id = telepot.glance(msg)[2]
-        res = tuple(self.katcr.search(msg['text'], 1))
+
+        for engine in (self.katcr, self.thepiratebay):
+            res = tuple(engine.search(msg['text'], 1))
+            if res:
+                break
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=list(
             [InlineKeyboardButton(text=k, callback_data=str(r))]
