@@ -24,6 +24,27 @@ def test_katbot_main():
                 bot.assert_called_with({'--token': 'foo'})
 
 
+def test_katbot_main_file():
+    """Test argument parsing and calling."""
+    from katcr.bot import main
+
+    from unittest.mock import patch
+    import os
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as tmpfile:
+        tmpfile.write('foobar')
+
+    opts = {'--token': None, '--shortener': None,
+            '--token-file': tmpfile.name}
+    with patch('katcr.bot.docopt', side_effect=(opts,)):
+        with patch('katcr.bot.MessageLoop'):
+            with patch('katcr.bot.telepot.Bot.__init__') as mock:
+                main()
+                mock.assert_called_with('foobar')
+    os.unlink(tmpfile.name)
+
+
 def test_on_chat_message_start():
     """Test on chat message handler."""
     from katcr.bot import KATBot
@@ -53,6 +74,7 @@ def test_on_chat_message():
             """Set token."""
             self.token = token
             self.katcr = MagicMock()
+            self.thepiratebay = MagicMock()
             self.katcr.search.return_value = (('foo', '3', 'bar'),)
             self.shortener = "http://foo"
             self.responses = {}
@@ -88,6 +110,7 @@ def test_on_chat_message_empty():
             """Set token."""
             self.token = token
             self.katcr = MagicMock()
+            self.thepiratebay = MagicMock()
             self.shortener = "http://foo"
             self.responses = {}
             self.sendMessage = MagicMock()
@@ -125,3 +148,7 @@ def test_on_callback_query():
             assert fkb.sendMessage.call_args[0][0] == 1
             assert 'href' in fkb.sendMessage.call_args[0][1]
             assert fkb.sendMessage.call_args[1]['parse_mode'] == 'html'
+
+
+def test_katbot_tokenfile():
+    """Test katbot tokenfile."""

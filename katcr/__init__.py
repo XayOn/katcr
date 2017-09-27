@@ -63,7 +63,8 @@ class BaseSearch(metaclass=abc.ABCMeta):
         proxies.insert(0, [self.url, None])
         for site, _ in proxies:
             self.logger.debug("Searching in %s", site)
-            with suppress(requests.exceptions.ReadTimeout, AssertionError):
+            with suppress(requests.exceptions.ReadTimeout,
+                          requests.exceptions.SSLError, AssertionError):
                 http = '' if site.startswith('http') else 'http://'
                 self.browser.open(self.url_format.format(
                     http, site, query, page))
@@ -150,6 +151,19 @@ def limit_terminal_size(what, limit=-20):
     return what[:Terminal().width + limit]
 
 
+def search_in_engines(logger, engines, search_term, pages):
+    """Search in engines."""
+    search_res = None
+
+    if engines == ["All"]:
+        engines = ("Katcr", "ThePirateBay")
+
+    for engine in engines:
+        search_res = list(globals()[engine](logger).search(search_term, pages))
+        if search_res:
+            return search_res
+
+
 def main():
     """Search in multiple torrent sites.
 
@@ -161,27 +175,29 @@ def main():
     - ThePirateBay
 
     Options:
-        -e --search-engine=<SearchEngine>  Torrent search engine to use
-                                           [default: Katcr].
-        -p --pages=<PAGES_NUM>             Number of pages to lookup
-                                           [default: 1]
-        -d --disable-shortener             Disable url shortener
-        -s --shortener=<SHORTENER_URL>     Use given magnet shortener to
-                                           prettify urls.
-                                           [default: http://www.shortmag.net]
+        -e --search-engines=<SearchEngine>  Torrent search engine to use
+                                            Options: Katcr, ThePirateBay
+                                            [default: All].
+        -p --pages=<PAGES_NUM>              Number of pages to lookup
+                                            [default: 1]
+        -d --disable-shortener              Disable url shortener
+        -s --shortener=<SHORTENER_URL>      Use given magnet shortener to
+                                            prettify urls.
+                                            [default: http://www.shortmag.net]
 
     Interactive Options:
-        -i --interactive                   Enable interactive mode
-        -o --open                          Launch with default torrent app
-                                           in interactive mode [default: True]
-        -h --help                          Show this help screen
-        -v --verbose                       Enable debug mode
+        -i --interactive                    Enable interactive mode
+        -o --open                           Launch with default torrent app
+                                            in interactive mode [default: True]
+        -h --help                           Show this help screen
+        -v --verbose                        Enable debug mode
     """
     opt = docopt(main.__doc__, version="0.0.1")
     logger = Gogo(__name__, verbose=opt.get('--verbose')).logger
 
-    search_res = list(globals()[opt['--search-engine'][0]](logger).search(
-        opt["<SEARCH_TERM>"], int(opt.get("--pages")[0])))
+    search_res = search_in_engines(logger, opt['--search-engine'],
+                                   opt["<SEARCH_TERM>"],
+                                   int(opt.get("--pages")[0]))
 
     if not opt['--disable-shortener']:
         search_res = list(get_from_short(opt['--shortener'][0], search_res))

@@ -22,7 +22,7 @@ def test_main():
             with patch('katcr.docopt', side_effect=(opts,)):
                 main()
                 mock().search.assert_called_with(opts['<SEARCH_TERM>'], 1)
-                short_mock.assert_called_with('bar', [])
+                short_mock.assert_called_with('bar', None)
 
     class Foo:
         text = "foo"
@@ -146,3 +146,13 @@ def test_cli_help():
     from katcr import main
     result = subprocess.check_output(['katcr', '--help'])
     assert main.__doc__.encode() in result
+
+
+def test_search_in_engines():
+    """Test search_in_engines function."""
+    from unittest.mock import patch, MagicMock
+
+    with patch('katcr.Katcr.search', side_effect=(tuple(),)):
+        with patch('katcr.ThePirateBay.search', side_effect=(tuple(),)):
+            from katcr import search_in_engines
+            search_in_engines(MagicMock(), ["All"], "test", 1)
