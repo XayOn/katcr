@@ -1,6 +1,9 @@
 CHANGES
 =======
 
+* Minor change
+* Fixed katbot tests
+* Fixed tests
 * Added (not working yet) Dockerfile and docker-compose
 * Fixed KatBot
 * Clean up readme
