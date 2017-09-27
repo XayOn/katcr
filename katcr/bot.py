@@ -60,7 +60,7 @@ def main():
 
     Options:
         --token=<BOT_TOKEN>             Telegram bot token
-        --token_file=<FILE>             Telegram bot token file
+        --token-file=<FILE>             Telegram bot token file
         --shortener=<URL_SHORTENER>     Url shortener to use
                                         [default: http://shortmag.net]
     """

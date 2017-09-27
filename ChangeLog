@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+1.0.4
+-----
+
+* Added token\_file option for dockerizing
 * Minor change
 * Fixed katbot tests
 * Fixed tests
