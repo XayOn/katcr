@@ -1,6 +1,8 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
 
+from pathlib import Path
+
 from katcr import Katcr
 from katcr import get_short
 
@@ -16,7 +18,8 @@ class KATBot(telepot.Bot):
 
     def __init__(self, opts):
         """Initialize of KATBot."""
-        super().__init__(opts['--token'])
+        super().__init__(
+            opts.get('--token', Path(opts.get('--token-file')).read_text()))
         self.logger = Gogo(__name__, verbose=True).logger
         self.logger.debug("Starting service.")
         self.shortener = opts['--shortener']
@@ -57,6 +60,7 @@ def main():
 
     Options:
         --token=<BOT_TOKEN>             Telegram bot token
+        --token_file=<FILE>             Telegram bot token file
         --shortener=<URL_SHORTENER>     Url shortener to use
                                         [default: http://shortmag.net]
     """
