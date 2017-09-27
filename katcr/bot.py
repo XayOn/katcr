@@ -1,12 +1,14 @@
 #!/usr/bin/env python3.5
 """Telegram bot to query KickassTorrents."""
 
-from katcr import Katcr, get_short
+from katcr import Katcr
+from katcr import get_short
+
 from docopt import docopt
 from pygogo import Gogo
-import telepot
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
+import telepot
 
 
 class KATBot(telepot.Bot):
@@ -16,6 +18,7 @@ class KATBot(telepot.Bot):
         """Initialize of KATBot."""
         super().__init__(opts['--token'])
         self.logger = Gogo(__name__, verbose=True).logger
+        self.logger.debug("Starting service.")
         self.shortener = opts['--shortener']
         self.katcr = Katcr(self.logger)
         self.responses = {}
@@ -32,7 +35,6 @@ class KATBot(telepot.Bot):
         keyboard = InlineKeyboardMarkup(inline_keyboard=list(
             [InlineKeyboardButton(text=k, callback_data=str(r))]
             for r, (k, _, _) in enumerate(res)))
-        print(keyboard)
 
         self.responses[chat_id] = {r: (k, v) for r, (k, _, v)
                                    in enumerate(res)}
