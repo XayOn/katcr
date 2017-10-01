@@ -5,7 +5,7 @@ def test_main():
     """Test argument parsing and calling."""
     from katcr import main, get_from_short
     from unittest.mock import patch, call
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': False, '--open': False, '-d': False,
             '--disable-shortener': True, '--pages': [1]}
     with patch('katcr.Katcr') as mock:
@@ -13,7 +13,7 @@ def test_main():
             main()
             mock().search.assert_called_with(opts['<SEARCH_TERM>'], 1)
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': False, '--open': False, '-d': False,
             '--shortener': ['bar'],
             '--disable-shortener': False, '--pages': [1]}
@@ -36,7 +36,7 @@ def test_main():
             mock.assert_has_calls([call('foo.com', data={'magnet': '2'}),
                                    call('foo.com', data={'magnet': '4'})])
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': True, '--open': True, '-d': False,
             '--disable-shortener': True, "--shortener": "http://foo.com",
             '--pages': [1]}
@@ -55,7 +55,7 @@ def test_main():
                         smock.check_call.assert_called_with(
                             ['xdg-open', 'bar'])
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': True, '--open': False, '-d': False,
             '--disable-shortener': True, "--shortener": "http://foo.com",
             '--pages': [1]}
@@ -71,7 +71,7 @@ def test_main():
                         mock().search.assert_called_with(*args)
                         smock.check_call.assert_not_called()
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': True, '--open': False,
             '--verbose': True,
             '--disable-shortener': True, '--pages': [1]}
@@ -89,7 +89,7 @@ def test_main():
                                 'katcr', verbose=True)
 
     opts = {'<SEARCH_TERM>': "foo",
-            '--search-engine': ['Katcr'],
+            '--search-engines': ['Katcr'],
             '--interactive': False,
             '--open': False,
             '--disable-shortener': True,
