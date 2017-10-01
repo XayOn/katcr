@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Fixed tests, still no tests for new additions
 * Added more engines
 * Added todo
 
