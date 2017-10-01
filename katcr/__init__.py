@@ -168,9 +168,9 @@ class DigBt(BaseSearch):
         """Extract all information from each href."""
         with suppress(IndexError, TypeError):
             tail = row.find(class_='tail')
-            return (row.find('div').find('a').text,
-                    list(filter(lambda x: x, tail.text.split(' ')))[4],
-                    tail.find('a')['href'])
+            return (row.find('div').find('a').text.strip(),
+                    list(filter(lambda x: x, tail.text.split(' ')))[4].strip(),
+                    tail.find('a')['href'].strip())
 
     def get_torrents(self):
         """Return torrents."""
@@ -222,6 +222,17 @@ def get_from_short(shortener, search_res):
 def limit_terminal_size(what, limit=-20):
     """Limit a string to current terminal size, plus limit."""
     return what[:Terminal().width + limit]
+
+
+def get_shortener_from_opts(opt):
+    """Return shortener with token if needed."""
+    shortener = opt['--shortener'][0]
+    token = opt.get('--token')
+    if not token and opt.get('--token_file'):
+        token = Path(opt.get('--token_file')).read_text()
+    if token:
+        shortener = shortener.format(token)
+    return shortener
 
 
 def search_in_engines(logger, engines, search_term, pages):
@@ -284,12 +295,7 @@ def main():
                                    int(opt.get("--pages")[0]))
 
     if not opt['--disable-shortener']:
-        shortener = opt['--shortener'][0]
-        token = opt.get('--token')
-        if not token and opt.get('--token_file'):
-            token = Path(opt.get('--token_file')).read_text()
-        if token:
-            shortener = shortener.format(token)
+        shortener = get_shortener_from_opts(opt)
         with suppress(TypeError):
             search_res = list(get_from_short(shortener, search_res))
 

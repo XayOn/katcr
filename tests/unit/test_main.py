@@ -134,6 +134,33 @@ def test_search_call():
                 mock().search.assert_called_with(*args)
 
 
+def test_main_token_file():
+    """Get shortener with token from file."""
+    from katcr import get_shortener_from_opts
+
+    opts = {
+        '--shortener': ['http://foo.com/{}'],
+        '--token': 'bar'}
+    assert get_shortener_from_opts(opts) == 'http://foo.com/bar'
+
+
+def test_main_token():
+    """Get shortener with token."""
+    import tempfile
+    import os
+    from katcr import get_shortener_from_opts
+    with tempfile.NamedTemporaryFile(delete=False, mode='wb') as fileo:
+        name = fileo.name
+        fileo.write(b'bar')
+
+    opts = {
+        '--shortener': ['http://foo.com/{}'],
+        '--token_file': name}
+
+    assert get_shortener_from_opts(opts) == 'http://foo.com/bar'
+    os.unlink(name)
+
+
 def test_basesearch():
     """Test basesearch has required methods."""
     from katcr import BaseSearch
