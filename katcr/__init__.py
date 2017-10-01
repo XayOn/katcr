@@ -11,6 +11,7 @@ Currently supported sites:
 """
 
 from contextlib import suppress
+from pathlib import Path
 import abc
 import itertools
 import re
@@ -59,7 +60,7 @@ class BaseSearch(metaclass=abc.ABCMeta):
 
     def search_magnets(self, query: str, page: int):
         """Return the list of magnets from a specific page."""
-        proxies = torrentmirror.get_proxies()[self.proxy_name]
+        proxies = torrentmirror.get_proxies().get(self.proxy_name, [])
         proxies.insert(0, [self.url, None])
         for site, _ in proxies:
             self.logger.debug("Searching in %s", site)
@@ -104,6 +105,78 @@ class ThePirateBay(BaseSearch):
         torrents = self.browser.find_all(
             'a', title='Download this torrent using magnet')
         return [self.tabulate(torrent) for torrent in torrents]
+
+
+class NyaaSi(BaseSearch):
+    """Nyaa.Si torrent search engine."""
+
+    proxy_name = ''
+    url = 'https://nyaa.si'
+    url_format = '{}{}/?f=0&c=0_0&q={}&p={}'
+
+    @staticmethod
+    def tabulate(link):
+        """Extract all information from each href."""
+        row = link.parent.parent.parent
+        cols = row.find_all('td')
+
+        def _nocomments(where):
+            return where != 'comments'
+
+        name = ''.join((cols[1].find('a', class_=_nocomments).text.strip(),
+                        ' ', cols[0].find('img')['alt'].strip()))
+        return (name, cols[3].text.strip(), link.parent['href'])
+
+    def get_torrents(self):
+        """Return torrents."""
+        # pylint: disable=not-callable
+        links = self.browser.find_all(class_='fa-magnet')
+        return [self.tabulate(link) for link in links]
+
+
+class Skytorrents(BaseSearch):
+    """Skytorrents.in torrent search engine."""
+
+    proxy_name = ''
+    url = 'https://skytorrents.in/'
+    url_format = '{0}{1}search/all/ed/{3}/?l=en-us&q={2}'
+
+    @staticmethod
+    def tabulate(row):
+        """Extract all information from each href."""
+        with suppress(IndexError):
+            cols = row.find_all('td')
+            links = cols[0].find_all('a')
+            return (links[0].text, cols[1].text, links[1]['href'])
+
+    def get_torrents(self):
+        """Return torrents."""
+        # pylint: disable=not-callable
+        return list(filter(
+            None, [self.tabulate(l) for l in self.browser.find_all('tr')]))
+
+
+class DigBt(BaseSearch):
+    """Digbt DHT search engine."""
+
+    proxy_name = ''
+    url = 'https://digbt.org/'
+    url_format = '{0}{1}search/{2}-relevance-{3}/'
+
+    @staticmethod
+    def tabulate(row):
+        """Extract all information from each href."""
+        with suppress(IndexError, TypeError):
+            tail = row.find(class_='tail')
+            return (row.find('div').find('a').text.strip(),
+                    list(filter(lambda x: x, tail.text.split(' ')))[4].strip(),
+                    tail.find('a')['href'].strip())
+
+    def get_torrents(self):
+        """Return torrents."""
+        # pylint: disable=not-callable
+        return list(filter(
+            None, [self.tabulate(l) for l in self.browser.find_all('tr')]))
 
 
 class Katcr(BaseSearch):
@@ -151,6 +224,17 @@ def limit_terminal_size(what, limit=-20):
     return what[:Terminal().width + limit]
 
 
+def get_shortener_from_opts(opt):
+    """Return shortener with token if needed."""
+    shortener = opt['--shortener'][0]
+    token = opt.get('--token')
+    if not token and opt.get('--token_file'):
+        token = Path(opt.get('--token_file')).read_text()
+    if token:
+        shortener = shortener.format(token)
+    return shortener
+
+
 def search_in_engines(logger, engines, search_term, pages):
     """Search in engines."""
     search_res = None
@@ -159,9 +243,11 @@ def search_in_engines(logger, engines, search_term, pages):
         engines = ("Katcr", "ThePirateBay")
 
     for engine in engines:
-        search_res = list(globals()[engine](logger).search(search_term, pages))
-        if search_res:
-            return search_res
+        with suppress(TypeError):
+            search_res = list(globals()[engine](logger).search(
+                search_term, pages))
+            if search_res:
+                return search_res
 
 
 def main():
@@ -173,10 +259,12 @@ def main():
 
     - Katcr
     - ThePirateBay
+    - Nyaa
+    - Skytorrents
+    - Digbt
 
     Options:
         -e --search-engines=<SearchEngine>  Torrent search engine to use
-                                            Options: Katcr, ThePirateBay
                                             [default: All].
         -p --pages=<PAGES_NUM>              Number of pages to lookup
                                             [default: 1]
@@ -184,6 +272,8 @@ def main():
         -s --shortener=<SHORTENER_URL>      Use given magnet shortener to
                                             prettify urls.
                                             [default: http://www.shortmag.net]
+        -t --token=<SHORTENER_TOKEN>        Shortener token to use, if required
+        -t --token_file=<S_TOKEN_FILE>      Shortener token file
 
     Interactive Options:
         -i --interactive                    Enable interactive mode
@@ -191,16 +281,23 @@ def main():
                                             in interactive mode [default: True]
         -h --help                           Show this help screen
         -v --verbose                        Enable debug mode
+
+
+    katcr  Copyright (C) 2017 David Francos Cuartero
+    This program comes with ABSOLUTELY NO WARRANTY; This is free software, and
+    you are welcome to redistribute it under certain conditions;
     """
-    opt = docopt(main.__doc__, version="0.0.1")
+    opt = docopt(main.__doc__, version="1.0.1")
     logger = Gogo(__name__, verbose=opt.get('--verbose')).logger
 
-    search_res = search_in_engines(logger, opt['--search-engine'],
+    search_res = search_in_engines(logger, opt['--search-engines'],
                                    opt["<SEARCH_TERM>"],
                                    int(opt.get("--pages")[0]))
 
     if not opt['--disable-shortener']:
-        search_res = list(get_from_short(opt['--shortener'][0], search_res))
+        shortener = get_shortener_from_opts(opt)
+        with suppress(TypeError):
+            search_res = list(get_from_short(shortener, search_res))
 
     if not search_res:
         return
@@ -213,7 +310,6 @@ def main():
     res = {limit_terminal_size(a): b for a, _, b in search_res}
     result = res[prompt([List('Link', message="",
                               choices=res.keys())])['Link']]
-    print(result)
 
     if opt['--open']:
         return subprocess.check_call(['xdg-open', result])

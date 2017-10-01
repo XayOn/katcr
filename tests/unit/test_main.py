@@ -3,9 +3,9 @@
 
 def test_main():
     """Test argument parsing and calling."""
-    from katcr import main, get_from_short
-    from unittest.mock import patch, call
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+    from katcr import main
+    from unittest.mock import patch
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': False, '--open': False, '-d': False,
             '--disable-shortener': True, '--pages': [1]}
     with patch('katcr.Katcr') as mock:
@@ -13,7 +13,12 @@ def test_main():
             main()
             mock().search.assert_called_with(opts['<SEARCH_TERM>'], 1)
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+
+def test_main_with_shortener():
+    """Test usage with url shortener."""
+    from katcr import main, get_from_short
+    from unittest.mock import patch, call
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': False, '--open': False, '-d': False,
             '--shortener': ['bar'],
             '--disable-shortener': False, '--pages': [1]}
@@ -25,6 +30,7 @@ def test_main():
                 short_mock.assert_called_with('bar', None)
 
     class Foo:
+        # pylint: disable=too-few-public-methods, missing-docstring
         text = "foo"
 
     with patch('katcr.requests.post', return_value=Foo) as mock:
@@ -36,7 +42,12 @@ def test_main():
             mock.assert_has_calls([call('foo.com', data={'magnet': '2'}),
                                    call('foo.com', data={'magnet': '4'})])
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+
+def test_main_open_link():
+    """Test open link option."""
+    from katcr import main
+    from unittest.mock import patch
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': True, '--open': True, '-d': False,
             '--disable-shortener': True, "--shortener": "http://foo.com",
             '--pages': [1]}
@@ -55,10 +66,17 @@ def test_main():
                         smock.check_call.assert_called_with(
                             ['xdg-open', 'bar'])
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+
+def test_interactive_mode():
+    """Test interactive mode."""
+    from katcr import main
+    from unittest.mock import patch
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': True, '--open': False, '-d': False,
             '--disable-shortener': True, "--shortener": "http://foo.com",
             '--pages': [1]}
+    torr = {'Link': 'foo'}
+    args = opts['<SEARCH_TERM>'], 1
 
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
@@ -71,39 +89,76 @@ def test_main():
                         mock().search.assert_called_with(*args)
                         smock.check_call.assert_not_called()
 
-    opts = {'<SEARCH_TERM>': "foo", '--search-engine': ['Katcr'],
+
+def test_logging():
+    """Test logging."""
+    from katcr import main
+    from unittest.mock import patch
+    opts = {'<SEARCH_TERM>': "foo", '--search-engines': ['Katcr'],
             '--interactive': True, '--open': False,
             '--verbose': True,
             '--disable-shortener': True, '--pages': [1]}
+    torr = {'Link': 'foo'}
 
     with patch('katcr.Katcr') as mock:
         with patch('katcr.Terminal') as tmock:
             tmock().width = 50
             mock().search.side_effect = ((('foo', "3", 'bar'),),)
-            with patch('katcr.subprocess') as smock:
-                with patch('katcr.docopt', side_effect=(opts,)):
-                    with patch('katcr.prompt', side_effect=(torr,)):
-                        with patch('katcr.Gogo') as logging_mock:
-                            main()
-                            logging_mock.assert_called_with(
-                                'katcr', verbose=True)
+            with patch('katcr.docopt', side_effect=(opts,)):
+                with patch('katcr.prompt', side_effect=(torr,)):
+                    with patch('katcr.Gogo') as logging_mock:
+                        main()
+                        logging_mock.assert_called_with(
+                            'katcr', verbose=True)
 
+
+def test_search_call():
+    """Test main search call."""
+    from katcr import main
+    from unittest.mock import patch
     opts = {'<SEARCH_TERM>': "foo",
-            '--search-engine': ['Katcr'],
+            '--search-engines': ['Katcr'],
             '--interactive': False,
             '--open': False,
             '--disable-shortener': True,
             "--shortener": "http://foo.com",
             '--pages': [1]}
-    torr = {'Link': 'foo'}
     args = opts['<SEARCH_TERM>'], 1
 
-    with patch('katcr.Katcr') as mock:
-        tmock().width = 50
-        mock().search.side_effect = ((('foo', 'bar', "baz"),),)
-        with patch('katcr.docopt', side_effect=(opts,)):
-            main()
-            mock().search.assert_called_with(*args)
+    with patch('katcr.Terminal') as tmock:
+        with patch('katcr.Katcr') as mock:
+            tmock().width = 50
+            mock().search.side_effect = ((('foo', 'bar', "baz"),),)
+            with patch('katcr.docopt', side_effect=(opts,)):
+                main()
+                mock().search.assert_called_with(*args)
+
+
+def test_main_token_file():
+    """Get shortener with token from file."""
+    from katcr import get_shortener_from_opts
+
+    opts = {
+        '--shortener': ['http://foo.com/{}'],
+        '--token': 'bar'}
+    assert get_shortener_from_opts(opts) == 'http://foo.com/bar'
+
+
+def test_main_token():
+    """Get shortener with token."""
+    import tempfile
+    import os
+    from katcr import get_shortener_from_opts
+    with tempfile.NamedTemporaryFile(delete=False, mode='wb') as fileo:
+        name = fileo.name
+        fileo.write(b'bar')
+
+    opts = {
+        '--shortener': ['http://foo.com/{}'],
+        '--token_file': name}
+
+    assert get_shortener_from_opts(opts) == 'http://foo.com/bar'
+    os.unlink(name)
 
 
 def test_basesearch():
@@ -118,26 +173,40 @@ def test_basesearch():
 
     with unittest.mock.patch('katcr.BaseSearch.search_magnets',
                              side_effect=(['foo'],)) as mock:
-        class FakeSearch(BaseSearch):
-            def get_torrents(self):
-                return "foo"
+        with unittest.mock.patch('katcr.torrentmirror.get_proxies',
+                                 side_effect=({},)):
+            class FakeSearch(BaseSearch):
+                """Fake search."""
+
+                def get_torrents(self):
+                    """Get torrents."""
+                    return "foo"
+                browser = unittest.mock.MagicMock()
+                proxy_name = "The Pirate Bay"
+                url = "Foo"
+                url_format = None
+
+            FakeSearch(mock.MagicMock).search('foo', 2)
+            assert mock.call_count == 2
+
+    with unittest.mock.patch('katcr.torrentmirror.get_proxies',
+                             side_effect=({},)):
+        class FakeSearchB(BaseSearch):
+            """Fake search."""
+
             proxy_name = "The Pirate Bay"
             url = "Foo"
-            url_format = None
+            url_format = "http://foo.com/"
 
-        FakeSearch(mock.MagicMock).search('foo', 2)
+            def __init__(self, logger):
+                super().__init__(logger)
+                self.browser = unittest.mock.MagicMock()
+
+            def get_torrents(self):
+                return "foo"
+
+        FakeSearchB(unittest.mock.MagicMock()).search('foo', 2)
         assert mock.call_count == 2
-
-    class FakeSearch(BaseSearch):
-        browser = mock.MagicMock()
-        proxy_name = "The Pirate Bay"
-        url = "Foo"
-        url_format = "http://foo.com/"
-
-        def get_torrents(self):
-            return "foo"
-    FakeSearch(mock.MagicMock).search('foo', 2)
-    assert mock.call_count == 2
 
 
 def test_cli_help():

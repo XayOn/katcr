@@ -1,6 +1,20 @@
 CHANGES
 =======
 
+* Segmented tests
+* Fixed tests
+* Fixed tests?
+* Updated usage
+* Fixed last commit
+* Moved asciicast to gif
+* Fixed tests, still no tests for new additions
+* Added more engines
+* Added todo
+
+1.0.5
+-----
+
+* Added multiple-search-engine searches
 * Fixed bot options
 
 1.0.4

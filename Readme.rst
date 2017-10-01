@@ -19,8 +19,7 @@ Command Line Interface
 
 katcr comes with a simple but powerful command line interface
 
-.. image:: https://asciinema.org/a/139240.png
-    :target: https://asciinema.org/a/139240
+.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.gif
 
 ::
 
@@ -32,23 +31,33 @@ katcr comes with a simple but powerful command line interface
 
         - Katcr
         - ThePirateBay
+        - Nyaa
+        - Skytorrents
+        - Digbt
 
         Options:
-            -e --search-engine=<SearchEngine>  Torrent search engine to use
-                                               [default: Any].
-            -p --pages=<PAGES_NUM>             Number of pages to lookup
-                                               [default: 1]
-            -d --disable-shortener             Disable url shortener
-            -s --sortener=<SHORTENER_URL>      Use given magnet shortener to
-                                               prettify urls.
-                                               [default: http://www.shortmag.net]
+            -e --search-engines=<SearchEngine>  Torrent search engine to use
+                                                [default: All].
+            -p --pages=<PAGES_NUM>              Number of pages to lookup
+                                                [default: 1]
+            -d --disable-shortener              Disable url shortener
+            -s --shortener=<SHORTENER_URL>      Use given magnet shortener to
+                                                prettify urls.
+                                                [default: http://www.shortmag.net]
+            -t --token=<SHORTENER_TOKEN>        Shortener token to use, if required
+            -t --token_file=<S_TOKEN_FILE>      Shortener token file
 
         Interactive Options:
-            -i --interactive                   Enable interactive mode
-            -o --open                          Launch with default torrent app
-                                               in interactive mode [default: True]
-            -h --help                          Show this help screen
-            -d --debug                         Enable debug mode
+            -i --interactive                    Enable interactive mode
+            -o --open                           Launch with default torrent app
+                                                in interactive mode [default: True]
+            -h --help                           Show this help screen
+            -v --verbose                        Enable debug mode
+
+
+        katcr  Copyright (C) 2017 David Francos Cuartero
+        This program comes with ABSOLUTELY NO WARRANTY; This is free software, and
+        you are welcome to redistribute it under certain conditions;
 
 
 Installation
