@@ -19,7 +19,7 @@ Command Line Interface
 
 katcr comes with a simple but powerful command line interface
 
-.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.png
+.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.gif
 
 ::
 
