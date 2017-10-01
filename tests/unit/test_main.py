@@ -118,33 +118,40 @@ def test_basesearch():
 
     with unittest.mock.patch('katcr.BaseSearch.search_magnets',
                              side_effect=(['foo'],)) as mock:
-        class FakeSearch(BaseSearch):
+        with unittest.mock.patch('katcr.torrentmirror.get_proxies',
+                                 side_effect=({},)):
+            class FakeSearch(BaseSearch):
+                """Fake search."""
+
+                def get_torrents(self):
+                    """Get torrents."""
+                    return "foo"
+                browser = unittest.mock.MagicMock()
+                proxy_name = "The Pirate Bay"
+                url = "Foo"
+                url_format = None
+
+            FakeSearch(mock.MagicMock).search('foo', 2)
+            assert mock.call_count == 2
+
+    with unittest.mock.patch('katcr.torrentmirror.get_proxies',
+                             side_effect=({},)):
+        class FakeSearchB(BaseSearch):
             """Fake search."""
 
-            def get_torrents(self):
-                """Get torrents."""
-                return "foo"
-            browser = unittest.mock.MagicMock()
             proxy_name = "The Pirate Bay"
             url = "Foo"
-            url_format = None
+            url_format = "http://foo.com/"
 
-        FakeSearch(mock.MagicMock).search('foo', 2)
+            def __init__(self, logger):
+                super().__init__(logger)
+                self.browser = unittest.mock.MagicMock()
+
+            def get_torrents(self):
+                return "foo"
+
+        FakeSearchB(unittest.mock.MagicMock()).search('foo', 2)
         assert mock.call_count == 2
-
-    class FakeSearchB(BaseSearch):
-        """Fake search."""
-
-        browser = unittest.mock.MagicMock()
-        proxy_name = "The Pirate Bay"
-        url = "Foo"
-        url_format = "http://foo.com/"
-
-        def get_torrents(self):
-            return "foo"
-
-    FakeSearchB(unittest.mock.MagicMock()).search('foo', 2)
-    assert mock.call_count == 2
 
 
 def test_cli_help():
