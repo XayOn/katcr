@@ -119,8 +119,12 @@ def test_basesearch():
     with unittest.mock.patch('katcr.BaseSearch.search_magnets',
                              side_effect=(['foo'],)) as mock:
         class FakeSearch(BaseSearch):
+            """Fake search."""
+
             def get_torrents(self):
+                """Get torrents."""
                 return "foo"
+            browser = unittest.mock.MagicMock()
             proxy_name = "The Pirate Bay"
             url = "Foo"
             url_format = None
@@ -128,15 +132,18 @@ def test_basesearch():
         FakeSearch(mock.MagicMock).search('foo', 2)
         assert mock.call_count == 2
 
-    class FakeSearch(BaseSearch):
-        browser = mock.MagicMock()
+    class FakeSearchB(BaseSearch):
+        """Fake search."""
+
+        browser = unittest.mock.MagicMock()
         proxy_name = "The Pirate Bay"
         url = "Foo"
         url_format = "http://foo.com/"
 
         def get_torrents(self):
             return "foo"
-    FakeSearch(mock.MagicMock).search('foo', 2)
+
+    FakeSearchB(unittest.mock.MagicMock()).search('foo', 2)
     assert mock.call_count == 2
 
 
