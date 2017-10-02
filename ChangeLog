@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+
+1.0.6
+-----
+
+* 100% coverage is back
 * Segmented tests
 * Fixed tests
 * Fixed tests?

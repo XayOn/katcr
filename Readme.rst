@@ -63,12 +63,25 @@ katcr comes with a simple but powerful command line interface
 Installation
 ------------
 
-If you don't already know about virtualenvs, you should read `Jamie Matthews's article about virtualenvs <https://www.dabapps.com/blog/introduction-to-pip-and-virtualenv-python/>`_
+This is a python package available on pypi, just run::
+
+    sudo python3 -m pip install katcr
 
 
-This is a python package available on pypi. Just execute::
+Features
+--------
 
-    pip install katcr
+- Display results in a nice utf-8 table
+- Optional interactive mode, choose and open torrent with a nice text user interface
+- Open torrent directly with your preferred client (via xdg-open)
+- Searches on all available engines until it gets results by default.
+- Search torrents in:
+
+  + Katcr
+  + ThePirateBay
+  + Nyaa
+  + Skytorrents
+  + Digbt
 
 
 
@@ -77,7 +90,9 @@ KATBot - Kickasstorrents telegram bot
 
 Katcr also comes with a telegram bot entry point.
 It's a simple bot that replies with search results for each message it gets.
-It returns links to .torrent files from KAT.cr for the first page of results.
+
+It returns magnet links with provided url shortener for the first page of
+results, on the first available search engine.
 
 .. image:: http://i.imgur.com/7FxplBs.gif
 
@@ -89,8 +104,10 @@ It returns links to .torrent files from KAT.cr for the first page of results.
 
         Options:
             --token=<BOT_TOKEN>             Telegram bot token
+            --token-file=<FILE>             Telegram bot token file
             --shortener=<URL_SHORTENER>     Url shortener to use
-                                        [default: http://shortmag.net]
+                                            [default: http://shortmag.net]
+
 
 Notes
 ------
