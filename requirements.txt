@@ -5,4 +5,4 @@ telepot==12.3
 robobrowser==0.5.3
 torrentmirror==0.0.1.dev5
 tableprint==0.7.0
-pygogo==0.10.0
+pygogo==0.12.0
