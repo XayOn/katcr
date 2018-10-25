@@ -2,6 +2,6 @@ pytest==3.2.5
 pytest-flake8==0.8.1
 pytest-cov==2.5.1
 pylint==1.7.2
-flake8==3.4.1
+flake8==3.6.0
 flake8_docstrings==1.1.0
 pytest-sugar==0.9.0
