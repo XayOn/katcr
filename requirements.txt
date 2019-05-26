@@ -6,4 +6,4 @@ robobrowser==0.5.3
 torrentmirror==0.0.1.dev5
 pygogo==0.12.0
 tableprint==0.8.0
-pygogo==0.10.0
+pygogo==0.12.0
