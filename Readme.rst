@@ -19,7 +19,7 @@ Command Line Interface
 
 katcr comes with a simple but powerful command line interface
 
-.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.gif
+.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/doc/screenshot.gif
 
 ::
 
@@ -122,3 +122,11 @@ If you like this project, show its appreciation by starring it, if you're using
 it and want to write to me personally, feel free to do so at
 opensource@davidfrancos.net. If you've got a bug to report, please use the
 github ticketing system
+Pending things
+--------------
+
+* Fix tests
+* Add information about seeds/leeches on each torrent
+* Add more search engines
+* Maybe direct search to the DHT?
+
