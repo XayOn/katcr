@@ -39,8 +39,9 @@ class BaseSearch(metaclass=abc.ABCMeta):
         session = Session()
         session.verify = False
         self.logger = logger
-        self.browser = robobrowser.RoboBrowser(
-            session=session, parser='html.parser', timeout=50)
+        self.browser = robobrowser.RoboBrowser(session=session,
+                                               parser='html.parser',
+                                               timeout=50)
 
     @abc.abstractproperty
     def url(self):
@@ -61,14 +62,16 @@ class BaseSearch(metaclass=abc.ABCMeta):
     def search_magnets(self, query: str, page: int):
         """Return the list of magnets from a specific page."""
         proxies = torrentmirror.get_proxies().get(self.proxy_name, [])
+        self.logger.debug("Got proxies: %s", proxies)
         proxies.insert(0, [self.url, None])
         for site, _ in proxies:
             self.logger.debug("Searching in %s", site)
             with suppress(requests.exceptions.ReadTimeout,
+                          requests.ConnectionError,
                           requests.exceptions.SSLError, AssertionError):
                 http = '' if site.startswith('http') else 'http://'
-                self.browser.open(self.url_format.format(
-                    http, site, query, page))
+                self.browser.open(
+                    self.url_format.format(http, site, query, page))
                 torrents = self.get_torrents()
                 assert torrents
                 self.logger.debug("Got torrents %s", torrents)
@@ -96,8 +99,7 @@ class ThePirateBay(BaseSearch):
     def tabulate(link):
         """Make a given a href link parsed on bs4 printable."""
         return (link.parent.find(class_='detName').text,
-                link.parent.find(class_='detDesc').text,
-                link['href'])
+                link.parent.find(class_='detDesc').text, link['href'])
 
     def get_torrents(self):
         """Return a list of torrents, printable."""
@@ -152,8 +154,9 @@ class Skytorrents(BaseSearch):
     def get_torrents(self):
         """Return torrents."""
         # pylint: disable=not-callable
-        return list(filter(
-            None, [self.tabulate(l) for l in self.browser.find_all('tr')]))
+        return list(
+            filter(None,
+                   [self.tabulate(l) for l in self.browser.find_all('tr')]))
 
 
 class DigBt(BaseSearch):
@@ -175,8 +178,9 @@ class DigBt(BaseSearch):
     def get_torrents(self):
         """Return torrents."""
         # pylint: disable=not-callable
-        return list(filter(
-            None, [self.tabulate(l) for l in self.browser.find_all('tr')]))
+        return list(
+            filter(None,
+                   [self.tabulate(l) for l in self.browser.find_all('tr')]))
 
 
 class Katcr(BaseSearch):
@@ -196,14 +200,13 @@ class Katcr(BaseSearch):
         """Make a given a href link parsed on bs4 printable."""
         magnet = link.find('a', title='Torrent magnet link')
         return (link.find(class_='cellMainLink').text,
-                link.find_all('td')[1].text,
-                magnet['href'])
+                link.find_all('td')[1].text, magnet['href'])
 
     def get_torrents(self):
         """Return a list of torrents, printable."""
         # pylint: disable=not-callable
-        torrents = self.browser.find_all(id=re.compile(
-            'torrent_latest_torrents(.*)'))
+        torrents = self.browser.find_all(
+            id=re.compile('torrent_latest_torrents(.*)'))
         return [self.tabulate(torrent) for torrent in torrents]
 
 
@@ -228,14 +231,16 @@ class MagnetSh(BaseSearch):
 
 def get_short(where, what):
     """Get magnet short link."""
-    return '{}/{}'.format(
-        where, requests.post(where, data={'magnet': what}).text)
+    return '{}/{}'.format(where,
+                          requests.post(where, data={
+                              'magnet': what
+                          }).text)
 
 
 def get_from_short(shortener, search_res):
     """Get new search res from shortened urls."""
     for elem in search_res:
-        yield elem[:-1] + (get_short(shortener, elem[-1]),)
+        yield elem[:-1] + (get_short(shortener, elem[-1]), )
 
 
 def limit_terminal_size(what, limit=-20):
@@ -263,8 +268,9 @@ def search_in_engines(logger, engines, search_term, pages):
 
     for engine in engines:
         with suppress(TypeError):
-            search_res = list(globals()[engine](logger).search(
-                search_term, pages))
+            # Get engine from glob... WTF...
+            engine = globals()[engine]
+            search_res = list(engine(logger).search(search_term, pages))
             if search_res:
                 return search_res
 
@@ -324,8 +330,10 @@ def main():
 
     if not opt['--interactive']:
         return tableprint.table(search_res, ['Description', 'Size', 'Link'],
-                                width=[max(len(a[p]) for a in search_res)
-                                       for p in range(0, len(search_res[0]))])
+                                width=[
+                                    max(len(a[p]) for a in search_res)
+                                    for p in range(0, len(search_res[0]))
+                                ])
 
     res = {limit_terminal_size(a): b for a, _, b in search_res}
     result = res[prompt([List('Link', message="",
