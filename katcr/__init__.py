@@ -42,20 +42,20 @@ class Result:
         if shortener:
             shortener = shortener.format(os.getenv('KATCR_TOKEN', token))
         self.shortener = shortener
-        self.interactive = interactive
+        self.is_interactive = interactive
 
     def __repr__(self):
         """Get new search res from shortened urls and adjust term output."""
         if not self.shortener:
             if self.is_interactive:
-                return self.result[:MAX_SIZE]
-            return self.result
+                return ' | '.join((self.result[0][:MAX_SIZE], self.result[1]))
+            return ' | '.join(self.result)
         clean = self.result[:-1]
         result = self.session.post(self.shortener, data={'magnet': clean})
-        return clean + f'{self.shortener}/{result.text}'
+        return ''.join(clean) + f'{self.shortener}/{result.text}'
 
     def open(self):
-        return subprocess.check_call(['xdg-open', self.result])
+        return subprocess.check_call(['xdg-open', self.result[-1]])
 
 
 class CLICommand(Command):
@@ -66,12 +66,12 @@ class CLICommand(Command):
         {search : Search term}
 
         {--pages=1 : Pages to search on search engines}
-        {--token=False : Token to use on URL shortener as AUTH}
-        {--shortener=False : URL Shortener}
-        {--engines=Katcr,ThePirateBay : Search engines}
+        {--token=? : Token to use on URL shortener as AUTH}
+        {--shortener=? : URL Shortener}
+        {--engines=Katcr,ThePirateBay,MagnetSh,NyaaSi,Skytorrents : Engines}
 
-        {--interactive=True : Allow the user to choose a specific magnet}
-        {--open=True : Open selected magnet with xdg-open}
+        {--interactive=? : Allow the user to choose a specific magnet}
+        {--open=? : Open selected magnet with xdg-open}
 
     """
 
@@ -79,6 +79,7 @@ class CLICommand(Command):
         """Handler."""
         logger = Gogo(__name__, verbose=self.io.verbosity).logger
         session = requests.Session()
+        session.verify = None
 
         engine_names = self.option('engines').split(',') or DEFAULT_ENGINES
         engines = (get_engine(a, session, logger) for a in engine_names)
@@ -94,26 +95,26 @@ class CLICommand(Command):
         self.line('<info>Starting search on {}</info>'.format(
             ', '.join(engine_names)))
 
-        progress = self.progress_bar(len(engine_names))
+        # progress = self.progress_bar(len(engine_names))
 
         for engine in engines:
-            progress.advance(0.9)
+            # progress.advance(0.9)
             engine_result = engine.search(search_term, int(pages))
             search_res.extend((Result(session, a, shortener, token,
                                       is_interactive) for a in engine_result))
 
-        progress.finish()
+        # progress.finish()
 
         if not search_res:
             return
 
         if not is_interactive:
             return self.render_table(['Description', 'Size', 'Link'],
-                                     [search_res])
+                                     [a.result for a in search_res])
 
-        result = search_res[cutie.select(search_res)]
+        result = search_res[cutie.select(search_res, selected_prefix="☛")]
 
-        if self.argument('--open'):
+        if self.option('open'):
             return result.open()
 
 

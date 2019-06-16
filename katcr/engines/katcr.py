@@ -1,3 +1,4 @@
+import re
 from .base import BaseSearch
 
 
@@ -9,7 +10,7 @@ class Katcr(BaseSearch):
     to be printed
     """
 
-    proxy_name = 'Kickass Torrents'
+    proxy_name = 'kickass-torrents'
     url_format = '{}{}/search.php?q={}&p={}'
     url = 'https://kat.cd'
 

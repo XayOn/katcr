@@ -37,7 +37,12 @@ class BaseSearch(metaclass=abc.ABCMeta):
 
     def search_magnets(self, query: str, page: int):
         """Return the list of magnets from a specific page."""
-        proxies = torrentmirror.get_proxies().get(self.proxy_name, [])
+        proxies = []
+        with suppress(Exception):
+            proxies = list(
+                torrentmirror.get_proxies_for(names=[self.proxy_name]).get(
+                    self.proxy_name, []))
+
         self.logger.debug("Got proxies: %s", proxies)
         proxies.insert(0, [self.url, None])
         for site, _ in proxies:
