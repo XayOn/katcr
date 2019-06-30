@@ -1,13 +1,20 @@
 language: python
-python:
-   - '3.5'
+sudo: required
+dist: xenial
+python: "3.7"
+
+cache:
+  pip: true
+  directories:
+    - "$HOME/.cache/pypoetry"
 
 install:
-    - pip install coveralls
-    - pip install tox
+  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+  - source $HOME/.poetry/env
+  - pip install tox
+  - pip install coveralls
 
 script: tox
 
 after_success:
   - coveralls
-
