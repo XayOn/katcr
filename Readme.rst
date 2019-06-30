@@ -19,45 +19,34 @@ Command Line Interface
 
 katcr comes with a simple but powerful command line interface
 
-.. image:: https://raw.githubusercontent.com/XayOn/katcr/master/screenshot.gif
+.. image:: /docs/screenshot.gif?raw=True
 
 ::
 
-    Search in multiple torrent sites.
+   > poetry run katcr search ...
 
-        Usage: katcr [options] [interactive options] <SEARCH_TERM>
+   USAGE
+     katcr search [--pages <...>] [--token [<...>]] [--shortener [<...>]] [--engines <...>] [--interactive [<...>]] [--open [<...>]] <search>
 
-        Currently available search engines:
+   ARGUMENTS
+     <search>               Search term
 
-        - Katcr
-        - ThePirateBay
-        - Nyaa
-        - Skytorrents
-        - Digbt
+   OPTIONS
+     --pages                Pages to search on search engines (default: "1")
+     --token                Token to use on URL shortener as AUTH
+     --shortener            URL Shortener
+     --engines              Engines (default: "Katcr,ThePirateBay,MagnetSh,NyaaSi,Skytorrents")
+     --interactive          Allow the user to choose a specific magnet
+     --open                 Open selected magnet with xdg-open
 
-        Options:
-            -e --search-engines=<SearchEngine>  Torrent search engine to use
-                                                [default: All].
-            -p --pages=<PAGES_NUM>              Number of pages to lookup
-                                                [default: 1]
-            -d --disable-shortener              Disable url shortener
-            -s --shortener=<SHORTENER_URL>      Use given magnet shortener to
-                                                prettify urls.
-                                                [default: http://www.shortmag.net]
-            -t --token=<SHORTENER_TOKEN>        Shortener token to use, if required
-            -t --token_file=<S_TOKEN_FILE>      Shortener token file
-
-        Interactive Options:
-            -i --interactive                    Enable interactive mode
-            -o --open                           Launch with default torrent app
-                                                in interactive mode [default: True]
-            -h --help                           Show this help screen
-            -v --verbose                        Enable debug mode
-
-
-        katcr  Copyright (C) 2017 David Francos Cuartero
-        This program comes with ABSOLUTELY NO WARRANTY; This is free software, and
-        you are welcome to redistribute it under certain conditions;
+   GLOBAL OPTIONS
+     -h (--help)            Display this help message
+     -q (--quiet)           Do not output any message
+     -v (--verbose)         Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug
+     -V (--version)         Display this application version
+     --ansi                 Force ANSI output
+     --no-ansi              Disable ANSI output
+     -n (--no-interaction)  Do not ask any interactive question
 
 
 Installation
@@ -82,6 +71,24 @@ Features
   + Nyaa
   + Skytorrents
   + Digbt
+  + `Jackett <https://github.com/Jackett/Jackett>`_
+
+
+Jackett Support
+---------------
+
+You can easily use a `Jackett <https://github.com/Jackett/Jackett>`_ instance
+to search on all your configured provider.
+
+This allows you to search on any jackett-supported site (that's about supported
+300 trackers).
+
+Jackett is probably the best way to use katcr and katbot, as it has a more
+active mantainance of the tracker sites that us.
+
+To enable Jackett use, simply export your jackett URL and TOKEN as variables::
+
+   JACKETT_HOST=http://127.0.0.1:9117 JACKETT_APIKEY=<redacted> poetry run katcr --engines=
 
 
 
@@ -122,3 +129,11 @@ If you like this project, show its appreciation by starring it, if you're using
 it and want to write to me personally, feel free to do so at
 opensource@davidfrancos.net. If you've got a bug to report, please use the
 github ticketing system
+Pending things
+--------------
+
+* Fix tests
+* Add information about seeds/leeches on each torrent
+* Add more search engines
+* Maybe direct search to the DHT?
+
