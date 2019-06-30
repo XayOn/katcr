@@ -1,3 +1,4 @@
+from contextlib import suppress
 from .base import BaseSearch
 
 

@@ -1,3 +1,4 @@
+from contextlib import suppress
 from .base import BaseSearch
 
 
@@ -23,5 +24,3 @@ class DigBt(BaseSearch):
         return list(
             filter(None,
                    [self.tabulate(l) for l in self.browser.find_all('tr')]))
-
-
