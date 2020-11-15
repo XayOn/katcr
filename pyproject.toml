@@ -4,16 +4,18 @@ version = "2.0.0"
 description = "KickassTorrents CLI and Telegram bot"
 authors = ["David Francos <opensource@davidfrancos.net>"]
 license = "GPL-3.0+"
+readme = "Readme.rst"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 pygogo = "^0.12.0"
 requests = "^2.22"
 telepot = "^12.7"
 cleo = "^0.7.4"
 cutie = "^0.2.2"
 robobrowser = "^0.5.3"
-torrentmirror = "^0.1.0"
+torrentmirror = "^2.0"
+werkzeug = "0.16.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"

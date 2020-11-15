@@ -35,7 +35,7 @@ katcr comes with a simple but powerful command line interface
      --pages                Pages to search on search engines (default: "1")
      --token                Token to use on URL shortener as AUTH
      --shortener            URL Shortener
-     --engines              Engines (default: "Katcr,ThePirateBay,MagnetSh,NyaaSi,Skytorrents")
+     --engines              Engines (default: "Katcr,ThePirateBay,NyaaSi,Skytorrents")
      --interactive          Allow the user to choose a specific magnet
      --open                 Open selected magnet with xdg-open
 

@@ -68,7 +68,7 @@ class CLICommand(Command):
         {--pages=1 : Pages to search on search engines}
         {--token=? : Token to use on URL shortener as AUTH}
         {--shortener=? : URL Shortener}
-        {--engines=Katcr,ThePirateBay,MagnetSh,NyaaSi,Skytorrents : Engines}
+        {--engines=Katcr,ThePirateBay,NyaaSi,Skytorrents : Engines}
 
         {--interactive=? : Allow the user to choose a specific magnet}
         {--open=? : Open selected magnet with xdg-open}
