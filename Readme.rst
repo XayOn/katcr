@@ -1,17 +1,17 @@
 .. image:: http://i.imgur.com/ofx75lO.png
 
-Easily **search torrents** in multiple providers such as KickAssTorrents and
-ThePirateBay.
+CLI client to torrent searches and streaming. Easily **search torrents** in
+multiple providers such as KickAssTorrents and ThePirateBay.
 
+|pypi| |release| |downloads| |python_versions| |pypi_versions| |coverage| |actions|
 
-.. image:: https://travis-ci.org/XayOn/katcr.svg?branch=master
+.. |pypi| image:: https://img.shields.io/pypi/l/katcr
+.. |release| image:: https://img.shields.io/librariesio/release/pypi/katcr
+.. |downloads| image:: https://img.shields.io/pypi/dm/katcr
+.. |python_versions| image:: https://img.shields.io/pypi/pyversions/katcr
+.. |pypi_versions| image:: https://img.shields.io/pypi/v/katcr
+.. |actions| image:: https://travis-ci.org/XayOn/katcr.svg?branch=master
     :target: https://travis-ci.org/XayOn/katcr
-
-.. image:: https://coveralls.io/repos/github/XayOn/katcr/badge.svg?branch=master
-    :target: https://coveralls.io/github/XayOn/katcr?branch=master
-
-.. image:: https://badge.fury.io/py/katcr.svg
-    :target: https://badge.fury.io/py/katcr
 
 
 Command Line Interface
@@ -63,15 +63,16 @@ Features
 - Display results in a nice utf-8 table
 - Optional interactive mode, choose and open torrent with a nice text user interface
 - Open torrent directly with your preferred client (via xdg-open)
+- Stream torrent with `torrentstream <https://github.com/XayOn/torrentstream>`_
 - Searches on all available engines until it gets results by default.
 - Search torrents in:
 
-  + Katcr
-  + ThePirateBay
-  + Nyaa
-  + Skytorrents
-  + Digbt
+  + Eztv
   + `Jackett <https://github.com/Jackett/Jackett>`_
+  + Katcr
+  + NyaaSi
+  + Skytorrents
+  + ThePirateBay
 
 
 Jackett Support
@@ -91,31 +92,6 @@ To enable Jackett use, simply export your jackett URL and TOKEN as variables::
    JACKETT_HOST=http://127.0.0.1:9117 JACKETT_APIKEY=<redacted> poetry run katcr --engines=
 
 
-
-KATBot - Kickasstorrents telegram bot
---------------------------------------
-
-Katcr also comes with a telegram bot entry point.
-It's a simple bot that replies with search results for each message it gets.
-
-It returns magnet links with provided url shortener for the first page of
-results, on the first available search engine.
-
-.. image:: http://i.imgur.com/7FxplBs.gif
-
-::
-
-    Run telegram bot.
-
-        Usage: katcr_bot [options]
-
-        Options:
-            --token=<BOT_TOKEN>             Telegram bot token
-            --token-file=<FILE>             Telegram bot token file
-            --shortener=<URL_SHORTENER>     Url shortener to use
-                                            [default: http://shortmag.net]
-
-
 Notes
 ------
 
@@ -129,11 +105,3 @@ If you like this project, show its appreciation by starring it, if you're using
 it and want to write to me personally, feel free to do so at
 opensource@davidfrancos.net. If you've got a bug to report, please use the
 github ticketing system
-Pending things
---------------
-
-* Fix tests
-* Add information about seeds/leeches on each torrent
-* Add more search engines
-* Maybe direct search to the DHT?
-
