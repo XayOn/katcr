@@ -1,23 +1,24 @@
+import aiohttp
 from contextlib import suppress
+import urllib.parse
+import re
 import abc
 import itertools
-
-import requests
-
-import robobrowser
 import torrentmirror
+
+CLDS = 'cloudflare', 'cloudfront'
+MAG = re.compile(
+    "(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
+
+
+class CloudFlareError(Exception):
+    """Cloud flare detected"""
 
 
 class BaseSearch(metaclass=abc.ABCMeta):
     """Base Search."""
-
-    def __init__(self, session, logger):
-        """Initialize browser instance."""
-        self.session = session
-        self.logger = logger
-        self.browser = robobrowser.RoboBrowser(session=session,
-                                               parser='html.parser',
-                                               timeout=50)
+    session = None
+    logger = None
 
     @abc.abstractproperty
     def url(self):
@@ -31,35 +32,68 @@ class BaseSearch(metaclass=abc.ABCMeta):
     def url_format(self):
         """Url formatter to add to base_url."""
 
-    @abc.abstractmethod
-    def get_torrents(self):
-        """Return a list of torrents."""
+    async def search_magnets(self, query: str, page: int):
+        """Return the list of magnets from a specific page.
 
-    def search_magnets(self, query: str, page: int):
-        """Return the list of magnets from a specific page."""
+        warning: paging may produce strange results if the first available
+        proxy changes between searches.
+
+        Arguments
+
+            query: Query string
+            page: Page to search on
+        """
         proxies = []
-        with suppress(Exception):
-            proxies = list(
-                torrentmirror.get_proxies_for(names=[self.proxy_name]).get(
-                    self.proxy_name, []))
-
+        all_proxies = torrentmirror.get_proxies()
+        proxies = [
+            a['link'] for a in all_proxies.get(self.proxy_name, [])
+            if a.get('status') == 'ONLINE'
+        ]
         self.logger.debug("Got proxies: %s", proxies)
-        proxies.insert(0, [self.url, None])
-        for site, _ in proxies:
-            self.logger.debug("Searching in %s", site)
-            with suppress(requests.exceptions.ReadTimeout,
-                          requests.ConnectionError,
-                          requests.exceptions.SSLError, AssertionError):
-                http = '' if site.startswith('http') else 'http://'
-                self.browser.open(
-                    self.url_format.format(http, site, query, page))
-                torrents = self.get_torrents()
-                assert torrents
-                self.logger.debug("Got torrents %s", torrents)
-                return torrents
+        proxies.insert(0, self.url)
+
+        for site in proxies:
+            # First site to get results wins.
+            http = '' if site.startswith('http') else 'http://'
+            url = self.url_format.format(http, site, query, page)
+            self.logger.debug("Searching in %s (%s)", site, url)
+            if res := await self.search_site(url):
+                return res
+
         return []
 
-    def search(self, query: str, pagelen: int = 1):
+    async def search_site(self, url):
+        with suppress(aiohttp.ClientError, CloudFlareError):
+            response = await self.session.get(url)
+            text = await response.text()
+
+            if any(reserved in text for reserved in CLDS):
+                raise CloudFlareError()
+
+            return list(await self.get_torrents(response))
+
+
+    @classmethod
+    async def get_torrents(cls, data):
+        """Get torrents from a site. data will be a response."""
+        data = await data.text()
+        results = (a for a in MAG.findall(data) if a.startswith('magnet'))
+        for result in results:
+            result = cls.parse_magnet(result)
+            if result:
+                yield result
+
+    @staticmethod
+    def parse_magnet(magnet):
+        """Parse magnet, only returns identifiable magnets."""
+        result = urllib.parse.parse_qs(magnet)
+        if result and result.get('dn'):
+            return next(iter(result.get('dn', [])), ''), magnet
+
+    async def search(self, query: str, pagelen: int = 1):
         """Manage complete search for specified pages."""
-        return itertools.chain(*(self.search_magnets(query, page + 1)
-                                 for page in range(0, pagelen)))
+        results = []
+        for page in range(0, pagelen):
+            self.logger.debug("Getting page %s", page)
+            results.extend(await self.search_magnets(query, page+1))
+        return results

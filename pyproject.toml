@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "katcr"
-version = "2.0.0"
+version = "2.0.1"
 description = "KickassTorrents CLI and Telegram bot"
 authors = ["David Francos <opensource@davidfrancos.net>"]
 license = "GPL-3.0+"
@@ -8,14 +8,13 @@ readme = "Readme.rst"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pygogo = "^0.12.0"
-requests = "^2.22"
 telepot = "^12.7"
-cleo = "^0.7.4"
+cleo = "*"
 cutie = "^0.2.2"
-robobrowser = "^0.5.3"
 torrentmirror = "^2.0"
-werkzeug = "0.16.1"
+aiohttp = "^3.7.2"
+feedparser = "^6.0.2"
+torrentstream = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.6"

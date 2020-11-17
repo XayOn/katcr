@@ -7,10 +7,12 @@ supported sites.
 
 from contextlib import suppress
 from pathlib import Path
-import functools
+from torrentstream import stream_torrent
 import os
 import shutil
 import subprocess
+import asyncio
+import aiohttp
 
 from cleo import Command
 from cleo import Application
@@ -19,26 +21,18 @@ import cutie
 import requests
 
 from . import engines
+from .engines.base import BaseSearch
 
 DEFAULT_ENGINES = ['Katcr', 'ThePirateBay']
 MAX_SIZE = shutil.get_terminal_size().columns - 20
 
 
-@functools.lru_cache()
-def get_engine(name, session, logger):
-    """Cached engine extraction by name.
-
-    Passing the logger down.
-    """
-    if not hasattr(engines, name):
-        raise RuntimeError('Wrong engine provided')
-    return getattr(engines, name)(session, logger)
-
-
 class Result:
-    def __init__(self, session, result, shortener, token, interactive):
+    """Represents a result, results are shortened and cleanly printable."""
+    session = None
+
+    def __init__(self, result, shortener, token, interactive):
         self.result = result
-        self.session = session
         if shortener:
             shortener = shortener.format(os.getenv('KATCR_TOKEN', token))
         self.shortener = shortener
@@ -55,6 +49,7 @@ class Result:
         return ''.join(clean) + f'{self.shortener}/{result.text}'
 
     def open(self):
+        """Open with xdg-open"""
         return subprocess.check_call(['xdg-open', self.result[-1]])
 
 
@@ -68,54 +63,66 @@ class CLICommand(Command):
         {--pages=1 : Pages to search on search engines}
         {--token=? : Token to use on URL shortener as AUTH}
         {--shortener=? : URL Shortener}
-        {--engines=Katcr,ThePirateBay,NyaaSi,Skytorrents : Engines}
+        {--engines=Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents : Engines}
 
         {--interactive=? : Allow the user to choose a specific magnet}
         {--open=? : Open selected magnet with xdg-open}
+        {--stream=? : Stream with torrentstream, plays using PLAYER envvar or xdg-open }
 
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.logger = None
 
-    def handle(self):
-        """Handler."""
-        logger = Gogo(__name__, verbose=self.io.verbosity).logger
-        session = requests.Session()
-        session.verify = None
+    async def setup_sessions(self):
+        """Setup client session as singleton"""
+        self.logger = Gogo(__name__, verbose=self.io.verbosity).logger
+        BaseSearch.session = aiohttp.ClientSession(raise_for_status=True)
+        BaseSearch.logger = self.logger
+        Result.session = BaseSearch.session
 
-        engine_names = self.option('engines').split(',') or DEFAULT_ENGINES
-        engines = (get_engine(a, session, logger) for a in engine_names)
+    @staticmethod
+    async def teardown_sessions():
+        BaseSearch.session.close()
 
-        shortener = self.option('shortener')
-        token = self.option('token')
-        is_interactive = self.option('interactive')
-        search_term = self.argument('search')
-        pages = self.option('pages')
-
+    async def search(self, engines, search_term, pages, shortener, token,
+                     is_interactive, stream):
+        """Search on all engines."""
+        await self.setup_sessions()
         search_res = []
-
-        self.line('<info>Starting search on {}</info>'.format(
-            ', '.join(engine_names)))
-
-        # progress = self.progress_bar(len(engine_names))
-
         for engine in engines:
-            # progress.advance(0.9)
-            engine_result = engine.search(search_term, int(pages))
-            search_res.extend((Result(session, a, shortener, token,
-                                      is_interactive) for a in engine_result))
+            engine_result = await engine.search(search_term, int(pages))
+            search_res.extend((Result(a, shortener, token, is_interactive)
+                               for a in engine_result))
 
-        # progress.finish()
-
+        await self.teardown_sessions()
         if not search_res:
             return
 
         if not is_interactive:
-            return self.render_table(['Description', 'Size', 'Link'],
+            return self.render_table(['Description', 'Link'],
                                      [a.result for a in search_res])
 
         result = search_res[cutie.select(search_res, selected_prefix="☛")]
-
         if self.option('open'):
             return result.open()
+        if stream:
+            await stream_torrent(result.result[1])
+        self.line(result.result[0])
+
+
+    def handle(self):
+        """Handler."""
+        engine_names = self.option('engines').split(',')
+        engs = (getattr(engines, a)() for a in engine_names)
+        is_interactive = self.option('interactive')
+
+        self.line(f'<info>Starting search on {", ".join(engine_names)}</info>')
+
+        coro = self.search(engs, self.argument('search'),
+                           self.option('pages'), self.option('shortener'),
+                           self.option('token'), is_interactive, self.option('stream'))
+        return asyncio.run(coro)
 
 
 def main():

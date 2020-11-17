@@ -1,4 +1,12 @@
 from .base import BaseSearch
+from urllib.parse import quote
+
+TRACKERS = ("udp://tracker.coppersurfer.tk:6969/announce",
+            "udp://9.rarbg.me:2850/announce", "udp://9.rarbg.to:2920/announce",
+            "udp://tracker.opentrackr.org:1337",
+            "udp://tracker.leechers-paradise.org:6969/announce")
+
+TRACKERS = list(quote(t, safe='') for t in TRACKERS)
 
 
 class ThePirateBay(BaseSearch):
@@ -10,18 +18,12 @@ class ThePirateBay(BaseSearch):
     """
 
     proxy_name = 'The Pirate Bay'
-    url_format = '{}{}/search/{}/{}/99'
-    url = 'https://thepiratebay.org/'
+    url_format = '{}{}q.php?q={}&cat='
+    url = 'https://apibay.org/'
 
-    @staticmethod
-    def tabulate(link):
-        """Make a given a href link parsed on bs4 printable."""
-        return (link.parent.find(class_='detName').text,
-                link.parent.find(class_='detDesc').text, link['href'])
-
-    def get_torrents(self):
-        """Return a list of torrents, printable."""
-        # pylint: disable=not-callable
-        torrents = self.browser.find_all(
-            'a', title='Download this torrent using magnet')
-        return [self.tabulate(torrent) for torrent in torrents]
+    async def get_torrents(self, response):
+        result = await response.json()
+        return [[
+            a['name'],
+            f"magnet:?xt=urn:btih:{a['info_hash']}&dn={quote(a['name'])}&tr={'&tr='.join(TRACKERS)}"
+        ] for a in result]
