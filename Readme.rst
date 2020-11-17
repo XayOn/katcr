@@ -3,7 +3,7 @@
 CLI client to torrent searches and streaming. Easily **search torrents** in
 multiple providers such as KickAssTorrents and ThePirateBay.
 
-|pypi| |release| |downloads| |python_versions| |pypi_versions| |coverage| |actions|
+|pypi| |release| |downloads| |python_versions| |pypi_versions| |actions|
 
 .. |pypi| image:: https://img.shields.io/pypi/l/katcr
 .. |release| image:: https://img.shields.io/librariesio/release/pypi/katcr
