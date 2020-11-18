@@ -14,48 +14,66 @@ multiple providers such as KickAssTorrents and ThePirateBay.
     :target: https://travis-ci.org/XayOn/katcr
 
 
-Command Line Interface
-----------------------
+Usage
+-----
 
 katcr comes with a simple but powerful command line interface
 
-.. image:: /docs/screenshot.gif?raw=True
-
 ::
 
-   > poetry run katcr search ...
+        USAGE
+          console search [--pages <...>] [--token [<...>]] [--shortener [<...>]] [--engines <...>] [--interactive [<...>]]
+                         [--open [<...>]] [--stream [<...>]] <search>
 
-   USAGE
-     katcr search [--pages <...>] [--token [<...>]] [--shortener [<...>]] [--engines <...>] [--interactive [<...>]] [--open [<...>]] <search>
+        ARGUMENTS
+          <search>               Search term
 
-   ARGUMENTS
-     <search>               Search term
+        OPTIONS
+          --pages                Pages to search on search engines (default: "1")
+          --token                Token to use on URL shortener as AUTH
+          --shortener            URL Shortener
+          --engines              Engines (default: "Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents")
+          --interactive          Allow the user to choose a specific magnet
+          --open                 Open selected magnet with xdg-open
+          --stream               Stream with torrentstream, plays using PLAYER envvar or xdg-open
 
-   OPTIONS
-     --pages                Pages to search on search engines (default: "1")
-     --token                Token to use on URL shortener as AUTH
-     --shortener            URL Shortener
-     --engines              Engines (default: "Katcr,ThePirateBay,NyaaSi,Skytorrents")
-     --interactive          Allow the user to choose a specific magnet
-     --open                 Open selected magnet with xdg-open
-
-   GLOBAL OPTIONS
-     -h (--help)            Display this help message
-     -q (--quiet)           Do not output any message
-     -v (--verbose)         Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug
-     -V (--version)         Display this application version
-     --ansi                 Force ANSI output
-     --no-ansi              Disable ANSI output
-     -n (--no-interaction)  Do not ask any interactive question
+        GLOBAL OPTIONS
+          -h (--help)            Display this help message
+          -q (--quiet)           Do not output any message
+          -v (--verbose)         Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output
+                                 and "-vvv" for debug
+          -V (--version)         Display this application version
+          --ansi                 Force ANSI output
+          --no-ansi              Disable ANSI output
+          -n (--no-interaction)  Do not ask any interactive question
 
 
 Installation
 ------------
 
-This is a python package available on pypi, just run::
+This is a python package available on pypi, just run
 
-    sudo python3 -m pip install katcr
+.. code:: bash
 
+    pip install katcr
+
+Make sure your python version is at least python3.8 and you're using that
+version's pip.
+
+Streaming
+---------
+
+Streaming requires `libtorrent <https://www.libtorrent.org/>`_ . 
+With libtorrent installed, you'll need to install katcr's streaming extras, for
+that matter, install it with [stream], 
+
+.. code:: bash
+
+    pip install katcr[stream]
+
+.. code:: bash
+
+        poetry run katcr search --engines Skytorrents,ThePirateBay "Big Buck Bunny" --interactive  --stream
 
 Features
 --------
