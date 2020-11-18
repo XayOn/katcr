@@ -1,7 +1,7 @@
 language: python
 sudo: required
 dist: xenial
-python: "3.7"
+python: "3.8"
 
 cache:
   pip: true
@@ -11,10 +11,11 @@ cache:
 install:
   - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
   - source $HOME/.poetry/env
-  - pip install tox
   - pip install coveralls
+  - poetry install -v
 
-script: tox
+script:
+  - poetry run pytest -m "not wip" tests/
 
 after_success:
   - coveralls
