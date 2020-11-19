@@ -10,8 +10,8 @@ multiple providers such as KickAssTorrents and ThePirateBay.
 .. |downloads| image:: https://img.shields.io/pypi/dm/katcr
 .. |python_versions| image:: https://img.shields.io/pypi/pyversions/katcr
 .. |pypi_versions| image:: https://img.shields.io/pypi/v/katcr
-.. |actions| image:: https://travis-ci.org/XayOn/katcr.svg?branch=master
-    :target: https://travis-ci.org/XayOn/katcr
+.. |actions| image:: https://github.com/XayOn/katcr/workflows/CI%20commit/badge.svg
+    :target: https://github.com/XayOn/katcr/actions
 
 
 Usage
