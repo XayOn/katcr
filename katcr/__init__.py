@@ -20,7 +20,6 @@ from cleo import Command
 from cleo import Application
 from pygogo import Gogo
 
-
 CONFIG_FILE = xdg.XDG_CONFIG_HOME / 'katcr.ini'
 
 try:
@@ -44,22 +43,15 @@ class Result:
     """Represents a result, results are shortened and cleanly printable."""
     session = None
 
-    def __init__(self, result, shortener, token, interactive):
+    def __init__(self, result, interactive):
         self.result = result
-        if shortener:
-            shortener = shortener.format(os.getenv('KATCR_TOKEN', token))
-        self.shortener = shortener
         self.is_interactive = interactive
 
     def __repr__(self):
         """Get new search res from shortened urls and adjust term output."""
-        if not self.shortener:
-            if self.is_interactive:
-                return ' | '.join((self.result[0][:MAX_SIZE], self.result[1]))
-            return ' | '.join(self.result)
-        clean = self.result[:-1]
-        result = self.session.post(self.shortener, data={'magnet': clean})
-        return ''.join(clean) + f'{self.shortener}/{result.text}'
+        if self.is_interactive:
+            return self.result[0][:MAX_SIZE]
+        return ' | '.join(self.result)
 
     def open(self):
         """Open with xdg-open"""
@@ -74,11 +66,8 @@ class CLICommand(Command):
         {search : Search term}
 
         {--pages=1 : Pages to search on search engines}
-        {--token=? : Token to use on URL shortener as AUTH}
-        {--shortener=? : URL Shortener}
         {--engines=Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents : Engines}
-
-        {--interactive=? : Allow the user to choose a specific magnet}
+        {--nointeractive=? : Print resuls directly to stdout}
         {--open=? : Open selected magnet with xdg-open}
         {--stream=? : Stream with torrentstream, uses PLAYER env or xdg-open }
 
@@ -100,16 +89,16 @@ class CLICommand(Command):
     async def teardown_sessions():
         BaseSearch.session.close()
 
-    async def search(self, engines, search_term, pages, shortener, token,
-                     is_interactive, stream):
+    async def search(self, engines, search_term, pages, is_interactive,
+                     stream):
         """Search on all engines."""
         search_term = urllib.parse.quote(search_term)
         await self.setup_sessions()
         search_res = []
         for engine in engines:
             engine_result = await engine.search(search_term, int(pages))
-            search_res.extend((Result(a, shortener, token, is_interactive)
-                               for a in engine_result))
+            search_res.extend(
+                (Result(a, is_interactive) for a in engine_result))
 
         await self.teardown_sessions()
         if not search_res:
@@ -119,7 +108,7 @@ class CLICommand(Command):
             return self.render_table(['Description', 'Link'],
                                      [a.result for a in search_res])
 
-        result = search_res[cutie.select(search_res, selected_prefix="☛")]
+        result = search_res[cutie.select(search_res, selected_prefix="[☛]")]
         if self.option('open'):
             return result.open()
         if stream:
@@ -130,12 +119,11 @@ class CLICommand(Command):
         """Handler."""
         engine_names = self.option('engines').split(',')
         engs = (getattr(engines, a)() for a in engine_names)
-        is_interactive = self.option('interactive')
+        is_interactive = not self.option('nointeractive')
 
         self.line(f'<info>Starting search on {", ".join(engine_names)}</info>')
 
         coro = self.search(engs, self.argument('search'), self.option('pages'),
-                           self.option('shortener'), self.option('token'),
                            is_interactive, self.option('stream'))
         return asyncio.run(coro)
 

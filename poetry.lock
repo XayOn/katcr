@@ -4,7 +4,7 @@ description = "Async http client/server framework (asyncio)"
 name = "aiohttp"
 optional = false
 python-versions = ">=3.6"
-version = "3.7.2"
+version = "3.7.3"
 
 [package.dependencies]
 async-timeout = ">=3.0,<4.0"

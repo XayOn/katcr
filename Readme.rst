@@ -1,7 +1,9 @@
 .. image:: http://i.imgur.com/ofx75lO.png
 
 CLI client to torrent searches and streaming. Easily **search torrents** in
-multiple providers such as KickAssTorrents and ThePirateBay.
+multiple providers such as KickAssTorrents, ThePirateBay, and any Jackett
+provider.
+
 
 |pypi| |release| |downloads| |python_versions| |pypi_versions| |actions|
 
@@ -15,17 +17,34 @@ multiple providers such as KickAssTorrents and ThePirateBay.
 
 
 Table of contents
-------------------
+=================
 
 .. contents::
   :local:
   :depth: 3
 
 
-`Usage`_
----------
+Usage
+-------
 
 Exposes a `katcr search` command.
+
+
+--pages
+    (optional) Number of pages to search for in each engine (Except on Jackett)
+
+--engines
+    (optional) Engines available. See `Features` section
+
+--nointeractive
+    (optional) Do not open text user interface, just print all the results
+
+--open
+    (optional) Use xdg-open to open magnet link. For example to download it
+    with your preferred torrent download client.
+
+--stream
+    (optional) Use torrentstreaming to stream. See `stream` section
 
 
 ::
@@ -39,10 +58,8 @@ Exposes a `katcr search` command.
 
         OPTIONS
           --pages                Pages to search on search engines (default: "1")
-          --token                Token to use on URL shortener as AUTH
-          --shortener            URL Shortener
           --engines              Engines (default: "Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents")
-          --interactive          Allow the user to choose a specific magnet
+          --nointeractive        Print results directly to stdout
           --open                 Open selected magnet with xdg-open
           --stream               Stream with torrentstream, plays using PLAYER envvar or xdg-open
 
