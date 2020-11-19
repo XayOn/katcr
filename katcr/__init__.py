@@ -5,20 +5,27 @@ Uses torrentmirror to get the first open mirror for any of the
 supported sites.
 """
 
-from contextlib import suppress
-from pathlib import Path
-from torrentstream import stream_torrent
+import warnings
 import os
 import shutil
 import subprocess
 import asyncio
-import aiohttp
 
 from cleo import Command
 from cleo import Application
 from pygogo import Gogo
 import cutie
-import requests
+import aiohttp
+
+try:
+    from torrentstream import stream_torrent
+except ImportError:
+    warnings.warn("Could not import torrentstream, streaming is disabled")
+
+    def stream_torrent(torrent):
+        """Stream torrents"""
+        pass
+
 
 from . import engines
 from .engines.base import BaseSearch
@@ -67,7 +74,7 @@ class CLICommand(Command):
 
         {--interactive=? : Allow the user to choose a specific magnet}
         {--open=? : Open selected magnet with xdg-open}
-        {--stream=? : Stream with torrentstream, plays using PLAYER envvar or xdg-open }
+        {--stream=? : Stream with torrentstream, uses PLAYER env or xdg-open }
 
     """
     def __init__(self, *args, **kwargs):
@@ -110,7 +117,6 @@ class CLICommand(Command):
             await stream_torrent(result.result[1])
         self.line(result.result[0])
 
-
     def handle(self):
         """Handler."""
         engine_names = self.option('engines').split(',')
@@ -119,9 +125,9 @@ class CLICommand(Command):
 
         self.line(f'<info>Starting search on {", ".join(engine_names)}</info>')
 
-        coro = self.search(engs, self.argument('search'),
-                           self.option('pages'), self.option('shortener'),
-                           self.option('token'), is_interactive, self.option('stream'))
+        coro = self.search(engs, self.argument('search'), self.option('pages'),
+                           self.option('shortener'), self.option('token'),
+                           is_interactive, self.option('stream'))
         return asyncio.run(coro)
 
 

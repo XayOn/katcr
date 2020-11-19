@@ -1,4 +1,3 @@
-import re
 from .base import BaseSearch
 
 

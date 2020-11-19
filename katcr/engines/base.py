@@ -1,14 +1,13 @@
-import aiohttp
 from contextlib import suppress
 import urllib.parse
 import re
 import abc
-import itertools
 import torrentmirror
+import aiohttp
 
 CLDS = 'cloudflare', 'cloudfront'
 MAG = re.compile(
-    "(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
+    r"(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
 
 
 class CloudFlareError(Exception):
@@ -72,7 +71,6 @@ class BaseSearch(metaclass=abc.ABCMeta):
 
             return list(await self.get_torrents(response))
 
-
     @classmethod
     async def get_torrents(cls, data):
         """Get torrents from a site. data will be a response."""
@@ -95,5 +93,5 @@ class BaseSearch(metaclass=abc.ABCMeta):
         results = []
         for page in range(0, pagelen):
             self.logger.debug("Getting page %s", page)
-            results.extend(await self.search_magnets(query, page+1))
+            results.extend(await self.search_magnets(query, page + 1))
         return results

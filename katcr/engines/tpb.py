@@ -25,5 +25,6 @@ class ThePirateBay(BaseSearch):
         result = await response.json()
         return [[
             a['name'],
-            f"magnet:?xt=urn:btih:{a['info_hash']}&dn={quote(a['name'])}&tr={'&tr='.join(TRACKERS)}"
+            (f"magnet:?xt=urn:btih:{a['info_hash']}"
+             f"&dn={quote(a['name'])}&tr={'&tr='.join(TRACKERS)}")
         ] for a in result]
