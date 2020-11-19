@@ -14,15 +14,24 @@ multiple providers such as KickAssTorrents and ThePirateBay.
     :target: https://github.com/XayOn/katcr/actions
 
 
-Usage
------
+Table of contents
+------------------
 
-katcr comes with a simple but powerful command line interface
+.. contents::
+  :local:
+  :depth: 3
+
+
+`Usage`_
+---------
+
+Exposes a `katcr search` command.
+
 
 ::
 
         USAGE
-          console search [--pages <...>] [--token [<...>]] [--shortener [<...>]] [--engines <...>] [--interactive [<...>]]
+          katcr search [--pages <...>] [--token [<...>]] [--shortener [<...>]] [--engines <...>] [--interactive [<...>]]
                          [--open [<...>]] [--stream [<...>]] <search>
 
         ARGUMENTS
