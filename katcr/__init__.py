@@ -10,6 +10,7 @@ import os
 import shutil
 import subprocess
 import asyncio
+import urllib.parse
 
 from cleo import Command
 from cleo import Application
@@ -95,6 +96,7 @@ class CLICommand(Command):
     async def search(self, engines, search_term, pages, shortener, token,
                      is_interactive, stream):
         """Search on all engines."""
+        search_term = urllib.parse.quote(search_term)
         await self.setup_sessions()
         search_res = []
         for engine in engines:
