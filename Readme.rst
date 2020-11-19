@@ -1,8 +1,16 @@
+.. raw:: html
+
+   <p align=center>
+
 .. image:: http://i.imgur.com/ofx75lO.png
 
 CLI client to torrent searches and streaming. Easily **search torrents** in
 multiple providers such as KickAssTorrents, ThePirateBay, and any Jackett
 provider.
+
+.. raw:: html
+
+   </p>
 
 
 |pypi| |release| |downloads| |python_versions| |pypi_versions| |actions|
