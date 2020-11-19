@@ -23,6 +23,38 @@ Table of contents
   :local:
   :depth: 3
 
+.. _features:
+
+Features
+--------
+
+- Display results in a nice utf-8 table
+- Interactive mode, choose and open torrent with a nice text user interface
+- Open torrent directly with your preferred client (via xdg-open)
+- Stream torrent with `torrentstream <https://github.com/XayOn/torrentstream>`_
+- Searches on all available engines until it gets results
+- Search torrents in:
+
+  + Eztv
+  + `Jackett <https://github.com/Jackett/Jackett>`_
+  + Katcr
+  + NyaaSi
+  + Skytorrents
+  + ThePirateBay
+
+Installation
+------------
+
+This is a python package available on pypi, just run
+
+.. code:: bash
+
+    pip install katcr
+
+Or, with streaming (see `Streaming <streaming_>`_)
+
+Make sure your python version is at least python3.8 and you're using that
+version's pip.
 
 Usage
 -------
@@ -34,7 +66,7 @@ Exposes a `katcr search` command.
     (optional) Number of pages to search for in each engine (Except on Jackett)
 
 --engines
-    (optional) Engines available. See `Features` section
+    (optional) Engines available. See `Features <features_>`_ section
 
 --nointeractive
     (optional) Do not open text user interface, just print all the results
@@ -44,14 +76,14 @@ Exposes a `katcr search` command.
     with your preferred torrent download client.
 
 --stream
-    (optional) Use torrentstreaming to stream. See `stream` section
+    (optional) Use torrentstreaming to stream. See `Streaming <streaming_>`_ section
 
 
 ::
 
         USAGE
-          katcr search [--pages <...>] [--token [<...>]] [--shortener [<...>]] [--engines <...>] [--interactive [<...>]]
-                         [--open [<...>]] [--stream [<...>]] <search>
+          katcr search [--pages <...>]  [--engines <...>] [--nointeractive [<...>]]
+                       [--open [<...>]] [--stream [<...>]] <search>
 
         ARGUMENTS
           <search>               Search term
@@ -74,17 +106,7 @@ Exposes a `katcr search` command.
           -n (--no-interaction)  Do not ask any interactive question
 
 
-Installation
-------------
-
-This is a python package available on pypi, just run
-
-.. code:: bash
-
-    pip install katcr
-
-Make sure your python version is at least python3.8 and you're using that
-version's pip.
+.. _streaming:
 
 Streaming
 ---------
@@ -101,25 +123,9 @@ Then, just run it with
 
 .. code:: bash
 
-        poetry run katcr search --engines Skytorrents,ThePirateBay "Big Buck Bunny" --interactive  --stream
+    poetry run katcr search --engines Jackett "Charlie Chaplin The Great Dictator" --stream
 
-Features
---------
-
-- Display results in a nice utf-8 table
-- Optional interactive mode, choose and open torrent with a nice text user interface
-- Open torrent directly with your preferred client (via xdg-open)
-- Stream torrent with `torrentstream <https://github.com/XayOn/torrentstream>`_
-- Searches on all available engines until it gets results by default.
-- Search torrents in:
-
-  + Eztv
-  + `Jackett <https://github.com/Jackett/Jackett>`_
-  + Katcr
-  + NyaaSi
-  + Skytorrents
-  + ThePirateBay
-
+.. _jackett:
 
 Jackett Support
 ---------------
@@ -128,26 +134,38 @@ You can easily use a `Jackett <https://github.com/Jackett/Jackett>`_ instance
 to search on all your configured provider.
 
 This allows you to search on any jackett-supported site (that's about supported
-300 trackers).
+300 trackers). **Jackett** is probably the best way to use this software, as it
+has a more active mantainance of the tracker sites.
 
-Jackett is probably the best way to use katcr and katbot, as it has a more
-active mantainance of the tracker sites that us.
+To enable Jackett use, simply export your jackett URL and TOKEN as variables
 
-To enable Jackett use, simply export your jackett URL and TOKEN as variables::
+
+.. code:: bash
 
    JACKETT_HOST=http://127.0.0.1:9117 JACKETT_APIKEY=<redacted> poetry run katcr --engines=
+
+Or, on a more permanent basis, write a config file on your
+`${XDG_CONFIG_HOME}/katcr.ini` (wich is usually located at
+`~/.local/share/katcr.ini`) with host and apikeys values:
+
+.. code:: ini
+
+    [jackett]
+    host = http://127.0.0.1
+    apikey = 12345 
+    # host = https://127.0.0.1
+    # host = https://127.0.0.1/prefix/
+    # ssl and prefix supported
 
 
 Notes
 ------
 
-This project is made with the best of intentions.
+I like :star:, starr this project to show your appreciation! 
 
-For that times you need to search for somethink shared as a torrent on KAT
-(I.E, linux images). Logo is based on robot cat by
+This project does not promote piracy. You can find a list of good public domain
+movies that are available as torrents at `public domain torrents
+<https://www.publicdomaintorrents.info/>`.
+
+Logo is based on robot cat by
 `Arsenty <https://thenounproject.com/arsenty/>`_
-
-If you like this project, show its appreciation by starring it, if you're using
-it and want to write to me personally, feel free to do so at
-opensource@davidfrancos.net. If you've got a bug to report, please use the
-github ticketing system
