@@ -110,7 +110,7 @@ class CLICommand(Command):
             return result.open()
         if stream:
             await stream_torrent(result.result[1])
-        self.line(result.result[0])
+        self.line(result.result[1])
 
     def handle(self):
         """Handler."""
