@@ -5,18 +5,23 @@ Uses torrentmirror to get the first open mirror for any of the
 supported sites.
 """
 
+import xdg
 import warnings
 import os
 import shutil
 import subprocess
 import asyncio
 import urllib.parse
+from configparser import ConfigParser
 
+import cutie
+import aiohttp
 from cleo import Command
 from cleo import Application
 from pygogo import Gogo
-import cutie
-import aiohttp
+
+
+CONFIG_FILE = xdg.XDG_CONFIG_HOME / 'katcr.ini'
 
 try:
     from torrentstream import stream_torrent
@@ -87,6 +92,8 @@ class CLICommand(Command):
         self.logger = Gogo(__name__, verbose=self.io.verbosity).logger
         BaseSearch.session = aiohttp.ClientSession(raise_for_status=True)
         BaseSearch.logger = self.logger
+        BaseSearch.config = ConfigParser()
+        BaseSearch.config.read(CONFIG_FILE)
         Result.session = BaseSearch.session
 
     @staticmethod

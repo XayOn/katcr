@@ -14,6 +14,7 @@ cutie = "^0.2.2"
 torrentmirror = "^2.0"
 aiohttp = "^3.7.2"
 feedparser = "^6.0.2"
+xdg = "^5.0.1"
 
 [tool.poetry.extras]
 stream = ["torrentstream"] 
