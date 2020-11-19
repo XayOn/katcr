@@ -7,7 +7,6 @@ supported sites.
 
 import xdg
 import warnings
-import os
 import shutil
 import subprocess
 import asyncio
@@ -20,7 +19,8 @@ from cleo import Command
 from cleo import Application
 from pygogo import Gogo
 
-CONFIG_FILE = xdg.XDG_CONFIG_HOME / 'katcr.ini'
+from . import engines
+from .engines.base import BaseSearch
 
 try:
     from torrentstream import stream_torrent
@@ -29,12 +29,9 @@ except ImportError:
 
     def stream_torrent(torrent):
         """Stream torrents"""
-        pass
 
 
-from . import engines
-from .engines.base import BaseSearch
-
+CONFIG_FILE = xdg.XDG_CONFIG_HOME / 'katcr.ini'
 DEFAULT_ENGINES = ['Katcr', 'ThePirateBay']
 MAX_SIZE = shutil.get_terminal_size().columns - 20
 
