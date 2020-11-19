@@ -165,7 +165,7 @@ I like :star:, starr this project to show your appreciation!
 
 This project does not promote piracy. You can find a list of good public domain
 movies that are available as torrents at `public domain torrents
-<https://www.publicdomaintorrents.info/>`.
+<https://www.publicdomaintorrents.info/>`_.
 
 Logo is based on robot cat by
 `Arsenty <https://thenounproject.com/arsenty/>`_
