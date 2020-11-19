@@ -50,6 +50,9 @@ Features
   + Skytorrents
   + ThePirateBay
 
+
+.. image:: ./docs/stream.png
+
 Installation
 ------------
 

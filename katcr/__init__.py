@@ -106,6 +106,12 @@ class CLICommand(Command):
                                      [a.result for a in search_res])
 
         result = search_res[cutie.select(search_res, selected_prefix="[☛]")]
+        if not result.result[1].startswith('magnet'):
+            # Allow jackett redirect to magnet uri.
+            resp = await BaseSearch.session.get(result.result[1],
+                                                allow_redirects=False)
+            result.result[1] = resp.headers['Location']
+
         if self.option('open'):
             return result.open()
         if stream:
