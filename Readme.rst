@@ -132,8 +132,6 @@ Then, just run it with
 
     poetry run katcr search --engines Jackett "Big Buck Bunny" --stream
 
-.. _jackett:
-
 Jackett Support
 ---------------
 
