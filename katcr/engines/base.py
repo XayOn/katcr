@@ -45,7 +45,7 @@ class BaseSearch(metaclass=abc.ABCMeta):
         proxies = []
         try:
             all_proxies = torrentmirror.get_proxies()
-        except:
+        except Exception:
             all_proxies = {}
             self.logger.debug('cant_get_proxies')
 
