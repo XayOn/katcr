@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "katcr"
-version = "3.0.1-alpha.0"
+version = "3.0.0-alpha.2"
 description = "KickassTorrents CLI and Telegram bot"
 authors = ["David Francos <opensource@davidfrancos.net>"]
 license = "GPL-3.0+"
