@@ -5,6 +5,7 @@ Uses torrentmirror to get the first open mirror for any of the
 supported sites.
 """
 
+import os
 import xdg
 import warnings
 import shutil
@@ -20,6 +21,7 @@ from cleo import Application
 from pygogo import Gogo
 
 from . import engines
+from .bot import bot_main
 from .engines.base import BaseSearch
 
 try:
@@ -55,24 +57,7 @@ class Result:
         return subprocess.check_call(['xdg-open', self.result[-1]])
 
 
-class CLICommand(Command):
-    """Search in multiple torrent sites.
-
-    search
-
-        {search : Search term}
-
-        {--pages=1 : Pages to search on search engines}
-        {--engines=Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents : Engines}
-        {--nointeractive=? : Print resuls directly to stdout}
-        {--open=? : Open selected magnet with xdg-open}
-        {--stream=? : Stream with torrentstream, uses PLAYER env or xdg-open }
-
-    """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.logger = None
-
+class SearcherCommand(Command):
     async def setup_sessions(self):
         """Setup client session as singleton"""
         self.logger = Gogo(__name__, verbose=self.io.verbosity).logger
@@ -118,6 +103,49 @@ class CLICommand(Command):
             await stream_torrent(result.result[1])
         self.line(result.result[1])
 
+
+
+class BotCommand(SearcherCommand):
+    """Launch bot
+
+    bot
+
+        {--token=? : Bot token. Ask BotFather}
+    """
+    async def run_bot(self):
+        await self.setup_sessions()
+        if not 'bot' in BaseSearch.config.sections():
+            BaseSearch.config.add_section('bot')
+        token = os.getenv('KATCR_TOKEN',
+                          BaseSearch.config['bot'].get('token', self.option('token'))
+                          )
+
+        await bot_main(self, token)
+        await self.teardown_sessions()
+
+    def handle(self):
+        return asyncio.run(self.run_bot())
+
+
+
+class CLICommand(SearcherCommand):
+    """Search in multiple torrent sites.
+
+    search
+
+        {search : Search term}
+
+        {--pages=1 : Pages to search on search engines}
+        {--engines=Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents : Engines}
+        {--nointeractive=? : Print resuls directly to stdout}
+        {--open=? : Open selected magnet with xdg-open}
+        {--stream=? : Stream with torrentstream, uses PLAYER env or xdg-open }
+
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.logger = None
+
     def handle(self):
         """Handler."""
         engine_names = self.option('engines').split(',')
@@ -135,4 +163,5 @@ def main():
     """Main entry point"""
     application = Application()
     application.add(CLICommand())
+    application.add(BotCommand())
     application.run()
