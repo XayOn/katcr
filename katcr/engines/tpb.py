@@ -23,8 +23,9 @@ class ThePirateBay(BaseSearch):
 
     async def get_torrents(self, response):
         result = await response.json()
-        return [[
-            a['name'],
-            (f"magnet:?xt=urn:btih:{a['info_hash']}"
-             f"&dn={quote(a['name'])}&tr={'&tr='.join(TRACKERS)}")
-        ] for a in result]
+        for mag in result:
+            yield [
+                mag['name'],
+                (f"magnet:?xt=urn:btih:{mag['info_hash']}"
+                 f"&dn={quote(mag['name'])}&tr={'&tr='.join(TRACKERS)}")
+            ]

@@ -74,7 +74,7 @@ class BaseSearch(metaclass=abc.ABCMeta):
             if any(reserved in text for reserved in CLDS):
                 raise CloudFlareError()
 
-            return list(await self.get_torrents(response))
+            return [a async for a in self.get_torrents(response)]
 
     @classmethod
     async def get_torrents(cls, data):
