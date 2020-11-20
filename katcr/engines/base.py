@@ -43,9 +43,14 @@ class BaseSearch(metaclass=abc.ABCMeta):
             page: Page to search on
         """
         proxies = []
-        all_proxies = torrentmirror.get_proxies()
+        try:
+            all_proxies = torrentmirror.get_proxies()
+        except:
+            all_proxies = {}
+            self.logger.debug('cant_get_proxies')
+
         proxies = [
-            a['link'] for a in all_proxies.get(self.proxy_name, [])
+            a['link'] for a in all_proxies.get(self.proxy_name, {})
             if a.get('status') == 'ONLINE'
         ]
         self.logger.debug("Got proxies: %s", proxies)
