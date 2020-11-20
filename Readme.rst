@@ -51,6 +51,10 @@ Features
   + ThePirateBay
 
 
+.. code:: bash
+
+    poetry run katcr search --engines Jackett "Big Buck Bunny" --stream
+
 .. image:: ./docs/stream.png
 
 Installation
@@ -134,7 +138,7 @@ Then, just run it with
 
 .. code:: bash
 
-    poetry run katcr search --engines Jackett "Charlie Chaplin The Great Dictator" --stream
+    poetry run katcr search --engines Jackett "Big Buck Bunny" --stream
 
 .. _jackett:
 
