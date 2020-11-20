@@ -142,16 +142,16 @@ This allows you to search on any jackett-supported site (that's about supported
 300 trackers). **Jackett** is probably the best way to use this software, as it
 has a more active mantainance of the tracker sites.
 
-To enable Jackett use, simply export your jackett URL and TOKEN as variables
+To enable Jackett use, simply export your jackett URL and TOKEN as environmental variables
 
 
 .. code:: bash
 
    JACKETT_HOST=http://127.0.0.1:9117 JACKETT_APIKEY=<redacted> poetry run katcr --engines=
 
-Or, on a more permanent basis, write a config file on your
-`${XDG_CONFIG_HOME}/katcr.ini` (wich is usually located at
-`~/.local/share/katcr.ini`) with host and apikeys values:
+Or, for a more permanent solution, write a config file to
+`${XDG_CONFIG_HOME}/katcr.ini` (wich is usually
+`~/.config/katcr.ini`) with the host and apikeys values:
 
 .. code:: ini
 
@@ -166,7 +166,7 @@ Or, on a more permanent basis, write a config file on your
 Notes
 ------
 
-I like :star:, starr this project to show your appreciation! 
+I like :star:, star this project to show your appreciation! 
 
 This project does not promote piracy. You can find a list of good public domain
 movies that are available as torrents at `public domain torrents
