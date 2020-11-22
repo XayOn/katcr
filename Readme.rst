@@ -249,4 +249,4 @@ Contributors
           <img src="https://contributors-img.web.app/image?repo=XayOn/katcr" />
         </a>
 
-Made with [contributors-img](https://contributors-img.web.app).
+Made with `contributors-img <https://contributors-img.web.app>`_
