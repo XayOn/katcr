@@ -227,9 +227,24 @@ Notes
 
 I like :star:, star this project to show your appreciation! 
 
+Disclaimer
+++++++++++++
+
 This project does not promote piracy. You can find a list of good public domain
 movies that are available as torrents at `public domain torrents
 <https://www.publicdomaintorrents.info/>`_.
 
+Logo
+++++
+
 Logo is based on robot cat by
 `Arsenty <https://thenounproject.com/arsenty/>`_
+
+Contributors
+++++++++++++
+
+<a href="https://github.com/XayOn/katcr/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=XayOn/katcr" />
+</a>
+
+Made with [contributors-img](https://contributors-img.web.app).
