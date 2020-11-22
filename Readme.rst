@@ -163,6 +163,45 @@ Or, for a more permanent solution, write a config file to
     # ssl and prefix supported
 
 
+Bot
+---
+
+Katcr comes with a bot command, connecting to telegram
+
+.. image:: docs/bot.png
+
+<details>
+  <summary>See more details!</summary>
+  
+  To start a katcr bot, you need a bot token from the GodFather.
+  Open a conversation to `GodFather <https://t.me/botfather/>`_  to get more
+  information on how to get a token.
+
+  Just launch the bot with --token=your_token
+
+  .. code:: bash
+
+        USAGE
+        console bot [--token [<...>]]
+
+        OPTIONS
+          --token                Bot token. Ask BotFather
+
+        GLOBAL OPTIONS
+          -h (--help)            Display this help message
+          -q (--quiet)           Do not output any message
+          -v (--verbose)         Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output
+                                 and "-vvv" for debug
+          -V (--version)         Display this application version
+          --ansi                 Force ANSI output
+          --no-ansi              Disable ANSI output
+          -n (--no-interaction)  Do not ask any interactive question
+
+
+</details>
+
+
+
 Notes
 ------
 
