@@ -42,7 +42,7 @@ def test_search_cmd():
     application.add(CLICommand())
 
     command_tester = CommandTester(application.find('search'))
-    command_tester.execute('search --engines fake asdf')
+    command_tester.execute('search --engine fake asdf')
     assert BaseSearch.logger
     assert BaseSearch.config
     assert BaseSearch.session
