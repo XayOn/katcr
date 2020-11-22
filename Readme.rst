@@ -243,8 +243,10 @@ Logo is based on robot cat by
 Contributors
 ++++++++++++
 
-<a href="https://github.com/XayOn/katcr/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=XayOn/katcr" />
-</a>
+.. raw:: html
+
+        <a href="https://github.com/XayOn/katcr/graphs/contributors">
+          <img src="https://contributors-img.web.app/image?repo=XayOn/katcr" />
+        </a>
 
 Made with [contributors-img](https://contributors-img.web.app).
