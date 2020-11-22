@@ -47,7 +47,11 @@ Features
 
 .. code:: bash
 
-    poetry run katcr search --engine Jackett "Big Buck Bunny" --stream
+    poetry run katcr search --stream --engine Jackett --engine ThePirateBay "Big Buck Bunny" 
+
+.. code:: bash
+
+    poetry run katcr search --stream --engine Jackett:eztv "Big Buck Bunny" 
 
 .. image:: ./docs/stream.png
 
