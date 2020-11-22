@@ -74,11 +74,19 @@ class SearcherCommand(Command):
     async def search(self, enames, search_term, pages, is_interactive, stream):
         """Search on all engines."""
 
-        eng = (getattr(engines, a)() for a in enames)
+        virtual = [a for a in enames if ':' in a]
+        real = [a for a in enames if ':' not in a]
+
+        veng = list(
+            getattr(engines, a[0])(a[1])
+            for a in [a.split(':') for a in virtual])
+        eng = list(getattr(engines, a)() for a in real)
+
         search_term = urllib.parse.quote(search_term)
         await self.setup_sessions()
         search_res = []
-        for engine in eng:
+
+        for engine in veng + eng:
             engine_result = await engine.search(search_term, int(pages))
             search_res.extend(
                 (Result(a, is_interactive) for a in engine_result))

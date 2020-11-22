@@ -19,6 +19,9 @@ class BaseSearch(metaclass=abc.ABCMeta):
     session = None
     logger = None
 
+    def __init__(self, option=None):
+        self.option = option
+
     @abc.abstractproperty
     def url(self):
         """Search on given url by default."""
