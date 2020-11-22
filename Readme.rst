@@ -5,13 +5,15 @@ multiple providers such as KickAssTorrents, ThePirateBay, and any Jackett
 provider.
 
 
-|pypi| |release| |downloads| |python_versions| |pypi_versions| |actions|
+|pypi| |release| |downloads| |python_versions| |coverage| |pypi_versions| |actions|
 
 .. |pypi| image:: https://img.shields.io/pypi/l/katcr
 .. |release| image:: https://img.shields.io/librariesio/release/pypi/katcr
 .. |downloads| image:: https://img.shields.io/pypi/dm/katcr
 .. |python_versions| image:: https://img.shields.io/pypi/pyversions/katcr
 .. |pypi_versions| image:: https://img.shields.io/pypi/v/katcr
+.. |coverage| image:: https://codecov.io/gh/XayOn/katcr/branch/develop/graph/badge.svg
+    :target: https://codecov.io/gh/XayOn/katcr
 .. |actions| image:: https://github.com/XayOn/katcr/workflows/CI%20commit/badge.svg
     :target: https://github.com/XayOn/katcr/actions
 
@@ -161,6 +163,40 @@ Or, for a more permanent solution, write a config file to
     # host = https://127.0.0.1
     # host = https://127.0.0.1/prefix/
     # ssl and prefix supported
+
+
+Bot
+---
+
+Katcr comes with a bot command, connecting to telegram
+
+.. image:: docs/bot.png
+
+To start a katcr bot, you need a bot token from the GodFather.
+Open a conversation to `GodFather <https://t.me/botfather/>`_  to get more
+information on how to get a token.
+
+Just launch the bot with --token=your_token
+
+.. code:: bash
+
+        USAGE
+        console bot [--token [<...>]]
+
+        OPTIONS
+          --token                Bot token. Ask BotFather
+
+        GLOBAL OPTIONS
+          -h (--help)            Display this help message
+          -q (--quiet)           Do not output any message
+          -v (--verbose)         Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output
+                                 and "-vvv" for debug
+          -V (--version)         Display this application version
+          --ansi                 Force ANSI output
+          --no-ansi              Disable ANSI output
+          -n (--no-interaction)  Do not ask any interactive question
+
+
 
 
 Notes
