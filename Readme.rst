@@ -5,13 +5,15 @@ multiple providers such as KickAssTorrents, ThePirateBay, and any Jackett
 provider.
 
 
-|pypi| |release| |downloads| |python_versions| |pypi_versions| |actions|
+|pypi| |release| |downloads| |python_versions| |coverage| |pypi_versions| |actions|
 
 .. |pypi| image:: https://img.shields.io/pypi/l/katcr
 .. |release| image:: https://img.shields.io/librariesio/release/pypi/katcr
 .. |downloads| image:: https://img.shields.io/pypi/dm/katcr
 .. |python_versions| image:: https://img.shields.io/pypi/pyversions/katcr
 .. |pypi_versions| image:: https://img.shields.io/pypi/v/katcr
+.. |coverage| image:: https://codecov.io/gh/XayOn/katcr/branch/develop/graph/badge.svg
+    :target: https://codecov.io/gh/XayOn/katcr
 .. |actions| image:: https://github.com/XayOn/katcr/workflows/CI%20commit/badge.svg
     :target: https://github.com/XayOn/katcr/actions
 
