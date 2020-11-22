@@ -21,7 +21,8 @@ class Jackett(BaseSearch):
                          self.config.get('jackett', 'host', fallback=None))
         apikey = os.getenv('JACKETT_APIKEY',
                            self.config.get('jackett', 'apikey', fallback=None))
-        return f"{host}/api/v2.0/indexers/all/results/torznab?apikey={apikey}"
+        return (f"{host}/api/v2.0/indexers/"
+                f"{self.option}/results/torznab?apikey={apikey}")
 
     async def search_site(self, url):
         """Search jackett using feedparser"""
