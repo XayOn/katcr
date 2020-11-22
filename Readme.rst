@@ -219,7 +219,7 @@ Katcr comes docker-ready, to execute it, just run:
 
 .. code:: bash
 
-        docker run katcr --engine ThePirateBay "Big Buck Bunny"
+        docker run xayon/katcr search --engine ThePirateBay "Big Buck Bunny"
 
 
 Notes
