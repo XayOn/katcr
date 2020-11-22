@@ -1,4 +1,3 @@
-import asyncio
 from aiogram import Bot, Dispatcher, types
 
 
@@ -12,7 +11,7 @@ class BotHandler:
         """Start command"""
         await event.answer(
             (f"Hello, {event.from_user.get_mention(as_html=True)} 👋!"
-             f" I'm katbot, a bot to search on multiple torrent search engines."
+             f" I'm katbot, use me to search on many torrent search engines."
              f" Use the /search <your_search> command with your query and I'll"
              f" return some results"),
             parse_mode=types.ParseMode.HTML,
