@@ -212,6 +212,14 @@ Just launch the bot with --token=your_token
           -n (--no-interaction)  Do not ask any interactive question
 
 
+Docker
+------
+
+Katcr comes docker-ready, to execute it, just run:
+
+.. code:: bash
+
+        docker run katcr --engine ThePirateBay "Big Buck Bunny"
 
 
 Notes
