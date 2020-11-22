@@ -21,7 +21,7 @@ from cleo import Application
 from pygogo import Gogo
 
 from . import engines
-from .bot import bot_main
+from .bot import BotHandler
 from .engines.base import BaseSearch
 
 try:
@@ -71,13 +71,14 @@ class SearcherCommand(Command):
     async def teardown_sessions():
         BaseSearch.session.close()
 
-    async def search(self, engines, search_term, pages, is_interactive,
-                     stream):
+    async def search(self, enames, search_term, pages, is_interactive, stream):
         """Search on all engines."""
+
+        eng = (getattr(engines, a)() for a in enames)
         search_term = urllib.parse.quote(search_term)
         await self.setup_sessions()
         search_res = []
-        for engine in engines:
+        for engine in eng:
             engine_result = await engine.search(search_term, int(pages))
             search_res.extend(
                 (Result(a, is_interactive) for a in engine_result))
@@ -87,8 +88,9 @@ class SearcherCommand(Command):
             return
 
         if not is_interactive:
-            return self.render_table(['Description', 'Link'],
-                                     [a.result for a in search_res])
+            self.render_table(['Description', 'Link'],
+                              [a.result for a in search_res])
+            return search_res
 
         result = search_res[cutie.select(search_res, selected_prefix="[☛]")]
         if not result.result[1].startswith('magnet'):
@@ -104,7 +106,6 @@ class SearcherCommand(Command):
         self.line(result.result[1])
 
 
-
 class BotCommand(SearcherCommand):
     """Launch bot
 
@@ -114,18 +115,18 @@ class BotCommand(SearcherCommand):
     """
     async def run_bot(self):
         await self.setup_sessions()
-        if not 'bot' in BaseSearch.config.sections():
+        if 'bot' not in BaseSearch.config.sections():
             BaseSearch.config.add_section('bot')
-        token = os.getenv('KATCR_TOKEN',
-                          BaseSearch.config['bot'].get('token', self.option('token'))
-                          )
 
-        await bot_main(self, token)
+        token = os.getenv(
+            'KATCR_TOKEN',
+            BaseSearch.config['bot'].get('token', self.option('token')))
+
+        await BotHandler(self).start(token)
         await self.teardown_sessions()
 
     def handle(self):
         return asyncio.run(self.run_bot())
-
 
 
 class CLICommand(SearcherCommand):
@@ -149,13 +150,13 @@ class CLICommand(SearcherCommand):
     def handle(self):
         """Handler."""
         engine_names = self.option('engines').split(',')
-        engs = (getattr(engines, a)() for a in engine_names)
         is_interactive = not self.option('nointeractive')
 
         self.line(f'<info>Starting search on {", ".join(engine_names)}</info>')
 
-        coro = self.search(engs, self.argument('search'), self.option('pages'),
-                           is_interactive, self.option('stream'))
+        coro = self.search(engine_names, self.argument('search'),
+                           self.option('pages'), is_interactive,
+                           self.option('stream'))
         return asyncio.run(coro)
 
 
