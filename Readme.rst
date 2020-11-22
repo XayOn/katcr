@@ -170,16 +170,13 @@ Katcr comes with a bot command, connecting to telegram
 
 .. image:: docs/bot.png
 
-<details>
-  <summary>See more details!</summary>
-  
-  To start a katcr bot, you need a bot token from the GodFather.
-  Open a conversation to `GodFather <https://t.me/botfather/>`_  to get more
-  information on how to get a token.
+To start a katcr bot, you need a bot token from the GodFather.
+Open a conversation to `GodFather <https://t.me/botfather/>`_  to get more
+information on how to get a token.
 
-  Just launch the bot with --token=your_token
+Just launch the bot with --token=your_token
 
-  .. code:: bash
+.. code:: bash
 
         USAGE
         console bot [--token [<...>]]
@@ -197,8 +194,6 @@ Katcr comes with a bot command, connecting to telegram
           --no-ansi              Disable ANSI output
           -n (--no-interaction)  Do not ask any interactive question
 
-
-</details>
 
 
 
