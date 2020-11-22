@@ -137,7 +137,7 @@ class CLICommand(SearcherCommand):
         {search : Search term}
 
         {--pages=1 : Pages to search on search engines}
-        {--engines=Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents : Engines}
+        {--engine=?* : Engines}
         {--nointeractive=? : Print resuls directly to stdout}
         {--open=? : Open selected magnet with xdg-open}
         {--stream=? : Stream with torrentstream, uses PLAYER env or xdg-open }
@@ -149,7 +149,12 @@ class CLICommand(SearcherCommand):
 
     def handle(self):
         """Handler."""
-        engine_names = self.option('engines').split(',')
+        if self.option('engine'):
+            engine_names = self.option('engine')
+        else:
+            engine_names = [
+                "Katcr", "ThePirateBay", "Eztv", "NyaaSi", "Skytorrents"
+            ]
         is_interactive = not self.option('nointeractive')
 
         self.line(f'<info>Starting search on {", ".join(engine_names)}</info>')

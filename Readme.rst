@@ -47,7 +47,7 @@ Features
 
 .. code:: bash
 
-    poetry run katcr search --engines Jackett "Big Buck Bunny" --stream
+    poetry run katcr search --engine Jackett "Big Buck Bunny" --stream
 
 .. image:: ./docs/stream.png
 
@@ -74,8 +74,9 @@ Exposes a `katcr search` command.
 --pages
     (optional) Number of pages to search for in each engine (Except on Jackett)
 
---engines
-    (optional) Engines available. See `Features <features_>`_ section
+--engine
+    (optional) Engines available. See `Features <features_>`_ section. You can
+    use this option multiple times (as in --engine Eztv --engine ThePirateBay)
 
 --nointeractive
     (optional) Do not open text user interface, just print all the results
@@ -91,7 +92,7 @@ Exposes a `katcr search` command.
 ::
 
         USAGE
-          katcr search [--pages <...>]  [--engines <...>] [--nointeractive [<...>]]
+          katcr search [--pages <...>]  [--engine <...>] [--nointeractive [<...>]]
                        [--open [<...>]] [--stream [<...>]] <search>
 
         ARGUMENTS
@@ -99,7 +100,7 @@ Exposes a `katcr search` command.
 
         OPTIONS
           --pages                Pages to search on search engines (default: "1")
-          --engines              Engines (default: "Katcr,ThePirateBay,Eztv,NyaaSi,Skytorrents")
+          --engine               Engines (multiple values allowed) 
           --nointeractive        Print results directly to stdout
           --open                 Open selected magnet with xdg-open
           --stream               Stream with torrentstream, plays using PLAYER envvar or xdg-open
@@ -132,7 +133,7 @@ Then, just run it with
 
 .. code:: bash
 
-    poetry run katcr search --engines Jackett "Big Buck Bunny" --stream
+    poetry run katcr search --engine Jackett "Big Buck Bunny" --stream
 
 Jackett Support
 ---------------
@@ -149,7 +150,7 @@ To enable Jackett use, simply export your jackett URL and TOKEN as environmental
 
 .. code:: bash
 
-   JACKETT_HOST=http://127.0.0.1:9117 JACKETT_APIKEY=<redacted> poetry run katcr --engines=
+   JACKETT_HOST=http://127.0.0.1:9117 JACKETT_APIKEY=<redacted> poetry run katcr --engine=jackett Big Buck Bunny
 
 Or, for a more permanent solution, write a config file to
 `${XDG_CONFIG_HOME}/katcr.ini` (wich is usually
