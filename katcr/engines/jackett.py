@@ -15,6 +15,8 @@ class Jackett(BaseSearch):
     @property
     def url(self):
         """Return formatted url extracting host and key from config or env."""
+        if not self.option:
+            self.option = 'all'
         if not self.config.has_section('jackett'):
             self.config.add_section('jackett')
         host = os.getenv('JACKETT_HOST',
