@@ -69,7 +69,7 @@ class SearcherCommand(Command):
 
     @staticmethod
     async def teardown_sessions():
-        BaseSearch.session.close()
+        await BaseSearch.session.close()
 
     async def search(self, enames, search_term, pages, is_interactive, stream):
         """Search on all engines."""
