@@ -5,13 +5,15 @@ multiple providers such as KickAssTorrents, ThePirateBay, and any Jackett
 provider.
 
 
-|pypi| |release| |downloads| |python_versions| |coverage| |pypi_versions| |actions|
+|pypi| |release| |downloads| |python_versions| |coverage| |pypi_versions| |aur_package| |actions|
 
 .. |pypi| image:: https://img.shields.io/pypi/l/katcr
 .. |release| image:: https://img.shields.io/librariesio/release/pypi/katcr
 .. |downloads| image:: https://img.shields.io/pypi/dm/katcr
 .. |python_versions| image:: https://img.shields.io/pypi/pyversions/katcr
 .. |pypi_versions| image:: https://img.shields.io/pypi/v/katcr
+.. |aur_pacakge| image:: https://img.shields.io/aur/version/katcr
+    :target: https://aur.archlinux.org/packages/katcr
 .. |coverage| image:: https://codecov.io/gh/XayOn/katcr/branch/develop/graph/badge.svg
     :target: https://codecov.io/gh/XayOn/katcr
 .. |actions| image:: https://github.com/XayOn/katcr/workflows/CI%20commit/badge.svg
@@ -68,6 +70,14 @@ Or, with streaming (see `Streaming <streaming_>`_)
 
 Make sure your python version is at least python3.8 and you're using that
 version's pip.
+
+On archlinux, you can install it from AUR
+(https://aur.archlinux.org/packages/katcr/), with your favourite aur package
+installer, such as yay.
+
+.. code:: bash
+
+    yay -S katcr
 
 Usage
 -------
