@@ -12,7 +12,7 @@ provider.
 .. |downloads| image:: https://img.shields.io/pypi/dm/katcr
 .. |python_versions| image:: https://img.shields.io/pypi/pyversions/katcr
 .. |pypi_versions| image:: https://img.shields.io/pypi/v/katcr
-.. |aur_pacakge| image:: https://img.shields.io/aur/version/katcr
+.. |aur_package| image:: https://img.shields.io/aur/version/katcr
     :target: https://aur.archlinux.org/packages/katcr
 .. |coverage| image:: https://codecov.io/gh/XayOn/katcr/branch/develop/graph/badge.svg
     :target: https://codecov.io/gh/XayOn/katcr
